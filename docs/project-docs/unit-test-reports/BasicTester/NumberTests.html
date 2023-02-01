@@ -1,0 +1,147 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <style>
+body {
+  font-family: arial, sans-serif;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.overall {
+  margin-bottom: 5px;
+}
+.overall::before {
+  display: table;
+  content: "";
+}
+.overall::after {
+  display: table;
+  content: "";
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1170px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.row {
+  margin-bottom: 15px;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.overall-passed {
+  background-color: #009933;
+}
+
+.overall div {
+  width:33.33333333%;
+  float:left;
+}
+
+.overall-failed {
+  background-color: #cc3300;
+}
+
+.tests {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.tests .summary {
+  width: 49%;
+  padding-right: 5px;
+  float:left;
+}
+
+.tests .details {
+  width: 50%;
+  float:left;
+}
+
+.passed {
+  color: #009933;
+  cursor: pointer;
+}
+.passed::before {
+  content: '\2713'; /* tick */
+}
+
+.failed {
+  color: #003399;
+  cursor: pointer;
+}
+.failed::before {
+  content: '\2716' /* cross */
+}
+
+.error {
+  color: #cc3300;
+  cursor: pointer;
+}
+.error::before {
+  content: '\2716' /* cross */
+}
+
+.highlight {
+  background-color: #3333cc;
+  color: #ffffff;
+}
+    </style>
+    <script>
+      let elemCount = 20;
+      function toggle(elemNum) {
+        for (let i = 1; i <= elemCount; i++) {
+          let elem = document.getElementById("test" + i);
+          elem.classList.remove("highlight");
+          let elemDetail = document.getElementById("testDetail" + i);
+          elemDetail.style = "display:none";
+        }
+        let highlightElem = document.getElementById("test" + elemNum);
+        highlightElem.classList.add("highlight");
+        let showElem = document.getElementById("testDetail" + elemNum);
+        showElem.style = "display:block";
+      }
+    </script>
+  </head>
+
+
+<body>
+    <div class="container">
+    <div class="row">
+      <h1>Number Tests</h1>
+      <div>Finished after: 1 seconds</div>
+    </div>
+    <div class="overall row">
+      <div>Runs: 20</div>
+      <div>Errors: 0</div>
+      <div>Fails: 9</div>
+    </div>
+    <br/>
+    <div class="overall-failed row">&nbsp;</div>
+
+    <div class="tests">
+
+<div class="summary"><div id="test1" class=Passed onclick="toggle(1)">&nbsp;Test integers, matching</div><div id="test2" class=Failed onclick="toggle(2)">&nbsp;Test integers, not matching</div><div id="test3" class=Passed onclick="toggle(3)">&nbsp;Test doubles, matching</div><div id="test4" class=Failed onclick="toggle(4)">&nbsp;Test doubles, not matching</div><div id="test5" class=Passed onclick="toggle(5)">&nbsp;Test doubles with calculations</div><div id="test6" class=Passed onclick="toggle(6)">&nbsp;Test complex recurring doubles</div><div id="test7" class=Passed onclick="toggle(7)">&nbsp;Test more complex recurring doubles</div><div id="test8" class=Passed onclick="toggle(8)">&nbsp;Test singles, matching</div><div id="test9" class=Failed onclick="toggle(9)">&nbsp;Test singles, not matching</div><div id="test10" class=Passed onclick="toggle(10)">&nbsp;Test longs, matching</div><div id="test11" class=Failed onclick="toggle(11)">&nbsp;Test longs, not matching</div><div id="test12" class=Failed onclick="toggle(12)">&nbsp;Test numeric, not matching</div><div id="test13" class=Passed onclick="toggle(13)">&nbsp;Test numeric, matching</div><div id="test14" class=Passed onclick="toggle(14)">&nbsp;Test between</div><div id="test15" class=Failed onclick="toggle(15)">&nbsp;Test not between - less</div><div id="test16" class=Failed onclick="toggle(16)">&nbsp;Test not between - more</div><div id="test17" class=Passed onclick="toggle(17)">&nbsp;Test greater than</div><div id="test18" class=Failed onclick="toggle(18)">&nbsp;Test greater than - less</div><div id="test19" class=Passed onclick="toggle(19)">&nbsp;Test less than</div><div id="test20" class=Failed onclick="toggle(20)">&nbsp;Test less than - more</div></div>
+<div class="details"><div id="testDetail1" style="display:none"></div><div id="testDetail2" style="display:none">Expected: 1, but was: 2</div><div id="testDetail3" style="display:none"></div><div id="testDetail4" style="display:none">Expected: 2.5, but was: 3.5</div><div id="testDetail5" style="display:none"></div><div id="testDetail6" style="display:none"></div><div id="testDetail7" style="display:none"></div><div id="testDetail8" style="display:none"></div><div id="testDetail9" style="display:none">Expected: 6.02E+23, but was: 6.12E+23</div><div id="testDetail10" style="display:none"></div><div id="testDetail11" style="display:none">Expected: 2094070921, but was: 2094070922</div><div id="testDetail12" style="display:none">Expected: 1, but was: 2.5</div><div id="testDetail13" style="display:none"></div><div id="testDetail14" style="display:none"></div><div id="testDetail15" style="display:none">Expected: Between 1 and 5, but was: 0</div><div id="testDetail16" style="display:none">Expected: Between 1 and 5, but was: 8</div><div id="testDetail17" style="display:none"></div><div id="testDetail18" style="display:none">Expected: Greater than 1, but was: 0</div><div id="testDetail19" style="display:none"></div><div id="testDetail20" style="display:none">Expected: Greater than 1, but was: 5</div></div>
+
+    </div>
+  </div>
+  </body>
+</html>

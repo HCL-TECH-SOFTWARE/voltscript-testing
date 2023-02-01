@@ -1,0 +1,109 @@
+%REM
+	Copyright 2022-2023 HCL America, Inc.
+	Licensed under the Apache License, Version 2.0 (the "License"); 
+	you may not use this file except in compliance with the License. 
+	You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, 
+	software distributed under the License is distributed on an "AS IS" BASIS, 
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+	See the License for the specific language governing permissions and limitations under the License	
+%END REM
+%REM
+	Agent DateTimeTester
+	Created Mar 16, 2022 by Paul Withers/UK/PNPHCL
+	Description: Tests NotesDateTime. Will not work outside Domino
+%END REM
+Option Public
+Option Declare
+Use "BaliTestRunner"
+%REM
+	Class DateTimeTester
+	Description: Example a custom tests class
+%END REM
+Private Class DateTimeTester As AbstractBaliCustomTester
+	
+	%REM
+		Function runTests
+		Description: Runs a variety of custom tests
+	%END REM
+	Function runTests As Boolean
+
+		Dim dateTime As Variant
+		Dim mon As Integer
+		
+		' If first test does not use an assertion, call checkStarted
+		' This starts timer and run beforeAll function, if relevant
+		
+		Me.testSuite.checkStarted
+		
+		' No custom before/after code, so no need to call BaliUnit.beforeEach and BaliUnit.afterEach
+		
+		dateTime = CDat(|30/01/2022|)
+		print datatype(datetime)
+		print typeName(dateTime)
+		Call checkIsDateTime(Datetime)
+		
+		mon = Month(dateTime)
+		checkMonthLessThan13(mon)
+		
+		Call Me.testSuite.describe(|Check dateTime is before Now|).assertIsLessThan(Now(), CDbl(dateTime))
+		
+		' Delete function of BaliUnit will run afterAll function
+		
+	End Function
+	
+	
+	%REM
+		*****************************************************
+		INDIVIDUAL TESTS
+		*****************************************************
+	%END REM
+	
+	%REM
+	Function checkIsDateTime
+	Description: Comments for Function
+	%END REM
+	Function checkIsDateTime(dateTime As Variant) As Boolean
+		print typeName(dateTime)
+		checkIsDateTime = Me.testSuite.describe(|Check is DateTime Variant|).assertIs(|DATE|, dateTime)
+
+	End Function
+	
+	%REM
+		Function checkMonthLessThan13
+		Description: Comments for Function
+	%END REM
+	Function checkMonthLessThan13(mon As Integer)
+
+		Try
+			Call Me.testSuite.describe(|Check month is less than 13|)
+			If (mon < 13) Then
+				Me.testSuite.addResult True, ||
+				checkMonthLessThan13 = True
+			Else
+				Me.testSuite.addResult False, |Expected less than 13, was | & CStr(mon)
+				checkMonthLessThan13 = False
+			End If
+		Catch
+			testSuite.addError testSuite.getErrorMsg, GetThreadInfo(12)
+		End Try
+		
+	End Function
+
+End Class
+Sub Initialize
+	
+	Dim BaliTestSuite As New BaliTestSuite(|NotesDateTime Tests|)
+	Dim DateTimeTester As New DateTimeTester
+	
+	Call DateTimeTester.addTestSuite(BaliTestSuite).runTests()
+	
+End Sub
+
+
+
+
+

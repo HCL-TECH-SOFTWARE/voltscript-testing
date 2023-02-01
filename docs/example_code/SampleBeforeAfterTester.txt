@@ -1,0 +1,176 @@
+%REM
+	Copyright 2022-2023 HCL America, Inc.
+	Licensed under the Apache License, Version 2.0 (the "License"); 
+	you may not use this file except in compliance with the License. 
+	You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, 
+	software distributed under the License is distributed on an "AS IS" BASIS, 
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+	See the License for the specific language governing permissions and limitations under the License	
+%END REM
+%REM
+	Agent SampleBeforeAfterTester
+	Created Mar 17, 2022 by Paul Withers/UK/PNPHCL
+	Description: Tests custom before/after code and final test uses custom tester
+%END REM
+Option Public
+Option Declare
+Use "BaliTestRunner"
+Private a As Integer
+Private b As Integer
+
+
+%REM
+	Copyright 2022 Paul Withers
+	Licensed under the Apache License, Version 2.0 (the "License"); 
+	you may not use this file except in compliance with the License. 
+	You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, 
+	software distributed under the License is distributed on an "AS IS" BASIS, 
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+	See the License for the specific language governing permissions and limitations under the License	
+%END REM
+%REM
+	BaliCustomBeforeAfter to set up integers before the start of the test, 
+	increment a before each test, increment b after each test and msgbox both after all tests
+%END REM
+Class IntegerIncrementBeforeAfter As AbstractBaliCustomBeforeAfter
+	
+	%REM
+		Sub beforeAll
+		Description: Set a and b to zero
+	%END REM
+	Sub beforeAll()
+
+		a = 0
+		b = 0
+
+	End Sub
+	
+	%REM
+		Sub beforeEach
+		Description: Increment a
+	%END REM
+	Sub beforeEach()
+		a++
+
+	End Sub
+	
+	%REM
+		Sub afterEach
+		Description: Increment b
+	%END REM
+	Sub afterEach()
+		b++
+
+	End Sub
+	
+	%REM
+		Sub afterAll
+		Description: Print both a and b
+	%END REM
+	Sub afterAll()
+
+		Print |a is | & a & |, b is | & b
+
+	End Sub
+
+End Class
+
+
+%REM
+	Copyright 2022 Paul Withers
+	Licensed under the Apache License, Version 2.0 (the "License"); 
+	you may not use this file except in compliance with the License. 
+	You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, 
+	software distributed under the License is distributed on an "AS IS" BASIS, 
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+	See the License for the specific language governing permissions and limitations under the License	
+%END REM
+%REM
+	Class CustomTesterOneLess
+	Description: Custom tester to test a > b
+%END REM
+Class CustomTesterGreaterThan As AbstractBaliCustomTester
+	
+	%REM
+		Function runTests
+		Description: One test, testing a > b
+	%END REM
+	Function runTests() As Boolean
+
+		Me.testSuite.runBeforeEach
+		
+		Me.testSuite.describe(|Test a > b|)
+		
+		If (a > b) Then
+			Me.testSuite.addResult True, ||
+			runTests = True
+		Else
+			Me.testSuite.addResult False, |Expected a greater than b, a was | & CStr(a) & |, b was | & CStr(b)
+			runTests = False
+		End If
+		
+		Me.testSuite.runAfterEach
+
+	End Function
+
+End Class
+Sub Initialize
+	
+	'Core tests
+	
+	Dim testSuite As New BaliTestSuite(|Custom BeforeAfter Tester|)
+	Dim beforeAfter As New IntegerIncrementBeforeAfter
+	
+	Call testSuite.addCustomBeforeAfter(beforeAfter)
+	
+	'a = 1, b = 0
+	testSuite.describe(|Test b is false|).assertFalse(b)
+	
+	'a = 2, b = 1
+	Call testSuite.describe(|Test a equals 2|).assertEqualsInteger(2, a)
+
+	'a = 3, b = 2	
+	Call testSuite.describe(|Test b equals 2 primitive|).assertEqualsPrimitive(2, b)
+	
+	'a = 4, b = 3
+	Dim f As Double
+	f = 3.0
+	'Cannot use a for these tests, because we're converting *before* incrementing
+	Call testSuite.describe(|Test CDbl(b) = 3.0|).assertEqualsDouble(f, CDbl(b))	'Just passing 3.0 fails
+	
+	'a = 5, b = 4
+	Dim c As Single
+	c = 4
+	Call testSuite.describe(|Test CSngl(b) = 4|).assertEqualsSingle(c, CSng(b))
+	
+	'a = 6, b = 5
+	Dim d As Long
+	d = 5
+	Call testSuite.describe(|Test CLng(b) = 5|).assertEqualsLong(d, CLng(b))
+	
+	'a = 7, b = 6
+	Dim e As Integer
+	e = b + 1
+	Call testSuite.describe(|Test a numeric = b + 1|).assertEqualsNumeric(e, a)
+	
+	'a = 8, b = 8
+	Dim tester As New CustomTesterGreaterThan
+	tester.addTestSuite(testSuite).runTests
+	
+	Exit Sub
+End Sub
+
+
+

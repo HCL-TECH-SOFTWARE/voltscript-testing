@@ -1,0 +1,8 @@
+# Bali
+*.bso
+/unit-test-reports/*
+
+# .devcontainer
+.devcontainer/*
+
+site/*
