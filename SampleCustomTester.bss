@@ -78,18 +78,20 @@ Private Class DateTimeTester As AbstractBaliCustomTester
 	%END REM
 	Function checkMonthLessThan13(mon As Integer)
 
-		Try
-			Call Me.testSuite.describe(|Check month is less than 13|)
-			If (mon < 13) Then
-				Me.testSuite.addResult True, ||
-				checkMonthLessThan13 = True
-			Else
-				Me.testSuite.addResult False, |Expected less than 13, was | & CStr(mon)
-				checkMonthLessThan13 = False
-			End If
-		Catch
-			testSuite.addError testSuite.getErrorMsg, GetThreadInfo(12)
-		End Try
+		On Error GoTo errCatch
+		
+		Call Me.testSuite.describe(|Check month is less than 13|)
+		If (mon < 13) Then
+			Me.testSuite.addResult True, ||
+			checkMonthLessThan13 = True
+		Else
+			Me.testSuite.addResult False, |Expected less than 13, was | & CStr(mon)
+			checkMonthLessThan13 = False
+		End If
+		Exit Function
+		
+errCatch:
+		testSuite.addError testSuite.getErrorMsg, ||
 		
 	End Function
 

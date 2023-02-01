@@ -45,10 +45,10 @@ Class BaliTestSuite
 	Public displayName As String
 	Public errors As Integer
 	Public failures As Integer
-	Public missingAssertions as Integer
+	Public missingAssertions As Integer
 	Public results List As TestCase
 	Public runTime As String
-	Public suppressReport as Boolean
+	Public suppressReport As Boolean
 	Public tests As Integer
 	Public title As String
 	Private description As String
@@ -59,7 +59,7 @@ Class BaliTestSuite
 	Private started As Boolean
 	Private isDelegatedAssertion As Boolean
 	Private hasTestRunner As Boolean
-	Private testRunnerName as String
+	Private testRunnerName As String
 	'}}
 	
 	%REM
@@ -180,7 +180,7 @@ Class BaliTestSuite
 		Converts error message to human readable format.
 		@return					Human readable error description, number and line
 	%END REM
-	Function getErrorMsg as String
+	Function getErrorMsg As String
 		'{{SETI_AUTHOR_CODE_getErrorMsg
 		getErrorMsg = |Error | & Error & |(| & Err() & |) on line | & Erl
 		'}}
@@ -201,7 +201,7 @@ Class BaliTestSuite
 		@param testRunnerName 	TestRunner name test is included in
 		@returns				Fluent
 	%END REM
-	Function includeInTestRunner(testRunnerName as String) As BaliTestSuite
+	Function includeInTestRunner(testRunnerName As String) As BaliTestSuite
 		'{{SETI_AUTHOR_CODE_includeInTestRunner
 		Me.hasTestRunner = True
 		Me.testRunnerName = testRunnerName
@@ -245,7 +245,7 @@ Class BaliTestSuite
 		Whether there are errors, failures or missing assertions.
 		@return					True if no errors, failures or missing assertions
 	%END REM
-	Function ranSuccessfully as Boolean
+	Function ranSuccessfully As Boolean
 		'{{SETI_AUTHOR_CODE_ranSuccessfully
 		If (Me.errors = 0 And Me.failures = 0 And Me.missingAssertions = 0) Then
 			ranSuccessfully = True
@@ -383,53 +383,57 @@ Class BaliTestSuite
 		'{{SETI_AUTHOR_CODE_assertEqualsString
 		checkStarted
 		
-		Try
-			If (Not Me.isDelegatedAssertion) Then
-				runBeforeEach
-			End If
+		On Error GoTo errCatch
 		
-			Dim expectedForReport As String, actualForReport As String
-			Dim expectedForComparison As String, actualForComparison As String
+		If (Not Me.isDelegatedAssertion) Then
+			runBeforeEach
+		End If
+	
+		Dim expectedForReport As String, actualForReport As String
+		Dim expectedForComparison As String, actualForComparison As String
 
-			If (TypeName(expected) <> "STRING") Then
-				addResult False, |Expected is not a String, instead is: | & TypeName(expected)
-				assertEqualsString = False
-				Exit Try
-			ElseIf(TypeName(actual) <> "STRING") Then
-				addResult False, |Actual is not a String, instead is: | & TypeName(actual)
-				assertEqualsString = False
-				Exit Try
-			End If
-		
-			expectedForReport = expected
-			actualForReport = actual
-		
-			If (caseInsensitive) Then
-				expectedForComparison = LCase(expected)
-				actualForComparison = LCase(actual)
-			Else
-				expectedForComparison = expected
-				actualForComparison = actual
-			End If
-		
-			If (expectedForComparison = actualForComparison) Then
-				addResult True, ||
-				assertEqualsString = True
-			Else
-				addResult False, |Expected: | & expectedForReport & | but was: | & actualForReport
-				assertEqualsString = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), ||
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
-				runAfterEach
-			End If
-		End Try
+		If (TypeName(expected) <> "STRING") Then
+			addResult False, |Expected is not a String, instead is: | & TypeName(expected)
+			assertEqualsString = False
+			GoTo getOut
+		ElseIf(TypeName(actual) <> "STRING") Then
+			addResult False, |Actual is not a String, instead is: | & TypeName(actual)
+			assertEqualsString = False
+			GoTo getOut
+		End If
+	
+		expectedForReport = expected
+		actualForReport = actual
+	
+		If (caseInsensitive) Then
+			expectedForComparison = LCase(expected)
+			actualForComparison = LCase(actual)
+		Else
+			expectedForComparison = expected
+			actualForComparison = actual
+		End If
+	
+		If (expectedForComparison = actualForComparison) Then
+			addResult True, ||
+			assertEqualsString = True
+		Else
+			addResult False, |Expected: | & expectedForReport & | but was: | & actualForReport
+			assertEqualsString = False
+		End If
+			
+getOut:
+		If (Not Me.isDelegatedAssertion) Then
+			runAfterEach
+		End If
+		Exit Function
+			
+errCatch:
+		If (Not Me.isDelegatedAssertion) Then
+			addError getErrorMsg(), ||
+		Else
+			Error 1501, getErrorMsg()
+		End If
+		Resume getOut
 		'}}
 	End Function
 	
@@ -443,39 +447,42 @@ Class BaliTestSuite
 		'{{SETI_AUTHOR_CODE_assertNotEqualString
 		checkStarted
 		
-		Try
-			If (Not Me.isDelegatedAssertion) Then
-				runBeforeEach
-			End If
-		
-			If (TypeName(expected) <> "STRING") Then
-				addResult False, |Expected is not a String, instead is: | & TypeName(expected)
-				assertNotEqualString = False
-				Exit Try
-			ElseIf(TypeName(actual) <> "STRING") Then
-				addResult False, |Actual is not a String, instead is: | & TypeName(actual)
-				assertNotEqualString = False
-				Exit Try
-			End If
+		On Error GoTo errCatch
+		If (Not Me.isDelegatedAssertion) Then
+			runBeforeEach
+		End If
+	
+		If (TypeName(expected) <> "STRING") Then
+			addResult False, |Expected is not a String, instead is: | & TypeName(expected)
+			assertNotEqualString = False
+			GoTo getOut
+		ElseIf(TypeName(actual) <> "STRING") Then
+			addResult False, |Actual is not a String, instead is: | & TypeName(actual)
+			assertNotEqualString = False
+			GoTo getOut
+		End If
 
-			If (expected <> actual) Then
-				addResult True, ||
-				assertNotEqualString = True
-			Else
-				addResult False, |Expected: | & expected & | matches actual: | & actual
-				assertNotEqualString = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), ||
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
-				runAfterEach
-			End If
-		End Try
+		If (expected <> actual) Then
+			addResult True, ||
+			assertNotEqualString = True
+		Else
+			addResult False, |Expected: | & expected & | matches actual: | & actual
+			assertNotEqualString = False
+		End If
+		
+getOut:
+		If (Not Me.isDelegatedAssertion) Then
+			runAfterEach
+		End If
+		Exit Function
+		
+errCatch:
+		If (Not Me.isDelegatedAssertion) Then
+			addError getErrorMsg(), ||
+		Else
+			Error 1501, getErrorMsg()
+		End If
+		Resume getOut
 		'}}
 	End Function
 	
@@ -489,29 +496,33 @@ Class BaliTestSuite
 		'{{SETI_AUTHOR_CODE_assertEqualsInteger
 		checkStarted
 		
-		Try
-			If (Not Me.isDelegatedAssertion) Then
-				runBeforeEach
-			End If
+		On Error GoTo errCatch
+		
+		If (Not Me.isDelegatedAssertion) Then
+			runBeforeEach
+		End If
 
-			If (expected = actual) Then
-				addResult True, ||
-				assertEqualsInteger = True
-			Else
-				addResult False, |Expected: | & CStr(expected) & |, but was: | & CStr(actual)
-				assertEqualsInteger = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), ||
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
-				runAfterEach
-			End If
-		End Try
+		If (expected = actual) Then
+			addResult True, ||
+			assertEqualsInteger = True
+		Else
+			addResult False, |Expected: | & CStr(expected) & |, but was: | & CStr(actual)
+			assertEqualsInteger = False
+		End If	
+		
+getOut:
+		If (Not Me.isDelegatedAssertion) Then
+			runAfterEach
+		End If
+		Exit Function
+		
+errCatch:
+		If (Not Me.isDelegatedAssertion) Then
+			addError getErrorMsg(), ||
+		Else
+			Error 1501, getErrorMsg()
+		End If
+		Resume getOut
 		'}}
 	End Function
 	
@@ -529,25 +540,30 @@ Class BaliTestSuite
 			runBeforeEach
 		End If
 
-		Try
-			If (expected <> actual) Then
-				addResult True, ||
-				assertNotEqualInteger = True
-			Else
-				addResult False, |Expected: | & CStr(expected) & | matches actual: | & CStr(actual)
-				assertNotEqualInteger = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), ||
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
-				runAfterEach
-			End If
-		End Try
+		On Error GoTo errCatch
+		
+		If (expected <> actual) Then
+			addResult True, ||
+			assertNotEqualInteger = True
+		Else
+			addResult False, |Expected: | & CStr(expected) & | matches actual: | & CStr(actual)
+			assertNotEqualInteger = False
+		End If
+		
+		
+getOut:
+		If (Not Me.isDelegatedAssertion) Then
+			runAfterEach
+		End If
+		Exit Function
+		
+errCatch:
+		If (Not Me.isDelegatedAssertion) Then
+			addError getErrorMsg(), ||
+		Else
+			Error 1501, getErrorMsg()
+		End If
+		Resume getOut
 		'}}
 	End Function
 	
@@ -565,25 +581,29 @@ Class BaliTestSuite
 			runBeforeEach
 		End If
 
-		Try
-			If (CStr(expected) = CStr(actual)) Then
-				addResult True, ||
-				assertEqualsDouble = True
-			Else
-				addResult False, |Expected: | & CStr(expected) & |, but was: | & CStr(actual)
-				assertEqualsDouble = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), ||
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
-				runAfterEach
-			End If
-		End Try
+		On Error GoTo errCatch
+		
+		If (CStr(expected) = CStr(actual)) Then
+			addResult True, ||
+			assertEqualsDouble = True
+		Else
+			addResult False, |Expected: | & CStr(expected) & |, but was: | & CStr(actual)
+			assertEqualsDouble = False
+		End If	
+		
+getOut:
+		If (Not Me.isDelegatedAssertion) Then
+			runAfterEach
+		End If
+		Exit Function
+		
+errCatch:
+		If (Not Me.isDelegatedAssertion) Then
+			addError getErrorMsg(), ||
+		Else
+			Error 1501, getErrorMsg()
+		End If
+		Resume getOut
 		'}}
 	End Function
 	
@@ -601,25 +621,29 @@ Class BaliTestSuite
 			runBeforeEach
 		End If
 
-		Try
-			If (CStr(expected) <> CStr(actual)) Then
-				addResult True, ||
-				assertNotEqualDouble = True
-			Else
-				addResult False, |Expected: | & CStr(expected) & | matches actual: | & CStr(actual)
-				assertNotEqualDouble = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), GetThreadInfo(12)
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
-				runAfterEach
-			End If
-		End Try
+		On Error GoTo errCatch
+		
+		If (CStr(expected) <> CStr(actual)) Then
+			addResult True, ||
+			assertNotEqualDouble = True
+		Else
+			addResult False, |Expected: | & CStr(expected) & | matches actual: | & CStr(actual)
+			assertNotEqualDouble = False
+		End If
+		
+getOut:
+		If (Not Me.isDelegatedAssertion) Then
+			runAfterEach
+		End If
+		Exit Function
+		
+errCatch:
+		If (Not Me.isDelegatedAssertion) Then
+			addError getErrorMsg(), ||
+		Else
+			Error 1501, getErrorMsg()
+		End If
+		Resume getOut
 		'}}
 	End Function
 	
@@ -635,21 +659,25 @@ Class BaliTestSuite
 		'{{SETI_AUTHOR_CODE_assertIsBetween
 		checkStarted
 		
-		Try
-			runBeforeEach
+		On Error GoTo errCatch
+		
+		runBeforeEach
 
-			If (actual >= expected1 And actual <= expected2) Then
-				addResult True, ||
-				assertIsBetween = True
-			Else
-				addResult False, |Expected: Between | & CStr(expected1) & | and | & CStr(expected2) & |, but was: | & CStr(actual)
-				assertIsBetween = False
-			End If
-		Catch
-			addError getErrorMsg(), GetThreadInfo(12)
-		Finally
-			runAfterEach
-		End Try
+		If (actual >= expected1 And actual <= expected2) Then
+			addResult True, ||
+			assertIsBetween = True
+		Else
+			addResult False, |Expected: Between | & CStr(expected1) & | and | & CStr(expected2) & |, but was: | & CStr(actual)
+			assertIsBetween = False
+		End If
+			
+getOut:
+		runAfterEach
+		Exit Function
+		
+errCatch:
+		addError getErrorMsg(), ||
+		Resume getOut
 		'}}
 	End Function
 	
@@ -665,24 +693,28 @@ Class BaliTestSuite
 		'{{SETI_AUTHOR_CODE_assertIsNotBetween
 		checkStarted
 		
-		Try
-			runBeforeEach
+		On Error GoTo errCatch
 		
-			If (actual < expected1) Then
-				addResult True, ||
-				assertIsNotBetween = True
-			ElseIf (actual > expected2) Then
-				addResult True, ||
-				assertIsNotBetween = True
-			Else
-				addResult False, |Expected: Not between | & CStr(expected1) & | and | & CStr(expected2) & |, but was: | & CStr(actual)
-				assertIsNotBetween = False
-			End If
-		Catch
-			addError getErrorMsg(), GetThreadInfo(12)
-		Finally
-			runAfterEach
-		End Try
+		runBeforeEach
+	
+		If (actual < expected1) Then
+			addResult True, ||
+			assertIsNotBetween = True
+		ElseIf (actual > expected2) Then
+			addResult True, ||
+			assertIsNotBetween = True
+		Else
+			addResult False, |Expected: Not between | & CStr(expected1) & | and | & CStr(expected2) & |, but was: | & CStr(actual)
+			assertIsNotBetween = False
+		End If
+			
+getOut:
+		runAfterEach
+		Exit Function
+			
+errCatch:
+		addError getErrorMsg(), ||
+		Resume getOut
 		'}}
 	End Function
 	
@@ -696,21 +728,25 @@ Class BaliTestSuite
 		'{{SETI_AUTHOR_CODE_assertIsGreaterThan
 		checkStarted
 		
-		Try
-			runBeforeEach
+		On Error goto errCatch
 		
-			If (actual > expected) Then
-				addResult True, ||
-				assertIsGreaterThan = True
-			Else
-				addResult False, |Expected: Greater than | & CStr(expected) & |, but was: | & CStr(actual)
-				assertIsGreaterThan = False
-			End If
-		Catch
-			addError getErrorMsg(), GetThreadInfo(12)
-		Finally
-			runAfterEach
-		End Try
+		runBeforeEach
+	
+		If (actual > expected) Then
+			addResult True, ||
+			assertIsGreaterThan = True
+		Else
+			addResult False, |Expected: Greater than | & CStr(expected) & |, but was: | & CStr(actual)
+			assertIsGreaterThan = False
+		End If
+			
+getOut:
+		runAfterEach
+		Exit Function
+			
+errCatch:
+		addError getErrorMsg(), ||
+		Resume getOut
 		'}}
 	End Function
 	
@@ -724,6 +760,8 @@ Class BaliTestSuite
 		'{{SETI_AUTHOR_CODE_assertIsLessThan
 		checkStarted
 		
+		On Error GoTo ErrCatch
+		
 		runBeforeEach
 		
 		If (actual < expected) Then
@@ -734,7 +772,13 @@ Class BaliTestSuite
 			assertIsLessThan = False
 		End If
 		
+getOut:
 		runAfterEach
+		Exit Function
+		
+errCatch:
+		addError getErrorMsg(), ||
+		Resume getOut
 		'}}
 	End Function
 	
@@ -748,29 +792,33 @@ Class BaliTestSuite
 		'{{SETI_AUTHOR_CODE_assertEqualsLong
 		checkStarted
 
-		Try
-			If (Not Me.isDelegatedAssertion) Then
-				runBeforeEach
-			End If
+		On Error GoTo errCatch
+		
+		If (Not Me.isDelegatedAssertion) Then
+			runBeforeEach
+		End If
 
-			If (expected = actual) Then
-				addResult True, ||
-				assertEqualsLong = True
-			Else
-				addResult False, |Expected: | & CStr(expected) & |, but was: | & cstr(actual)
-				assertEqualsLong = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), GetThreadInfo(12)
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
-				runAfterEach
-			End If
-		End Try
+		If (expected = actual) Then
+			addResult True, ||
+			assertEqualsLong = True
+		Else
+			addResult False, |Expected: | & CStr(expected) & |, but was: | & CStr(actual)
+			assertEqualsLong = False
+		End If
+		
+getOut:
+		If (Not Me.isDelegatedAssertion) Then
+			runAfterEach
+		End If
+		Exit Function
+		
+errCatch:
+		If (Not Me.isDelegatedAssertion) Then
+			addError getErrorMsg(), ||
+		Else
+			Error 1501, getErrorMsg()
+		End If
+		Resume getOut
 		'}}
 	End Function
 	
@@ -784,29 +832,33 @@ Class BaliTestSuite
 		'{{SETI_AUTHOR_CODE_assertNotEqualLong
 		checkStarted
 		
-		Try
-			If (Not Me.isDelegatedAssertion) Then
-				runBeforeEach
-			End If
+		On Error GoTo errCatch
+		
+		If (Not Me.isDelegatedAssertion) Then
+			runBeforeEach
+		End If
 
-			If (expected <> actual) Then
-				addResult True, ||
-				assertNotEqualLong = True
-			Else
-				addResult False, |Expected: | & CStr(expected) & | matches actual: | & CStr(actual)
-				assertNotEqualLong = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), GetThreadInfo(12)
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
-				runAfterEach
-			End If
-		End Try
+		If (expected <> actual) Then
+			addResult True, ||
+			assertNotEqualLong = True
+		Else
+			addResult False, |Expected: | & CStr(expected) & | matches actual: | & CStr(actual)
+			assertNotEqualLong = False
+		End If
+		
+getOut:
+		If (Not Me.isDelegatedAssertion) Then
+			runAfterEach
+		End If
+		Exit Function
+		
+errCatch:
+		If (Not Me.isDelegatedAssertion) Then
+			addError getErrorMsg(), ||
+		Else
+			Error 1501, getErrorMsg()
+		End If
+		Resume getOut
 		'}}
 	End Function
 	
@@ -820,29 +872,33 @@ Class BaliTestSuite
 		'{{SETI_AUTHOR_CODE_assertEqualsSingle
 		checkStarted
 		
-		Try
-			If (Not Me.isDelegatedAssertion) Then
-				runBeforeEach
-			End If
+		On Error GoTo errCatch
+		
+		If (Not Me.isDelegatedAssertion) Then
+			runBeforeEach
+		End If
 
-			If (CStr(expected) = CStr(actual)) Then
-				addResult True, ||
-				assertEqualsSingle = True
-			Else
-				addResult False, |Expected: | & CStr(expected) & |, but was: | & CStr(actual)
-				assertEqualsSingle = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), GetThreadInfo(12)
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
+		If (CStr(expected) = CStr(actual)) Then
+			addResult True, ||
+			assertEqualsSingle = True
+		Else
+			addResult False, |Expected: | & CStr(expected) & |, but was: | & CStr(actual)
+			assertEqualsSingle = False
+		End If
+		
+getOut:
+		If (Not Me.isDelegatedAssertion) Then
 				runAfterEach
 			End If
-		End Try
+		Exit Function
+		
+errCatch:
+		If (Not Me.isDelegatedAssertion) Then
+			addError getErrorMsg(), ||
+		Else
+			Error 1501, getErrorMsg()
+		End If
+		Resume getOut
 		'}}
 	End Function
 	
@@ -856,29 +912,33 @@ Class BaliTestSuite
 		'{{SETI_AUTHOR_CODE_assertNotEqualSingle
 		checkStarted
 		
-		Try
-			If (Not Me.isDelegatedAssertion) Then
-				runBeforeEach
-			End If
+		On Error GoTo errCatch
+		
+		If (Not Me.isDelegatedAssertion) Then
+			runBeforeEach
+		End If
 
-			If (CStr(expected) <> CStr(actual)) Then
-				addResult True, ||
-				assertNotEqualSingle = True
-			Else
-				addResult False, |Expected: | & CStr(expected) & | matches actual: | & CStr(actual)
-				assertNotEqualSingle = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), GetThreadInfo(12)
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
-				runAfterEach
-			End If
-		End Try
+		If (CStr(expected) <> CStr(actual)) Then
+			addResult True, ||
+			assertNotEqualSingle = True
+		Else
+			addResult False, |Expected: | & CStr(expected) & | matches actual: | & CStr(actual)
+			assertNotEqualSingle = False
+		End If
+		
+getOut:
+		If (Not Me.isDelegatedAssertion) Then
+			runAfterEach
+		End If
+		Exit Function
+		
+errCatch:
+		If (Not Me.isDelegatedAssertion) Then
+			addError getErrorMsg(), ||
+		Else
+			Error 1501, getErrorMsg()
+		End If
+		Resume getOut
 		'}}
 	End Function
 	
@@ -892,22 +952,25 @@ Class BaliTestSuite
 		'{{SETI_AUTHOR_CODE_assertEqualsNumeric
 		checkStarted
 		
-		Try
-			runBeforeEach
-		
-			If (Not IsNumeric(actual)) Then
-				addResult False, |Actual is not numeric: | & CStr(actual)
-				assertEqualsNumeric = False
-			Else
-				Me.isDelegatedAssertion = True
-				assertEqualsNumeric = assertEqualsDouble(CDbl(expected), CDbl(actual))
-				Me.isDelegatedAssertion = False
-			End If
-		Catch
-			addError Error(), GetThreadInfo(12)
-		Finally
-			runAfterEach
-		End Try
+		On Error GoTo errCatch
+		runBeforeEach
+	
+		If (Not IsNumeric(actual)) Then
+			addResult False, |Actual is not numeric: | & CStr(actual)
+			assertEqualsNumeric = False
+		Else
+			Me.isDelegatedAssertion = True
+			assertEqualsNumeric = assertEqualsDouble(CDbl(expected), CDbl(actual))
+			Me.isDelegatedAssertion = False
+		End If
+			
+getOut:
+		runAfterEach
+		Exit Function
+			
+errCatch:
+		addError Error(), ||
+		Resume getOut
 		'}}
 	End Function
 	
@@ -921,22 +984,26 @@ Class BaliTestSuite
 		'{{SETI_AUTHOR_CODE_assertNotEqualNumeric
 		checkStarted
 		
-		Try
-			runBeforeEach
+		On Error GoTo errCatch
 		
-			If (Not IsNumeric(actual)) Then
-				addResult False, |Actual is not numeric: | & CStr(actual)
-				assertNotEqualNumeric = False
-			Else
-				Me.isDelegatedAssertion = True
-				assertNotEqualNumeric = assertNotEqualDouble(CDbl(expected), CDbl(actual))
-				Me.isDelegatedAssertion = False
-			End If
-		Catch
-			addError Error(), GetThreadInfo(12)
-		Finally
-			runAfterEach
-		End Try
+		runBeforeEach
+	
+		If (Not IsNumeric(actual)) Then
+			addResult False, |Actual is not numeric: | & CStr(actual)
+			assertNotEqualNumeric = False
+		Else
+			Me.isDelegatedAssertion = True
+			assertNotEqualNumeric = assertNotEqualDouble(CDbl(expected), CDbl(actual))
+			Me.isDelegatedAssertion = False
+		End If
+			
+getOut:
+		runAfterEach
+		Exit Function
+			
+errCatch:
+		addError Error(), ||
+		Resume getOut
 		'}}
 	End Function
 	
@@ -959,22 +1026,25 @@ Class BaliTestSuite
 		
 		Dim actualType As String
 
-		Try
-			runBeforeEach
+		On Error GoTo errCatch
+		runBeforeEach
+	
+		actualType = TypeName(actual)
+		If (LCase(expectedType) = LCase(actualType)) Then
+			addResult True, ||
+			assertIs = True
+		Else
+			addResult False, |Expected: | & expectedType & |, but was: | & actualType
+			assertIs = False
+		End If
 		
-			actualType = TypeName(actual)
-			If (LCase(expectedType) = LCase(actualType)) Then
-				addResult True, ||
-				assertIs = True
-			Else
-				addResult False, |Expected: | & expectedType & |, but was: | & actualType
-				assertIs = false
-			End If
-		Catch
-			addError getErrorMsg(), GetThreadInfo(12)
-		Finally
-			runAfterEach
-		End Try
+getOut:
+		runAfterEach
+		Exit Function
+		
+errCatch:
+		addError getErrorMsg(), ||
+		Resume getOut
 		'}}
 	End Function
 	
@@ -990,22 +1060,26 @@ Class BaliTestSuite
 		
 		Dim actualType As String
 		
-		Try
-			runBeforeEach
+		On Error GoTo errCatch
 		
-			actualType = TypeName(actual)
-			If (LCase(expectedType) <> LCase(actualType)) Then
-				addResult True, ||
-				assertIsNot = True
-			Else
-				addResult False, |Expected: | & expectedType & | matches actual: | & actualType
-				assertIsNot = false
-			End If
-		Catch
-			addError getErrorMsg(), GetThreadInfo(12)
-		Finally
-			runAfterEach
-		End Try
+		runBeforeEach
+	
+		actualType = TypeName(actual)
+		If (LCase(expectedType) <> LCase(actualType)) Then
+			addResult True, ||
+			assertIsNot = True
+		Else
+			addResult False, |Expected: | & expectedType & | matches actual: | & actualType
+			assertIsNot = False
+		End If
+			
+getOut:
+		runAfterEach
+		Exit Function
+			
+errCatch:
+		addError getErrorMsg(), ||
+		Resume getOut
 		'}}
 	End Function
 	
@@ -1030,42 +1104,47 @@ Class BaliTestSuite
 		
 		Dim typeExpected As String
 		
-		Try
-			typeExpected = TypeName(expected)
-			Select Case typeExpected
-				Case "STRING"
-					assertEqualsPrimitive = assertEqualsString(CStr(Expected), CStr(Actual), False)
-				Case "BOOLEAN"
-					If (CBool(expected)) Then
-						assertEqualsPrimitive = assertTrue(CBool(actual))
-					Else
-						assertEqualsPrimitive = assertFalse(CBool(actual))
-					End If
-				Case "DOUBLE"
-					assertEqualsPrimitive = assertEqualsDouble(CDbl(Expected), CDbl(Actual))
-				Case "INTEGER"
-					assertEqualsPrimitive = assertEqualsInteger(CInt(Expected), CInt(Actual))
-				Case "LONG"
-					assertEqualsPrimitive = assertEqualsLong(CLng(Expected), CLng(Actual))
-				Case "SINGLE"
-					assertEqualsPrimitive = assertEqualsSingle(CSng(Expected), CSng(Actual))
-				Case "DATE"
-					assertEqualsPrimitive = assertEqualsDouble(CDbl(CDat(Expected)), CDbl(CDat(actual)))
-				Case "CURRENCY"
-					assertEqualsPrimitive = assertEqualsDouble(CDbl(Expected), CDbl(Actual))
-				Case "BYTE"
-					assertEqualsPrimitive = assertEqualsDouble(CDbl(Expected), CDbl(Actual))
-				Case Else
-					addResult False, |Unexpected data types, expected is a: | & typeExpected & _
-					|, actual is a: | & TypeName(actual)
-			End Select
-		Catch
-			If (Err() = 13) Then
-				addResult False, |Type mismatch between expected : | & CStr(expected) & | and actual: | & CStr(actual)
-			Else
-				addError Error(), GetThreadInfo(12)
-			End If
-		End Try
+		On Error GoTo errCatch
+		
+		typeExpected = TypeName(expected)
+		Select Case typeExpected
+			Case "STRING"
+				assertEqualsPrimitive = assertEqualsString(CStr(Expected), CStr(Actual), False)
+			Case "BOOLEAN"
+				If (CBool(expected)) Then
+					assertEqualsPrimitive = assertTrue(CBool(actual))
+				Else
+					assertEqualsPrimitive = assertFalse(CBool(actual))
+				End If
+			Case "DOUBLE"
+				assertEqualsPrimitive = assertEqualsDouble(CDbl(Expected), CDbl(Actual))
+			Case "INTEGER"
+				assertEqualsPrimitive = assertEqualsInteger(CInt(Expected), CInt(Actual))
+			Case "LONG"
+				assertEqualsPrimitive = assertEqualsLong(CLng(Expected), CLng(Actual))
+			Case "SINGLE"
+				assertEqualsPrimitive = assertEqualsSingle(CSng(Expected), CSng(Actual))
+			Case "DATE"
+				assertEqualsPrimitive = assertEqualsDouble(CDbl(CDat(Expected)), CDbl(CDat(actual)))
+			Case "CURRENCY"
+				assertEqualsPrimitive = assertEqualsDouble(CDbl(Expected), CDbl(Actual))
+			Case "BYTE"
+				assertEqualsPrimitive = assertEqualsDouble(CDbl(Expected), CDbl(Actual))
+			Case Else
+				addResult False, |Unexpected data types, expected is a: | & typeExpected & _
+				|, actual is a: | & TypeName(actual)
+		End Select
+			
+getOut:
+		Exit Function
+			
+errCatch:
+		If (Err() = 13) Then
+			addResult False, |Type mismatch between expected : | & CStr(expected) & | and actual: | & CStr(actual)
+		Else
+			addError Error(), ||
+		End If
+		Resume getOut
 		'}}
 	End Function
 	
@@ -1107,45 +1186,50 @@ Class BaliTestSuite
 		checkStarted
 		result = False
 		
-		Try
-			If (TypeName(expected) <> TypeName(actual)) Then
-				addResult True, ||
-				result = True
-			Else
-				If (Not IsArray(expected) And Not IsArray(actual)) Then
-					If (CStr(expected) <> CStr(actual)) Then
-						addResult True, ||
-						result = True
-					Else
-						addResult False, |Expected: | & expected & | matches actual: | & actual
-						result = False
-					End If
+		On Error GoTo errCatch
+		
+		If (TypeName(expected) <> TypeName(actual)) Then
+			addResult True, ||
+			result = True
+		Else
+			If (Not IsArray(expected) And Not IsArray(actual)) Then
+				If (CStr(expected) <> CStr(actual)) Then
+					addResult True, ||
+					result = True
 				Else
-					If (Not IsArray(expected) Or Not IsArray(actual)) Then
-						addResult True, ||
-						result = True
-					ElseIf (UBound(expected) <> UBound(actual)) Then
-						addResult True, ||
-						result = True
-					Else
-						For i = 0 To UBound(expected)
-							If (CStr(expected(i)) <> CStr(actual(i))) Then
-								result = True
-							End If
-						Next
-						If (result) Then
-							addResult True, ||
-						Else
-							addResult False, |Expected: [| & Join(expected, |,|) & |] matches actual: [| & Join(actual, |,|) & |]|
+					addResult False, |Expected: | & expected & | matches actual: | & actual
+					result = False
+				End If
+			Else
+				If (Not IsArray(expected) Or Not IsArray(actual)) Then
+					addResult True, ||
+					result = True
+				ElseIf (UBound(expected) <> UBound(actual)) Then
+					addResult True, ||
+					result = True
+				Else
+					For i = 0 To UBound(expected)
+						If (CStr(expected(i)) <> CStr(actual(i))) Then
+							result = True
 						End If
+					Next
+					If (result) Then
+						addResult True, ||
+					Else
+						addResult False, |Expected: [| & Join(expected, |,|) & |] matches actual: [| & Join(actual, |,|) & |]|
 					End If
 				End If
 			End If
-		
-			assertNotEqualPrimitiveOrPrimitiveArray = result
-		Catch
-			addError getErrorMsg, GetThreadInfo(12)
-		End Try
+		End If
+	
+		assertNotEqualPrimitiveOrPrimitiveArray = result
+			
+getOut:
+		Exit Function
+			
+errCatch:
+		addError getErrorMsg, ||
+		Resume getOut
 		'}}
 	End Function
 	
@@ -1217,7 +1301,7 @@ Class BaliTestSuite
 		@param failMessage		A message to explain the error
 		@param errorStack		More detailed stack for the error
 	%END REM
-	Private Sub addArrayFailure(failMessage as String, errorStack as Variant)
+	Private Sub addArrayFailure(failMessage As String, errorStack As Variant)
 		If (|| = FullTrim(Me.Description)) Then
 			Me.tests = Me.tests + 1
 			Me.description = |Test | & CStr(Me.tests)
@@ -1277,9 +1361,9 @@ Class BaliTestSuite
 		Prints a summary of tests run, errors and failures
 	%END REM
 	Private Sub printSummary()
-		Dim prefix as String
-		Dim altTitle as String * 40
-		Dim msg as String
+		Dim prefix As String
+		Dim altTitle As String * 40
+		Dim msg As String
 
 		If (hasTestRunner) Then
 			prefix = Me.testRunnerName & ", "
@@ -1307,8 +1391,9 @@ Class BaliTestSuite
 		Dim success As Boolean
 		Dim errorStack() As String
 		Dim tmpDescription As String
-		Dim tmpErrors As Integer, tmpFailures As Integer, tmpTests As Integer, i As Integer, j As integer
-		Dim tmpMissingAssertions as Integer
+		Dim tmpErrMsg As String
+		Dim tmpErrors As Integer, tmpFailures As Integer, tmpTests As Integer, i As Integer, j As Integer
+		Dim tmpMissingAssertions As Integer
 		
 		' Testing each element in the array will increment errors and failure
 		' We will need to reset them and manually increment afterwards
@@ -1323,53 +1408,70 @@ Class BaliTestSuite
 
 		checkStarted
 
-		Try
+		On Error GoTo errCatch
 
-			runBeforeEach
-		
-			Me.isDelegatedAssertion = True
-			For i = 0 To UBound(expected)
-				Try
-					If (Not assertEqualsPrimitive(expected(i), actual(i))) Then
-						success = False
-						Error 1400, |Element | & CStr(i + 1) & |: Expected: | & CStr(expected(i)) & |, but was: | & CStr(actual(i))
-					End If
-				Catch
-					success = False
-					ReDim Preserve errorStack(j)
-					If (j = 5) Then
-						errorStack(j) = |...and others|
-						Me.description = tmpDescription	'Adding will have cleared the error
-						Me.tests = tmpTests
-						Exit For
-					End If
-					errorStack(j) = getErrorMsg()
-					j = j + 1
-				End Try
-				Me.description = tmpDescription	'Adding will have cleared the error
-				Me.tests = tmpTests
-			Next
-			Me.isDelegatedAssertion = False
-		
-			Me.missingAssertions = tmpMissingAssertions - 1
-			If (Not success) Then
-				addArrayFailure |Expected: [| & Join(expected) & |], but was: [| & Join(actual) & |]|, errorStack
-
-				If (me.errors > tmpErrors) Then
-					me.errors = tmpErrors + 1
+		runBeforeEach
+	
+		Me.isDelegatedAssertion = True
+		For i = 0 To UBound(expected)
+			If Not runAssertionOnArrayElem(expected(i), actual(i), i, tmpErrMsg) Then
+				ReDim Preserve errorStack(j)
+				If (j = 5) Then
+					errorStack(j) = |...and others|
+					Me.description = tmpDescription	'Adding will have cleared the error
+					Me.tests = tmpTests
+					Exit For
 				End If
-				If (me.failures > tmpFailures) Then
-					me.failures = tmpFailures + 1
-				End If
+				errorStack(j) = tmpErrMsg
+				j = j + 1
 			End If
-		Catch
-			addError getErrorMsg, GetThreadInfo(12)
-		Finally
-			runAfterEach
-		End Try
+			Me.description = tmpDescription	'Adding will have cleared the error
+			Me.tests = tmpTests
+		Next
+		Me.isDelegatedAssertion = False
+	
+		Me.missingAssertions = tmpMissingAssertions - 1
+		If (Not success) Then
+			addArrayFailure |Expected: [| & Join(expected) & |], but was: [| & Join(actual) & |]|, errorStack
+
+			If (me.errors > tmpErrors) Then
+				me.errors = tmpErrors + 1
+			End If
+			If (me.failures > tmpFailures) Then
+				me.failures = tmpFailures + 1
+			End If
+		End If
+			
+getOut:
+		runAfterEach
+		Exit Function
+			
+errCatch:
+		addError getErrorMsg, ||
 		
 		processArray = success
 
+	End Function
+	
+	%REM
+		Function runAssertionOnArrayElem
+		Description: Comments for Function
+	%END REM
+	Function runAssertionOnArrayElem(expected As Variant, actual As Variant, i As Integer, errMsg As String) As Boolean
+		On Error GoTo errCatch
+		
+		If (assertEqualsPrimitive(expected, actual)) Then
+			runAssertionOnArrayElem = True
+		Else
+			runAssertionOnArrayElem = False
+			Error 1400, |Element | & CStr(i + 1) & |: Expected: | & CStr(expected) & |, but was: | & CStr(actual)
+		End If
+					
+getOut:
+		Exit Function
+errCatch:
+		errMsg = getErrorMsg()
+		Resume getOut
 	End Function
 	
 	%REM
@@ -1379,52 +1481,56 @@ Class BaliTestSuite
 		@param returnArrays		Whether or not both are arrays
 		@returns				Whether the testing generated an error or not
 	%END REM
-	Private Function testArrays(expected As Variant, actual As Variant, returnArrays As boolean) As Boolean
+	Private Function testArrays(expected As Variant, actual As Variant, returnArrays As Boolean) As Boolean
 
 		Dim expectedIsArray As Boolean, actualIsArray As Boolean
 		Dim errMsg As String
 		Dim success As Boolean
 
-		Try
-			If (IsArray(expected)) Then
-				expectedIsArray = True
-			End If
+		On Error GoTo errCatch
 		
-			If (IsArray(actual)) Then
-				actualIsArray = True
-			End If
-		
-			If (expectedIsArray <> actualIsArray) Then
-				errMsg = |Invalid array comparison - expected is |
-				If expectedIsArray Then
-					errMsg = errMsg & | an array, actual is |
-				Else
-					errMsg = errMsg & | not an array, actual is |
-				End If
-				If actualIsArray Then
-					errMsg = errMsg & | an array|
-				Else
-					errMsg = errMsg & | not an array|
-				End If
-				addResult False, errMsg
+		If (IsArray(expected)) Then
+			expectedIsArray = True
+		End If
+	
+		If (IsArray(actual)) Then
+			actualIsArray = True
+		End If
+	
+		If (expectedIsArray <> actualIsArray) Then
+			errMsg = |Invalid array comparison - expected is |
+			If expectedIsArray Then
+				errMsg = errMsg & | an array, actual is |
 			Else
-				If (Not expectedIsArray) Then
-					success = True
+				errMsg = errMsg & | not an array, actual is |
+			End If
+			If actualIsArray Then
+				errMsg = errMsg & | an array|
+			Else
+				errMsg = errMsg & | not an array|
+			End If
+			addResult False, errMsg
+		Else
+			If (Not expectedIsArray) Then
+				success = True
+			Else
+				returnArrays = True	'We have two arrays
+				If (UBound(expected) <> UBound(actual)) Then
+					errMsg = |Elements in arrays not equal, expected: | & CStr(UBound(expected) + 1) & _
+					|, actual: | & CStr(UBound(actual) + 1)
+					addResult False, errMsg
 				Else
-					returnArrays = True	'We have two arrays
-					If (UBound(expected) <> UBound(actual)) Then
-						errMsg = |Elements in arrays not equal, expected: | & CStr(UBound(expected) + 1) & _
-						|, actual: | & CStr(UBound(actual) + 1)
-						addResult False, errMsg
-					Else
-						returnArrays = True
-						success = True
-					End If
+					returnArrays = True
+					success = True
 				End If
 			End If
-		Catch
-			addError getErrorMsg(), GetThreadInfo(12)
-		End Try
+		End If
+			
+getOut:
+		Exit Function
+			
+errCatch:
+		addError getErrorMsg(), ||
 
 	exitPoint:
 		testArrays = success
@@ -1622,7 +1728,7 @@ tr:nth-child(even) {
 		Dim nowTime As String
 		Dim testHtml As String
 		Dim testErrorHtml As String
-		Dim testCount As integer
+		Dim testCount As Integer
 		
 		On Error GoTo trapError
 		
@@ -1645,7 +1751,7 @@ tr:nth-child(even) {
 				testErrorHtml = testErrorHtml & |<br/><br/>Stack:<br/>| & testCase.errorStack
 			End If
 			testErrorHtml = testErrorHtml & |</div>|
-		End Forall
+		End ForAll
 		
 		testHtml = testHtml & |</div>|
 		testErrorHtml = testErrorHtml & |</div>|
@@ -2256,6 +2362,6 @@ skipErr:
 	If (Err <> 75) Then
 		MsgBox |Error | & Error(Err) & | on line | & CStr(Erl)
 	End If
-	Resume next
+	Resume Next
 
 End Sub

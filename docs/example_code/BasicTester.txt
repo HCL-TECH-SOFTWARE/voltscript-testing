@@ -217,18 +217,22 @@ Sub testBooleansAndStrings(runner As BaliTestRunner)
 	testSuite.describe("Test true basic boolean true").assertTrue(a)
 
 	Call testSuite.describe("Test error")
-	Try
-		Call testSuite.assertTrue(doTest())
-	Catch
-		Call testSuite.addError(testSuite.getErrorMsg, GetThreadInfo(12))
-	End Try
+	On Error GoTo catchTrueError
+	Call testSuite.assertTrue(doTest())
+	
+nextTest:
+	On Error Resume Next
 	
 	Call testSuite.describe("Test string equals pass").assertEqualsString("Foo", "Foo", False)
 	Call testSuite.describe("Test string equals fail").assertEqualsString("Foo", "foo", False)
 	
 	Call testSuite.describe("Test string equals insensitive pass").assertEqualsString("Foo", "foo", True)
 	Call testSuite.describe("Test string equals insensitive fail").assertEqualsString("Foo", "Bar", True)
+	Exit Sub
 	
+catchTrueError:
+	Call testSuite.addError(testSuite.getErrorMsg, ||)
+	Resume nextTest
 End Sub
 %REM
 	Sub testNotEqual
