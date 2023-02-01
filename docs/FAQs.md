@@ -4,6 +4,10 @@ hide:
 ---
 # FAQs
 
+## How do I use it in an NSF?
+
+Copy the contents of BaliTestRunner.bss into a Script Library. Write an agent with `Use "BaliTestRunner"`.
+
 ## Where do I find the output?
 
 The output will, by default, be in a "unit-test-reports" directory (defined by the `BASE_REPORT_LOC` constant in BaliTestRunner.bss) under the directory of the program running the tests.
@@ -18,6 +22,10 @@ If you wish to change the output directory for a single set of tests:
 
 - If using a BaliTestRunner, call `BaliTestRunner.outputTo()`.
 - If just using a BaliTestSuite independent of a test runner, call `BaliTestSuite.outputTo()`.
+
+## Why is the content outside the NSF?
+
+The output is part of your project reporting. Typically in software development, project reporting is not included in the binary deliverable, so it doesn't make sense to include it in the NSF being delivered to the customer or end user. HTML is also a more flexible medium for reproducing the kind of output and user experience familiar to developers who have used JUnit.
 
 ## "Error Path not Found on line 12" Error
 
