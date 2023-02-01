@@ -8,6 +8,8 @@ hide:
 
 The output will, by default, be in a "unit-test-reports" directory (defined by the `BASE_REPORT_LOC` constant in BaliTestRunner.bss) under the directory of the program running the tests.
 
+If running from a Notes client, this is the Notes program directory. If running in a scheduled agent on a Domino server, this is the Domino program directory.
+
 ## How do I change the output directory?
 
 If you wish to change the output directory for every test runner using the script, change the `BASE_REPORT_LOC` constant.

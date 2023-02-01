@@ -2,6 +2,8 @@
 
 Bali Unit Testing Framework is a framework for testing code written using VoltScript, the evolution of LotusScript delivered as part of HCL Volt MX Go. The framework can also be used for LotusScript, with modifications (see below on new language functions used). There are deliberately no dependencies on any LSXs (e.g nlsxbe.dll). None should be added, it will make it dependent on a particular implementation. Create separate classes derived from BaliCustomTester to test individual LSXs or custom classes.
 
+This fork is adapted to compile with LotusScript in Notes/Domino 12.0.x.
+
 ## Writing BaliUnit Tests
 
 See [Writing Units Tests](/docs/Writing-Unit-Tests/index.md).

@@ -211,8 +211,6 @@ Language keywords used:
 - ReDim Preserve (processArray)
 - Join (processArray, assertNotEqualPrimitiveOrPrimitiveArray, testArrays)
 - FullTrim (addResult, addError)
-- Try / Catch / Finally (**specific to VoltScript**)
-- GetThreadInfo(12) (**specific to VoltScript**)
 
 ## BaliTestSuiteReport
 

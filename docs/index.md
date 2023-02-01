@@ -4,7 +4,7 @@ hide:
 ---
 # Bali Unit Testing Framework
 
-Bali Unit Testing Framework is a framework for testing code written using VoltScript, the evolution of LotusScript delivered as part of HCL Volt MX Go. The framework can also be used for LotusScript, with modifications (see below on new language functions used).
+Bali Unit Testing Framework is a framework for testing code written using VoltScript, the evolution of LotusScript delivered as part of HCL Volt MX Go. This framework has been adapted for use with LotusScript.
 
 There are deliberately no dependencies on any LotusScript Extensions (LSX, e.g nlsxbe.dll). None should be added, it will make it dependent on a particular implementation.
 
