@@ -19,6 +19,10 @@ If you wish to change the output directory for a single set of tests:
 - If using a BaliTestRunner, call `BaliTestRunner.outputTo()`.
 - If just using a BaliTestSuite independent of a test runner, call `BaliTestSuite.outputTo()`.
 
+## "Error Path not Found on line 12" Error
+
+This can be caused by permissions to the parent of the output directory. Ensure directory permissions allow "Modify" access for all relevant OS-level users and agent permissions are as required. Verify with `MkDir(CurDir & "/Foo/")`, which simulates the code being run. Alternatively, manually create the output directory.
+
 ## I set outputTo for a TestSuite, but it's not working?
 
 Has the test suite been added to a BaliTestRunner? If so, the location for the BaliTestRunner overrides any setting in the test suite - otherwise the index.html won't map to the test suite's output!
