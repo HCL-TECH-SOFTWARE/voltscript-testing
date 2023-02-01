@@ -10,6 +10,10 @@ There are deliberately no dependencies on any LotusScript Extensions (LSX, e.g n
 
 Output can be set as either HTML files, XML files or both. HTML files are designed for your project reporting. The XML files are in standard JUnit format, which your build automation processes (e.g. Jenkins) can leverage to determine whether the build is successful or not.
 
+## Using in an NSF
+
+Copy the contents of BaliTestRunner.bss into a Script Library. Write an agent with `Use "BaliTestRunner"`.
+
 ## Using BaliUnit for Validation
 
 The BaliTestSuite has a `suppressReport` boolean property, which can be used to prevent report output. The use case for this is to create a BaliTestSuite and use it to validate content within code, e.g. a JSON file. You can set `suppressReport = true`, then create your tests and check `testSuite.ranSuccessfully()` to verify all tests were successful.
