@@ -4,6 +4,10 @@ Bali Unit Testing Framework is a framework for testing code written using VoltSc
 
 This fork is adapted to compile with LotusScript in Notes/Domino 12.0.x.
 
+## Downloading
+
+To download the code, go to [Releases](/releases). The script is in BaliTestRUnner.bss, in the Assets for each release. This can be copied into a Script Library in your NSF. This corresponds to [src/BaliTestRunner.bss](/src/BaliTestRunner.bss) at the time of the specific release.
+
 ## Writing BaliUnit Tests
 
 See [Writing Units Tests](/docs/Writing-Unit-Tests/index.md).

@@ -1415,6 +1415,7 @@ errCatch:
 		Me.isDelegatedAssertion = True
 		For i = 0 To UBound(expected)
 			If Not runAssertionOnArrayElem(expected(i), actual(i), i, tmpErrMsg) Then
+				success = False
 				ReDim Preserve errorStack(j)
 				If (j = 5) Then
 					errorStack(j) = |...and others|
@@ -1441,6 +1442,8 @@ errCatch:
 				me.failures = tmpFailures + 1
 			End If
 		End If
+		
+		processArray = success
 			
 getOut:
 		runAfterEach
@@ -1448,9 +1451,7 @@ getOut:
 			
 errCatch:
 		addError getErrorMsg, ||
-		
-		processArray = success
-
+		Resume getOut
 	End Function
 	
 	%REM
@@ -1527,13 +1528,12 @@ errCatch:
 		End If
 			
 getOut:
+		testArrays = success
 		Exit Function
 			
 errCatch:
 		addError getErrorMsg(), ||
-
-	exitPoint:
-		testArrays = success
+		resume getOut
 	End Function
 
 	'}}
