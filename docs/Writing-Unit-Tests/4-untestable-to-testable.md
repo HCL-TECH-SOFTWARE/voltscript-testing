@@ -25,7 +25,6 @@ This function is untestable, unless you are willing to test at multiple times of
 ```vbscript
 Function getTimeOfDay(nowTime as Variant) as String
 
-    nowTime = Now()
     If (Hour(Now) < 8) Then
         getTimeOfDay = "Night"
     ElseIf (Hour(Now) < 12) Then
