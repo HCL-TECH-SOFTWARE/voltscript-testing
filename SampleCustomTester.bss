@@ -18,12 +18,12 @@
 %END REM
 Option Public
 Option Declare
-Use "./src/BaliTestRunner"
+Use "./src/VoltScriptTesting"
 %REM
 	Class DateTimeTester
 	Description: Example a custom tests class
 %END REM
-Private Class DateTimeTester As AbstractBaliCustomTester
+Private Class DateTimeTester As AbstractCustomTester
 	
 	%REM
 		Function runTests
@@ -96,7 +96,7 @@ Private Class DateTimeTester As AbstractBaliCustomTester
 End Class
 Sub Initialize
 	
-	Dim BaliTestSuite As New BaliTestSuite(|DateTime Tests|)
+	Dim BaliTestSuite As New TestSuite(|DateTime Tests|)
 	Dim DateTimeTester As New DateTimeTester
 	
 	Call DateTimeTester.addTestSuite(BaliTestSuite).runTests()

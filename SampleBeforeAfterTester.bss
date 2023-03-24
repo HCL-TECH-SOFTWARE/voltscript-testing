@@ -18,7 +18,7 @@
 %END REM
 Option Public
 Option Declare
-Use "./src/BaliTestRunner"
+Use "./src/VoltScriptTesting"
 Private a As Integer
 Private b As Integer
 
@@ -40,7 +40,7 @@ Private b As Integer
 	BaliCustomBeforeAfter to set up integers before the start of the test, 
 	increment a before each test, increment b after each test and msgbox both after all tests
 %END REM
-Class IntegerIncrementBeforeAfter As AbstractBaliCustomBeforeAfter
+Class IntegerIncrementBeforeAfter As AbstractCustomBeforeAfter
 	
 	%REM
 		Sub beforeAll
@@ -101,7 +101,7 @@ End Class
 	Class CustomTesterOneLess
 	Description: Custom tester to test a > b
 %END REM
-Class CustomTesterGreaterThan As AbstractBaliCustomTester
+Class CustomTesterGreaterThan As AbstractCustomTester
 	
 	%REM
 		Function runTests
@@ -130,7 +130,7 @@ Sub Initialize
 	
 	'Core tests
 	
-	Dim testSuite As New BaliTestSuite(|Custom BeforeAfter Tester|)
+	Dim testSuite As New TestSuite(|Custom BeforeAfter Tester|)
 	Dim beforeAfter As New IntegerIncrementBeforeAfter
 	
 	Call testSuite.addCustomBeforeAfter(beforeAfter)

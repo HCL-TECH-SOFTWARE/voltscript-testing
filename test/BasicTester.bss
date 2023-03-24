@@ -18,14 +18,14 @@
 %END REM
 Option Public
 Option Declare
-Use "../src/BaliTestRunner"
+Use "../src/VoltScriptTesting"
 Sub Initialize
 	
-	Dim runner As BaliTestRunner
+	Dim runner As TestRunner
 	
 	' All tests are in subs, one for each test suite
 	
-	Set runner = New BaliTestRunner(|BasicTester|)
+	Set runner = New TestRunner(|BasicTester|)
 	runner.setOutputFormat("BOTH")
 	
 	Call testBooleansAndStrings(runner)
@@ -41,8 +41,8 @@ End Sub
 	testPrimitive
 	Runs tests for all primitive types against assertEqualsPrimitive
 %END REM
-Sub testPrimitives(runner As BaliTestRunner)
-	Dim testSuite As New BaliTestSuite(|Primitive Tests|)
+Sub testPrimitives(runner As TestRunner)
+	Dim testSuite As New TestSuite(|Primitive Tests|)
 	Dim a As Integer, b As Double, c As Single, d As Long, e As Boolean
 	
 	Call runner.addTestSuite(testSuite)
@@ -90,8 +90,8 @@ End Function
 	Sub testNumbers
 	Runs all numeric tests
 %END REM
-Sub testNumbers(runner As BaliTestRunner)
-	Dim testSuite As New BaliTestSuite(|Number Tests|)
+Sub testNumbers(runner As TestRunner)
+	Dim testSuite As New TestSuite(|Number Tests|)
 	Dim a As Integer, b As Double, c As Single, d As Long
 	
 	Call runner.addTestSuite(testSuite)
@@ -134,8 +134,8 @@ End Sub
 	Sub testVariantArrays
 	Description: Tests variant arrays
 %END REM
-Sub testVariantArrays(runner As BaliTestRunner)
-	Dim testSuite As New BaliTestSuite(|Variant Array Tests|)
+Sub testVariantArrays(runner As TestRunner)
+	Dim testSuite As New TestSuite(|Variant Array Tests|)
 	Dim a(7) As Variant, b() As Variant
 	Dim i As integer
 	
@@ -184,8 +184,8 @@ End Function
 	Sub testVariants
 	Description: Tests all primitive variants
 %END REM
-Sub testVariants(runner As BaliTestRunner)
-	Dim testSuite As New BaliTestSuite(|Complex Variants Tests|)
+Sub testVariants(runner As TestRunner)
+	Dim testSuite As New TestSuite(|Complex Variants Tests|)
 	Dim a As Variant, b As Variant
 	
 	Call runner.addTestSuite(testSuite)
@@ -219,8 +219,8 @@ End Sub
 	Sub testBooleansAndStrings
 	Description: Tests BaliUnit against booleans and strings
 %END REM
-Sub testBooleansAndStrings(runner As BaliTestRunner)
-	Dim testSuite As New BaliTestSuite(|Boolean and String Tests|)
+Sub testBooleansAndStrings(runner As TestRunner)
+	Dim testSuite As New TestSuite(|Boolean and String Tests|)
 	Dim a As Boolean
 	
 	Call runner.addTestSuite(testSuite)
@@ -249,8 +249,8 @@ End Sub
 	Sub testNotEqual
 	Runs all assertNot... tests
 %END REM
-Sub testNotEqual(runner As BaliTestRunner)
-	Dim testSuite As New BaliTestSuite(|Not Equal|)
+Sub testNotEqual(runner As TestRunner)
+	Dim testSuite As New TestSuite(|Not Equal|)
 	Dim a As Integer, b As Double, c As Single, d As Long
 	Dim e As Variant, f(2) As Variant, g(2) As Variant
 	

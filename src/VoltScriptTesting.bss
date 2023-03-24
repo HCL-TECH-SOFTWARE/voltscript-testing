@@ -38,10 +38,10 @@ Const BASE_REPORT_LOC = |unit-test-reports/|
 
 
 ' Core unit testing suite
-Class BaliTestSuite
+Class TestSuite
 	
     '{{SETI_AUTHOR_CODE_Internal_Member_Init
-	Public customBeforeAfter As AbstractBaliCustomBeforeAfter
+	Public customBeforeAfter As AbstractCustomBeforeAfter
 	Public displayName As String
 	Public errors As Integer
 	Public failures As Integer
@@ -67,7 +67,7 @@ Class BaliTestSuite
 		@param customBeforeAfter Containing before and after functions
 		@return					Fluent
 	%END REM
-	Function addCustomBeforeAfter(customBeforeAfter As AbstractBaliCustomBeforeAfter) As BaliTestSuite
+	Function addCustomBeforeAfter(customBeforeAfter As AbstractCustomBeforeAfter) As TestSuite
 		'{{SETI_AUTHOR_CODE_addCustomBeforeAfter
 		Set Me.customBeforeAfter = customBeforeAfter
 		Set addCustomBeforeAfter = Me
@@ -113,7 +113,7 @@ Class BaliTestSuite
 				Me.title = Me.title & |-| & FormatTimeForOutput(Now)
 			End If
 		
-			Dim testSuiteReport As New BaliTestSuiteReport(Me.outputLoc)
+			Dim testSuiteReport As New TestSuiteReport(Me.outputLoc)
 			Call testSuiteReport.printoutReport(Me)
 		End If
 
@@ -140,7 +140,7 @@ Class BaliTestSuite
 		@param description		Proposed description
 		@return					Fluent
 	%END REM
-	Function describe(description As String) As BaliTestSuite
+	Function describe(description As String) As TestSuite
 		'{{SETI_AUTHOR_CODE_describe
 		Dim uniqueDesc As String
 		uniqueDesc = makeDescriptionUnique(description)
@@ -201,7 +201,7 @@ Class BaliTestSuite
 		@param testRunnerName 	TestRunner name test is included in
 		@returns				Fluent
 	%END REM
-	Function includeInTestRunner(testRunnerName as String) As BaliTestSuite
+	Function includeInTestRunner(testRunnerName as String) As TestSuite
 		'{{SETI_AUTHOR_CODE_includeInTestRunner
 		Me.hasTestRunner = True
 		Me.testRunnerName = testRunnerName
@@ -229,7 +229,7 @@ Class BaliTestSuite
 		@param outputLoc		Directory to write reports
 		@return					Fluent
 	%END REM
-	Function outputTo(outputLoc As String) As BaliTestSuite
+	Function outputTo(outputLoc As String) As TestSuite
 		'{{SETI_AUTHOR_CODE_outputTo
 		Dim lastChar As String
 		lastChar = Right(FullTrim(outputLoc), 1)
@@ -281,7 +281,7 @@ Class BaliTestSuite
 		@param displayName		A more readable explanation of the report. Used in XML output for Jenkins.
 		@return					Fluent
 	%END REM
-	Public Function setDisplayName(displayName As String) As BaliTestSuite
+	Public Function setDisplayName(displayName As String) As TestSuite
 		'{{SETI_AUTHOR_CODE_setDisplayName
 		Me.displayName = displayName
 		Set setDisplayName = Me
@@ -294,7 +294,7 @@ Class BaliTestSuite
 		@return					Fluent
 		@throws Error 1400, invalid format type if formatType is not "HTML", "XML" or "BOTH"
 	%END REM
-	Function setOutputFormat(formatType As String) As BaliTestSuite
+	Function setOutputFormat(formatType As String) As TestSuite
 		'{{SETI_AUTHOR_CODE_setOutputFormat
 		Select Case formatType
 			Case "HTML", "XML", "BOTH":
@@ -1436,7 +1436,7 @@ End Class
 
 
 ' Class for the HTML report for a BaliTestSuite
-Class BaliTestSuiteReport
+Class TestSuiteReport
 	
     '{{SETI_AUTHOR_CODE_Internal_Member_Init
 	Private htmlHead As String
@@ -1611,7 +1611,7 @@ tr:nth-child(even) {
 		Write out the actual HTML report.
 		@param testSuite		Test suite to write out
 	%END REM
-	Sub printoutReport(testSuite As BaliTestSuite)
+	Sub printoutReport(testSuite As TestSuite)
 		'{{SETI_AUTHOR_CODE_printoutReport
 		Dim fileName As String
 		Dim fileNum As Integer
@@ -1700,10 +1700,10 @@ End Class
 
 
 ' Class for creating custom tests, e.g. for a specific LSX
-Class AbstractBaliCustomTester
+Class AbstractCustomTester
 	
     '{{SETI_AUTHOR_CODE_Internal_Member_Init
-	Public testSuite As BaliTestSuite
+	Public testSuite As TestSuite
 	'}}
 	
 	%REM
@@ -1721,7 +1721,7 @@ Class AbstractBaliCustomTester
 		@param testSuite		BaliTestSuite in which to record results
 		@return					Fluent
 	%END REM
-	Function addTestSuite(testSuite As BaliTestSuite) As AbstractBaliCustomTester
+	Function addTestSuite(testSuite As TestSuite) As AbstractCustomTester
 		'{{SETI_AUTHOR_CODE_addTestSuite
 		Set Me.testSuite = testSuite
 		Set addTestSuite = Me
@@ -1748,7 +1748,7 @@ End Class
 	afterEach is automatically run by core BaliTestSuite assertions, but must be manually run in custom assertion tests.
 	afterAll is automatically run during BaliTestSuite.delete() function, at the end of the scope for the BaliTestSuite.
 %END REM
-Class AbstractBaliCustomBeforeAfter
+Class AbstractCustomBeforeAfter
 	
 	%REM
 		Code to run before each assertion.
@@ -1790,10 +1790,10 @@ End Class
 
 
 ' Wrapper for outputting an index.html for multiple BaliTestSuites
-Class BaliTestRunner
+Class TestRunner
 	
     '{{SETI_AUTHOR_CODE_Internal_Member_Init
-	Public testSuites List As BaliTestSuite
+	Public testSuites List As TestSuite
 	Private title As String
 	Private nowTime As Variant
 	Private htmlHead As String
@@ -1808,7 +1808,7 @@ Class BaliTestRunner
 		Adds a BaliTestSuite to this BaliTestRunner.
 		@param testSuite		BaliTestSuite to add to this BaliTestRunner
 	%END REM
-	Sub addTestSuite(testSuite As BaliTestSuite)
+	Sub addTestSuite(testSuite As TestSuite)
 		'{{SETI_AUTHOR_CODE_addTestSuite
 		Set me.testSuites(testSuite.title) = testSuite
 		Call testSuite.includeInTestRunner(me.title).outputTo(getFilePath())
@@ -1820,9 +1820,9 @@ Class BaliTestRunner
 		@param title			Title for the test suite
 		@return					Created BaliTestSuite
 	%END REM
-	Function createTestSuite(title As String) As BaliTestSuite
+	Function createTestSuite(title As String) As TestSuite
 		'{{SETI_AUTHOR_CODE_createTestSuite
-		Set me.testSuites(title) = New BaliTestSuite(title)
+		Set me.testSuites(title) = New TestSuite(title)
 		Set createTestSuite = me.testSuites(title)
 		createTestSuite.includeInTestRunner(me.title).outputTo(Me.getFilePath())
 		'}}
@@ -1888,7 +1888,7 @@ Class BaliTestRunner
 		@param outputLoc		Directory to write reports
 		@return					Fluent
 	%END REM
-	Function outputTo(outputLoc As String) As BaliTestRunner
+	Function outputTo(outputLoc As String) As TestRunner
 		'{{SETI_AUTHOR_CODE_outputTo
 		Dim lastChar As String
 		lastChar = Right(FullTrim(outputLoc), 1)
@@ -1906,7 +1906,7 @@ Class BaliTestRunner
 		@return					Fluent
 		@throws Error 1400, invalid format type if formatType is not "HTML", "XML" or "BOTH"
 	%END REM
-	Function setOutputFormat(formatType As String) As BaliTestRunner
+	Function setOutputFormat(formatType As String) As TestRunner
 		'{{SETI_AUTHOR_CODE_setOutputFormat
 		On Error GoTo 0
 		Select Case formatType
