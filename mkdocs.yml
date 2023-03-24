@@ -1,7 +1,7 @@
-site_name: Bali Unit
+site_name: VoltScript Testing Framework
 site_url: https://github01.hclpnp.com/pages/HCL-Janus/bali-unit/
 site_description: >-
-  Bali Unit: Unit Testing classes for VoltScript
+  VoltScript Testing Framework: Unit and Integration Testing framework for VoltScript
 # Theme Configuration
 theme:
   name: material
@@ -12,7 +12,6 @@ theme:
     - navigation.indexes
     - navigation.top
     - navigation.instant
-    - navigation.sections
     - search.highlight
     - search.share
     - search.suggest
@@ -90,3 +89,4 @@ plugins:
   - awesome-pages
   - search
   - tags
+  - section-index
