@@ -13,7 +13,7 @@
 %END REM
 Option Declare
 Option Public
-Use "../../src/BaliTestRunner"
+Use "VoltScriptTesting"
 
 Class Person
     Public firstName as String
@@ -29,7 +29,7 @@ Sub Initialize
 
     Dim person as New Person()
     Dim errMsg as String
-    Dim testSuite as New BaliTestSuite("Validator")
+    Dim testSuite as New TestSuite("Validator")
 
     person.firstName = "John"
     person.lastName = "Doe"

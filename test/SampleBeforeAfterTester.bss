@@ -37,7 +37,7 @@ Private b As Integer
 	See the License for the specific language governing permissions and limitations under the License	
 %END REM
 %REM
-	BaliCustomBeforeAfter to set up integers before the start of the test, 
+	CustomBeforeAfter to set up integers before the start of the test, 
 	increment a before each test, increment b after each test and msgbox both after all tests
 %END REM
 Class IntegerIncrementBeforeAfter As AbstractCustomBeforeAfter

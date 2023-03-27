@@ -1,4 +1,4 @@
-# BaliUnit for Validation
+# How to Use VoltScript Testing Framework for Validation
 
 Imagine we have the following class:
 
@@ -30,7 +30,7 @@ We will create the Person and set property values, ready for validation. In real
 ## Test Code
 
 ```vbscript linenums="1"
-Dim testSuite as New BaliTestSuite("Validator")
+Dim testSuite as New TestSuite("Validator")
 testSuite.suppressReport = True
 Call testSuite.describe("fname").assertNotEqualString("", person.firstName)
 Call testSuite.describe("lname").assertNotEqualString("", person.lastName)
@@ -39,7 +39,7 @@ Call testSuite.describe("age > 0 alt").assertTrue(person.age > 0)
 Call testSuite.describe("age sensible").assertTrue(person.age < 110)
 ```
 
-We need to pass a name to the BaliTestSuite in line 1, even though it's not being used. The key is line 2, where we suppress the report. If we did not, when the code finishes and the BaliTestSuite is deleted, the HTML reports would be generated - unnecessarily.
+We need to pass a name to the TestSuite in line 1, even though it's not being used. The key is line 2, where we suppress the report. If we did not, when the code finishes and the TestSuite is deleted, the HTML reports would be generated - unnecessarily.
 
 In lines 3 - 8 we run the tests. Age is an integer, so could potentially be a negative integer, or much bigger than the age a person could be.
 

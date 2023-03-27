@@ -14,7 +14,7 @@
 
 %REM
 	Agent TestSuite_Arrays
-	Created Mar 31, 2022 by Paul Withers/UK/PNPHCL
+	Created Mar 31, 2022 by Paul Withers
 	Description: Comments for Agent
 %END REM
 Option Public

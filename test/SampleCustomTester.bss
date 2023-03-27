@@ -39,7 +39,7 @@ Private Class DateTimeTester As AbstractCustomTester
 		
 		Me.testSuite.checkStarted
 		
-		' No custom before/after code, so no need to call BaliUnit.beforeEach and BaliUnit.afterEach
+		' No custom before/after code, so no need to call TestSuite.beforeEach and TestSuite.afterEach
 		
 		dateTime = CDat("01/30/2022")
 		print datatype(datetime)
@@ -51,7 +51,7 @@ Private Class DateTimeTester As AbstractCustomTester
 		
 		Call Me.testSuite.describe(|Check dateTime is before Now|).assertIsLessThan(Now(), CDbl(dateTime))
 		
-		' Delete function of BaliUnit will run afterAll function
+		' Delete function of TestSuite will run afterAll function
 		
 	End Function
 	
@@ -96,10 +96,10 @@ Private Class DateTimeTester As AbstractCustomTester
 End Class
 Sub Initialize
 	
-	Dim BaliTestSuite As New TestSuite(|DateTime Tests|)
+	Dim TestSuite As New TestSuite(|DateTime Tests|)
 	Dim DateTimeTester As New DateTimeTester
 	
-	Call DateTimeTester.addTestSuite(BaliTestSuite).runTests()
+	Call DateTimeTester.addTestSuite(TestSuite).runTests()
 	
 End Sub
 

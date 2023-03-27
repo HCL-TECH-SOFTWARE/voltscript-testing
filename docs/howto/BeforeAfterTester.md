@@ -1,11 +1,11 @@
-# SampleBeforeAfterTester
+# How to Write Code to BeforeAll, BeforeEach etc
 
-The full code can be found in [SampleBeforeAfterTester](../example_code/SampleBeforeAfterTester.txt).
+The full code can be found in [SampleBeforeAfterTester](../assets/example_code/SampleBeforeAfterTester.txt).
 
 ## BeforeAfter Code
 
 ``` vbscript linenums="1"
-Class IntegerIncrementBeforeAfter As AbstractBaliCustomBeforeAfter
+Class IntegerIncrementBeforeAfter As AbstractCustomBeforeAfter
 	
 	Sub beforeAll()
 		a = 0
@@ -38,7 +38,7 @@ Finally, we use the `afterAll` to print out `a` and `b`.
 ## Test Code
 
 ``` vbscript linenums="1"
-Dim testSuite As New BaliTestSuite(|Custom BeforeAfter Tester|)
+Dim testSuite As New TestSuite(|Custom BeforeAfter Tester|)
 Dim beforeAfter As New IntegerIncrementBeforeAfter
 
 Call testSuite.addCustomBeforeAfter(beforeAfter)
@@ -73,7 +73,7 @@ e = b + 1
 Call testSuite.describe(|Test a numeric = b + 1|).assertEqualsNumeric(e, a)
 ```
 
-In line 1 we just create a BaliTestSuite without a BaliTestRunner, because we are only running a single test suite. In line 2 we create a instance of the custom BeforeAfter class, and in line 4 we add it to the test suite. Now we are ready to start running tests. Many of the tests are straightforward, but some deserve further comment.
+In line 1 we just create a TestSuite without a TestRunner, because we are only running a single test suite. In line 2 we create a instance of the custom BeforeAfter class, and in line 4 we add it to the test suite. Now we are ready to start running tests. Many of the tests are straightforward, but some deserve further comment.
 
 On lines 16 and 17 we create a double to pass to the `assertEqualsDouble()`. This is because we cannot just pass `3.0`. We could use `assertEqualsNumeric()`, which proxies off to `assertEqualsDouble()`, but on this occasion we're using the lower level assertion.
 

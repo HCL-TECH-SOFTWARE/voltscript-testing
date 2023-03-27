@@ -13,34 +13,20 @@
 %END REM
 %REM
 	Agent SampleBeforeAfterTester
-	Created Mar 17, 2022 by Paul Withers/UK/PNPHCL
+	Created Mar 17, 2022 by Paul Withers
 	Description: Tests custom before/after code and final test uses custom tester
 %END REM
 Option Public
 Option Declare
-Use "BaliTestRunner"
+Use "VoltScriptTesting"
 Private a As Integer
 Private b As Integer
 
-
 %REM
-	Copyright 2022 Paul Withers
-	Licensed under the Apache License, Version 2.0 (the "License"); 
-	you may not use this file except in compliance with the License. 
-	You may obtain a copy of the License at
-
-	http://www.apache.org/licenses/LICENSE-2.0
-
-	Unless required by applicable law or agreed to in writing, 
-	software distributed under the License is distributed on an "AS IS" BASIS, 
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-	See the License for the specific language governing permissions and limitations under the License	
-%END REM
-%REM
-	BaliCustomBeforeAfter to set up integers before the start of the test, 
+	CustomBeforeAfter to set up integers before the start of the test, 
 	increment a before each test, increment b after each test and msgbox both after all tests
 %END REM
-Class IntegerIncrementBeforeAfter As AbstractBaliCustomBeforeAfter
+Class IntegerIncrementBeforeAfter As AbstractCustomBeforeAfter
 	
 	%REM
 		Sub beforeAll
@@ -83,25 +69,11 @@ Class IntegerIncrementBeforeAfter As AbstractBaliCustomBeforeAfter
 
 End Class
 
-
-%REM
-	Copyright 2022 Paul Withers
-	Licensed under the Apache License, Version 2.0 (the "License"); 
-	you may not use this file except in compliance with the License. 
-	You may obtain a copy of the License at
-
-	http://www.apache.org/licenses/LICENSE-2.0
-
-	Unless required by applicable law or agreed to in writing, 
-	software distributed under the License is distributed on an "AS IS" BASIS, 
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-	See the License for the specific language governing permissions and limitations under the License	
-%END REM
 %REM
 	Class CustomTesterOneLess
 	Description: Custom tester to test a > b
 %END REM
-Class CustomTesterGreaterThan As AbstractBaliCustomTester
+Class CustomTesterGreaterThan As AbstractCustomTester
 	
 	%REM
 		Function runTests
@@ -130,7 +102,7 @@ Sub Initialize
 	
 	'Core tests
 	
-	Dim testSuite As New BaliTestSuite(|Custom BeforeAfter Tester|)
+	Dim testSuite As New TestSuite(|Custom BeforeAfter Tester|)
 	Dim beforeAfter As New IntegerIncrementBeforeAfter
 	
 	Call testSuite.addCustomBeforeAfter(beforeAfter)

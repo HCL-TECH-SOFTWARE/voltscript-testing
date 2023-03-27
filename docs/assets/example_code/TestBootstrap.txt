@@ -14,17 +14,17 @@
 
 %REM
 	Agent TestSuite_Arrays
-	Created Mar 31, 2022 by Paul Withers/UK/PNPHCL
+	Created Mar 31, 2022 by Paul Withers
 	Description: Comments for Agent
 %END REM
 Option Public
 Option Declare
-Use "BaliTestRunner"
+Use "VoltScriptTesting"
 Sub Initialize
-	Dim testRunner As BaliTestRunner
+	Dim testRunner As TestRunner
 	Dim results As Integer
 	
-	Set testRunner = New BaliTestRunner(|ENTER NAME|)
+	Set testRunner = New TestRunner(|ENTER NAME|)
 	
 	' BEGIN CODE HERE
 	Call test(testRunner)
@@ -35,9 +35,9 @@ End Sub
 	Function **UPDATE NAME**
 	Description: unit tests for **ADD DESCRIPTION**
 %END REM
-Function test(testRunner As BaliTestRunner) As Boolean
+Function test(testRunner As TestRunner) As Boolean
 
-	Dim testSuite As New BaliTestSuite(|**UPDATE NAME**|)
+	Dim testSuite As New TestSuite(|**UPDATE NAME**|)
 	
 	Call testRunner.addTestSuite(testSuite)
 	

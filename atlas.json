@@ -1,21 +1,21 @@
 {
-    "name": "Bali-Unit",
-    "displayName": "BaliUnit",
-    "description": "Bali Unit Testing",
-    "library": "bali-unit",
+    "name": "VoltScriptTesting",
+    "displayName": "VoltScript Testing",
+    "description": "VoltScript Testing Framework",
+    "library": "voltscript-testing",
     "license": "Apache 2.0",
     "version": "1.0.0",
     "authors": [
         "Paul Withers"
     ],
     "publisher": "HCL America, Inc.",
-    "repo": "https://github01.hclpnp.com/hcl-janus/bali-unit.git",
+    "repo": "https://github.com/HCL-TECH-SOFTWARE/voltscript-testing.git",
     "sourceDir": "src",
     "testDir": "test",
     "libsDir": "",
     "lsxsDir": "",
     "mainScripts": [
-        "BaliTestRunner.bss"
+        "VoltScriptTesting.bss"
     ],
     "unitTestScripts": [
         "BasicTester.bss"

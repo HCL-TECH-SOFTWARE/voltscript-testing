@@ -13,17 +13,17 @@
 %END REM
 %REM
 	Agent DateTimeTester
-	Created Mar 16, 2022 by Paul Withers/UK/PNPHCL
-	Description: Tests NotesDateTime. Will not work outside Domino
+	Created Mar 16, 2022 by Paul Withers
+	Description: Tests dates
 %END REM
 Option Public
 Option Declare
-Use "BaliTestRunner"
+Use "VoltScriptTesting"
 %REM
 	Class DateTimeTester
 	Description: Example a custom tests class
 %END REM
-Private Class DateTimeTester As AbstractBaliCustomTester
+Private Class DateTimeTester As AbstractCustomTester
 	
 	%REM
 		Function runTests
@@ -39,7 +39,7 @@ Private Class DateTimeTester As AbstractBaliCustomTester
 		
 		Me.testSuite.checkStarted
 		
-		' No custom before/after code, so no need to call BaliUnit.beforeEach and BaliUnit.afterEach
+		' No custom before/after code, so no need to call TestSuite.beforeEach and TestSuite.afterEach
 		
 		dateTime = CDat(|30/01/2022|)
 		print datatype(datetime)
@@ -51,7 +51,7 @@ Private Class DateTimeTester As AbstractBaliCustomTester
 		
 		Call Me.testSuite.describe(|Check dateTime is before Now|).assertIsLessThan(Now(), CDbl(dateTime))
 		
-		' Delete function of BaliUnit will run afterAll function
+		' Delete function of TestSuite will run afterAll function
 		
 	End Function
 	
@@ -96,10 +96,10 @@ Private Class DateTimeTester As AbstractBaliCustomTester
 End Class
 Sub Initialize
 	
-	Dim BaliTestSuite As New BaliTestSuite(|NotesDateTime Tests|)
+	Dim TestSuite As New TestSuite(|DateTime Tests|)
 	Dim DateTimeTester As New DateTimeTester
 	
-	Call DateTimeTester.addTestSuite(BaliTestSuite).runTests()
+	Call DateTimeTester.addTestSuite(TestSuite).runTests()
 	
 End Sub
 

@@ -1,0 +1,10 @@
+nav:
+    - How to Write a Standalone TestSuite: Standalone.md
+    - How to Aggregate Test Suites: TestRunner.md
+    - writingtests.md
+    - How to Mock Calls: mocking.md
+    - Jenkins.md
+    - BeforeAfterTester.md
+    - How to Write a Custom Tester: customtester.md
+    - validation.md
+    - untestable-to-testable.md

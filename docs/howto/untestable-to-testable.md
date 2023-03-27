@@ -1,6 +1,6 @@
-# From Untestable Code to Testable
+# How to Change Functions to be Testable
 
-Functions may need to be changed or written differently. It's easy to convert an example on a [blog post about writing testable code](https://www.toptal.com/qa/how-to-write-testable-code-and-why-it-matters) for VoltScript. Imagine the following function:
+Functions may need to be changed or written differently. It's easy to convert an example on a [blog post about writing testable code](https://www.toptal.com/qa/how-to-write-testable-code-and-why-it-matters){: target="_new"} for VoltScript. Imagine the following function:
 
 ```vbscript
 Function getTimeOfDay() as String
@@ -41,7 +41,7 @@ End Function
 Now it can be tested easily:
 
 ```
-Dim testSuite as New BaliTestSuite("Testing time of day")
+Dim testSuite as New TestSuite("Testing time of day")
 Dim nowTime as Variant
 nowTime = TimeNumber(4,30,04)  ' Fine because we're only interested in the time
 Call testSuite.describe("Test Night am").assertEqualsString("Night", getTimeOfDay(nowTime), True)

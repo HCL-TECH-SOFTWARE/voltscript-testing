@@ -76,8 +76,8 @@ Language keywords used:
 - New
 - Function
 - End Function
-- Set (addBaliUnit)
-- Me (addBaliUnit)
+- Set (addTestSuite)
+- Me (addTestSuite)
 - Boolean
 - Error (runTests)
 
@@ -212,7 +212,7 @@ Language keywords used:
 
 ## TestSuiteReport
 
-This is the class for writing out an HTML file for a BaliUnit.
+This is the class for writing out an HTML file for a TestSuite.
 
 Language keywords used:
 

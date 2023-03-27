@@ -13,9 +13,9 @@
 %END REM
 
 %REM
-	Library BaliUnit
-	Created Mar 14, 2022 by Paul Withers/UK/PNPHCL
-	Unit Testing Framework for Bali and LotusScript
+	Library VoltScriptTesting
+	Created Mar 14, 2022 by Paul Withers
+	Unit Testing Framework for VoltScript and LotusScript
 %END REM
 Option Public
 Option Declare
@@ -76,7 +76,7 @@ Class TestSuite
 	
 	%REM
 		Checks whether an assertion has been run yet and, if not, starts the timer
-		and runs beforeAll if a BaliCustomBeforeAfter has been passed in.
+		and runs beforeAll if a CustomBeforeAfter has been passed in.
 	%END REM
 	Sub checkStarted()
 		'{{SETI_AUTHOR_CODE_checkStarted
@@ -91,7 +91,7 @@ Class TestSuite
 	End Sub
 	
 	%REM
-		Ends timer, triggers afterAll if a BaliCustomBeforeAfter has been passed in,
+		Ends timer, triggers afterAll if a CustomBeforeAfter has been passed in,
 		and prints out the report.
 	%END REM
 	Sub completeReport()
@@ -197,7 +197,7 @@ Class TestSuite
 	End Function
 	
 	%REM
-		Sets this test as included in a BaliTestRunner. Called by BaliTestRunner.addTestSuite.
+		Sets this test as included in a TestRunner. Called by TestRunner.addTestSuite.
 		@param testRunnerName 	TestRunner name test is included in
 		@returns				Fluent
 	%END REM
@@ -254,7 +254,7 @@ Class TestSuite
 	End Function
 	
 	%REM
-		Tests whether a AbstractBaliCustomBeforeAfter has been passed in and, if so, calls afterEach.
+		Tests whether a AbstractCustomBeforeAfter has been passed in and, if so, calls afterEach.
 		Triggered automatically from all in-built assertiopns.
 	%END REM
 	Sub runAfterEach()
@@ -266,7 +266,7 @@ Class TestSuite
 	End Sub
 	
 	%REM
-		Tests whether a AbstractBaliCustomBeforeAfter has been passed in and, if so, calls beforeEach.
+		Tests whether a AbstractCustomBeforeAfter has been passed in and, if so, calls beforeEach.
 	%END REM
 	Sub runBeforeEach()
 		'{{SETI_AUTHOR_CODE_runBeforeEach
@@ -1435,7 +1435,7 @@ Class TestSuite
 End Class
 
 
-' Class for the HTML report for a BaliTestSuite
+' Class for the HTML report for a TestSuite
 Class TestSuiteReport
 	
     '{{SETI_AUTHOR_CODE_Internal_Member_Init
@@ -1716,9 +1716,9 @@ Class AbstractCustomTester
 	End Sub
 	
 	%REM
-		Loads a BaliTestSuite into the tester, in which to record test results.
+		Loads a TestSuite into the tester, in which to record test results.
 		
-		@param testSuite		BaliTestSuite in which to record results
+		@param testSuite		TestSuite in which to record results
 		@return					Fluent
 	%END REM
 	Function addTestSuite(testSuite As TestSuite) As AbstractCustomTester
@@ -1743,10 +1743,10 @@ End Class
 %REM
 	Class for custom beforeAll, beforeEach, afterEach and afterAll code
 	
-	beforeAll is automatically run during BaliTestSuite.isStarted() function.
-	beforeEach is automatically run by core BaliTestSuite assertions, but must be manually run in custom assertion tests.
-	afterEach is automatically run by core BaliTestSuite assertions, but must be manually run in custom assertion tests.
-	afterAll is automatically run during BaliTestSuite.delete() function, at the end of the scope for the BaliTestSuite.
+	beforeAll is automatically run during TestSuite.isStarted() function.
+	beforeEach is automatically run by core TestSuite assertions, but must be manually run in custom assertion tests.
+	afterEach is automatically run by core TestSuite assertions, but must be manually run in custom assertion tests.
+	afterAll is automatically run during TestSuite.delete() function, at the end of the scope for the TestSuite.
 %END REM
 Class AbstractCustomBeforeAfter
 	
@@ -1789,7 +1789,7 @@ Class AbstractCustomBeforeAfter
 End Class
 
 
-' Wrapper for outputting an index.html for multiple BaliTestSuites
+' Wrapper for outputting an index.html for multiple TestSuites
 Class TestRunner
 	
     '{{SETI_AUTHOR_CODE_Internal_Member_Init
@@ -1805,8 +1805,8 @@ Class TestRunner
 	'}}
 	
 	%REM
-		Adds a BaliTestSuite to this BaliTestRunner.
-		@param testSuite		BaliTestSuite to add to this BaliTestRunner
+		Adds a TestSuite to this TestRunner.
+		@param testSuite		TestSuite to add to this TestRunner
 	%END REM
 	Sub addTestSuite(testSuite As TestSuite)
 		'{{SETI_AUTHOR_CODE_addTestSuite
@@ -1816,9 +1816,9 @@ Class TestRunner
 	End Sub
 	
 	%REM
-		Creates a new BaliTestSuite with a label and adds it to this BaliTestRunner.
+		Creates a new TestSuite with a label and adds it to this TestRunner.
 		@param title			Title for the test suite
-		@return					Created BaliTestSuite
+		@return					Created TestSuite
 	%END REM
 	Function createTestSuite(title As String) As TestSuite
 		'{{SETI_AUTHOR_CODE_createTestSuite
@@ -1874,9 +1874,9 @@ Class TestRunner
 		Me.outputFormat = "HTML"
 		
 		Dim passedEngine As String
-		passedEngine = Environ("BaliRunnerEngine")
+		passedEngine = Environ("TestRunnerEngine")
 		If (passedEngine = "") Then
-			engine = "baliunit-lotusscript"
+			engine = "testsuite-voltscript"
 		Else
 			engine = passedEngine
 		End If

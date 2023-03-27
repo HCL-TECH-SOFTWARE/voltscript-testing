@@ -14,7 +14,7 @@
 %REM
 	Agent BasicTester
 	Created Mar 14, 2022 by Paul Withers/UK/PNPHCL
-	Description: Tests core functionality of a BaliUnit, no custom tester, no before/after code
+	Description: Tests core functionality of a TestSuite, no custom tester, no before/after code
 %END REM
 Option Public
 Option Declare
@@ -217,7 +217,7 @@ Sub testVariants(runner As TestRunner)
 End Sub
 %REM
 	Sub testBooleansAndStrings
-	Description: Tests BaliUnit against booleans and strings
+	Description: Tests TestSuite against booleans and strings
 %END REM
 Sub testBooleansAndStrings(runner As TestRunner)
 	Dim testSuite As New TestSuite(|Boolean and String Tests|)

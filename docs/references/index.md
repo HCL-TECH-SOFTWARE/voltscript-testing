@@ -12,7 +12,7 @@
 
 ## API Documentation
 
-- [Bali Unit Class Documentation](./apidocs/index.html){: target="_new"}
+- [VoltScript Testing Framework Class Documentation](./apidocs/index.html){: target="_new"}
 
 ## Unit Test Output
 
