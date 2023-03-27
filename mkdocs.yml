@@ -1,5 +1,5 @@
 site_name: VoltScript Testing Framework
-site_url: https://github01.hclpnp.com/pages/HCL-Janus/bali-unit/
+site_url: https://github.com/pages/HCL-Janus/bali-unit/
 site_description: >-
   VoltScript Testing Framework: Unit and Integration Testing framework for VoltScript
 # Theme Configuration
@@ -8,8 +8,8 @@ theme:
   logo: 
   language: en
   features:
-    - navigation.tabs
     - navigation.indexes
+    - navigation.tabs
     - navigation.top
     - navigation.instant
     - search.highlight
@@ -80,7 +80,7 @@ extra:
       - manage
 
 # Repository
-repo_url: https://github01.hclpnp.com/HCL-Janus/bali-unit/
+repo_url: https://github.com/HCL-Janus/bali-unit/
 repo_name: HCL-Janus/bali-unit
 edit_uri: edit/main/docs
 

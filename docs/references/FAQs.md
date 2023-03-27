@@ -1,7 +1,3 @@
----
-hide:
-    - navigation
----
 # FAQs
 
 ## Where do I find the output?

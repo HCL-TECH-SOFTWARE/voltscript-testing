@@ -1,10 +1,6 @@
----
-hide:
-    - navigation
----
 # Core Language Functions Used
 
-Core Functions in BaliUnit Script Library
+Core Functions in VoltScriptTesting.bss
 
 `%REM` and `%END REM` are used throughout. `'` for a single-line comment is also used.
 
@@ -54,7 +50,7 @@ Language keywords used:
 - String
 - Format(Variant of Date Type, String format). String format is `yymmddThhnnss`
 
-## AbstractBaliCustomBeforeAfter
+## AbstractCustomBeforeAfter
 
 This is an abstract class and contains no code.
 
@@ -65,7 +61,7 @@ Language keywords used:
 - Sub
 - End Sub
 
-## AbstractBaliCustomTester
+## AbstractCustomTester
 
 This is a basic class with minimal code.
 
@@ -85,7 +81,7 @@ Language keywords used:
 - Boolean
 - Error (runTests)
 
-## BaliTestRunner
+## TestRunner
 
 This is the class for outputting a number of HTML files, with an index.html wrapping them.
 
@@ -133,7 +129,7 @@ Language keywords used:
 - Erl (printoutReport)
 - Resume (printoutReport)
 
-## BaliTestSuite
+## TestSuite
 
 This is the class for a set of tests.
 
@@ -214,7 +210,7 @@ Language keywords used:
 - Try / Catch / Finally (**specific to VoltScript**)
 - GetThreadInfo(12) (**specific to VoltScript**)
 
-## BaliTestSuiteReport
+## TestSuiteReport
 
 This is the class for writing out an HTML file for a BaliUnit.
 

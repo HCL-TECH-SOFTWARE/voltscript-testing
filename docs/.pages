@@ -1,6 +1,5 @@
 nav:
     - index.md
     - Writing-Unit-Tests
-    - CoreFunctions.md
-    - FAQs.md
+    - Topic Guides: topicguides
     - references
