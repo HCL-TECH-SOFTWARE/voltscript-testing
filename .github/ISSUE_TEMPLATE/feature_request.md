@@ -10,7 +10,7 @@ assignees: ''
 **Additional assertions will be carefully vetted and may be refused. Simplicity is a major focus.**
 
 **Area Affected**
-[ ] BalitestRunner code
+[ ] TestRunner code
 [ ] Documentation
 [ ] Samples
 

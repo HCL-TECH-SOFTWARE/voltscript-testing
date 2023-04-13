@@ -11,7 +11,7 @@ assignees: ''
 A clear and concise description of what the bug is.
 
 **Area Affected**
-[ ] BaliTestRunner code
+[ ] TestRunner code
 [ ] Documentation
 [ ] Samples
 

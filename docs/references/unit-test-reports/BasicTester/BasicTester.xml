@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="BasicTester" tests="85" time="230327T150254" failures="40" errors="1">
+  <testsuite name="Boolean and String Tests" time="0" displayname="Boolean and String Tests" id="[engine:testsuite-voltscript]/[Boolean and String Tests]">
+    <testcase name="Test fail basic boolean true" classname="Boolean and String Tests" time="0" displayname="Test fail basic boolean true" id="[engine:testsuite-voltscript]/[Boolean and String Tests]/[Test fail basic boolean true]">
+      <failure>Expected: true, but was: false
+      </failure>
+    </testcase>
+    <testcase name="Test fail basic boolean false" classname="Boolean and String Tests" time="0" displayname="Test fail basic boolean false" id="[engine:testsuite-voltscript]/[Boolean and String Tests]/[Test fail basic boolean false]">
+    </testcase>
+    <testcase name="Test true basic boolean false" classname="Boolean and String Tests" time="0" displayname="Test true basic boolean false" id="[engine:testsuite-voltscript]/[Boolean and String Tests]/[Test true basic boolean false]">
+      <failure>Expected: false, but was: true
+      </failure>
+    </testcase>
+    <testcase name="Test true basic boolean true" classname="Boolean and String Tests" time="0" displayname="Test true basic boolean true" id="[engine:testsuite-voltscript]/[Boolean and String Tests]/[Test true basic boolean true]">
+    </testcase>
+    <testcase name="Test error" classname="Boolean and String Tests" time="0" displayname="Test error" id="[engine:testsuite-voltscript]/[Boolean and String Tests]/[Test error]">
+      <error>Error Variant does not contain an object(183) on line 236
+BASICTESTER,TESTBOOLEANSANDSTRINGS,238
+BASICTESTER,INITIALIZE,31
+
+      </error>
+    </testcase>
+    <testcase name="Test string equals pass" classname="Boolean and String Tests" time="0" displayname="Test string equals pass" id="[engine:testsuite-voltscript]/[Boolean and String Tests]/[Test string equals pass]">
+    </testcase>
+    <testcase name="Test string equals fail" classname="Boolean and String Tests" time="0" displayname="Test string equals fail" id="[engine:testsuite-voltscript]/[Boolean and String Tests]/[Test string equals fail]">
+      <failure>Expected: Foo but was: foo
+      </failure>
+    </testcase>
+    <testcase name="Test string equals insensitive pass" classname="Boolean and String Tests" time="0" displayname="Test string equals insensitive pass" id="[engine:testsuite-voltscript]/[Boolean and String Tests]/[Test string equals insensitive pass]">
+    </testcase>
+    <testcase name="Test string equals insensitive fail" classname="Boolean and String Tests" time="0" displayname="Test string equals insensitive fail" id="[engine:testsuite-voltscript]/[Boolean and String Tests]/[Test string equals insensitive fail]">
+      <failure>Expected: Foo but was: Bar
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Number Tests" time="0" displayname="Number Tests" id="[engine:testsuite-voltscript]/[Number Tests]">
+    <testcase name="Test integers, matching" classname="Number Tests" time="0" displayname="Test integers, matching" id="[engine:testsuite-voltscript]/[Number Tests]/[Test integers, matching]">
+    </testcase>
+    <testcase name="Test integers, not matching" classname="Number Tests" time="0" displayname="Test integers, not matching" id="[engine:testsuite-voltscript]/[Number Tests]/[Test integers, not matching]">
+      <failure>Expected: 1, but was: 2
+      </failure>
+    </testcase>
+    <testcase name="Test doubles, matching" classname="Number Tests" time="0" displayname="Test doubles, matching" id="[engine:testsuite-voltscript]/[Number Tests]/[Test doubles, matching]">
+    </testcase>
+    <testcase name="Test doubles, not matching" classname="Number Tests" time="0" displayname="Test doubles, not matching" id="[engine:testsuite-voltscript]/[Number Tests]/[Test doubles, not matching]">
+      <failure>Expected: 2.5, but was: 3.5
+      </failure>
+    </testcase>
+    <testcase name="Test doubles with calculations" classname="Number Tests" time="0" displayname="Test doubles with calculations" id="[engine:testsuite-voltscript]/[Number Tests]/[Test doubles with calculations]">
+    </testcase>
+    <testcase name="Test complex recurring doubles" classname="Number Tests" time="0" displayname="Test complex recurring doubles" id="[engine:testsuite-voltscript]/[Number Tests]/[Test complex recurring doubles]">
+    </testcase>
+    <testcase name="Test more complex recurring doubles" classname="Number Tests" time="0" displayname="Test more complex recurring doubles" id="[engine:testsuite-voltscript]/[Number Tests]/[Test more complex recurring doubles]">
+    </testcase>
+    <testcase name="Test singles, matching" classname="Number Tests" time="0" displayname="Test singles, matching" id="[engine:testsuite-voltscript]/[Number Tests]/[Test singles, matching]">
+    </testcase>
+    <testcase name="Test singles, not matching" classname="Number Tests" time="0" displayname="Test singles, not matching" id="[engine:testsuite-voltscript]/[Number Tests]/[Test singles, not matching]">
+      <failure>Expected: 6.02E+23, but was: 6.12E+23
+      </failure>
+    </testcase>
+    <testcase name="Test longs, matching" classname="Number Tests" time="0" displayname="Test longs, matching" id="[engine:testsuite-voltscript]/[Number Tests]/[Test longs, matching]">
+    </testcase>
+    <testcase name="Test longs, not matching" classname="Number Tests" time="0" displayname="Test longs, not matching" id="[engine:testsuite-voltscript]/[Number Tests]/[Test longs, not matching]">
+      <failure>Expected: 2094070921, but was: 2094070922
+      </failure>
+    </testcase>
+    <testcase name="Test numeric, not matching" classname="Number Tests" time="0" displayname="Test numeric, not matching" id="[engine:testsuite-voltscript]/[Number Tests]/[Test numeric, not matching]">
+      <failure>Expected: 1, but was: 2.5
+      </failure>
+    </testcase>
+    <testcase name="Test numeric, matching" classname="Number Tests" time="0" displayname="Test numeric, matching" id="[engine:testsuite-voltscript]/[Number Tests]/[Test numeric, matching]">
+    </testcase>
+    <testcase name="Test between" classname="Number Tests" time="0" displayname="Test between" id="[engine:testsuite-voltscript]/[Number Tests]/[Test between]">
+    </testcase>
+    <testcase name="Test not between - less" classname="Number Tests" time="0" displayname="Test not between - less" id="[engine:testsuite-voltscript]/[Number Tests]/[Test not between - less]">
+      <failure>Expected: Between 1 and 5, but was: 0
+      </failure>
+    </testcase>
+    <testcase name="Test not between - more" classname="Number Tests" time="0" displayname="Test not between - more" id="[engine:testsuite-voltscript]/[Number Tests]/[Test not between - more]">
+      <failure>Expected: Between 1 and 5, but was: 8
+      </failure>
+    </testcase>
+    <testcase name="Test greater than" classname="Number Tests" time="0" displayname="Test greater than" id="[engine:testsuite-voltscript]/[Number Tests]/[Test greater than]">
+    </testcase>
+    <testcase name="Test greater than - less" classname="Number Tests" time="0" displayname="Test greater than - less" id="[engine:testsuite-voltscript]/[Number Tests]/[Test greater than - less]">
+      <failure>Expected: Greater than 1, but was: 0
+      </failure>
+    </testcase>
+    <testcase name="Test less than" classname="Number Tests" time="0" displayname="Test less than" id="[engine:testsuite-voltscript]/[Number Tests]/[Test less than]">
+    </testcase>
+    <testcase name="Test less than - more" classname="Number Tests" time="0" displayname="Test less than - more" id="[engine:testsuite-voltscript]/[Number Tests]/[Test less than - more]">
+      <failure>Expected: Greater than 1, but was: 5
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Primitive Tests" time="0" displayname="Primitive Tests" id="[engine:testsuite-voltscript]/[Primitive Tests]">
+    <testcase name="Test integers, matching" classname="Primitive Tests" time="0" displayname="Test integers, matching" id="[engine:testsuite-voltscript]/[Primitive Tests]/[Test integers, matching]">
+    </testcase>
+    <testcase name="Test integers, not matching" classname="Primitive Tests" time="0" displayname="Test integers, not matching" id="[engine:testsuite-voltscript]/[Primitive Tests]/[Test integers, not matching]">
+      <failure>Expected: 1, but was: 2
+      </failure>
+    </testcase>
+    <testcase name="Test doubles, matching" classname="Primitive Tests" time="0" displayname="Test doubles, matching" id="[engine:testsuite-voltscript]/[Primitive Tests]/[Test doubles, matching]">
+    </testcase>
+    <testcase name="Test doubles, not matching" classname="Primitive Tests" time="0" displayname="Test doubles, not matching" id="[engine:testsuite-voltscript]/[Primitive Tests]/[Test doubles, not matching]">
+      <failure>Expected: 2.5, but was: 3.5
+      </failure>
+    </testcase>
+    <testcase name="Test singles, matching" classname="Primitive Tests" time="0" displayname="Test singles, matching" id="[engine:testsuite-voltscript]/[Primitive Tests]/[Test singles, matching]">
+    </testcase>
+    <testcase name="Test singles, not matching" classname="Primitive Tests" time="0" displayname="Test singles, not matching" id="[engine:testsuite-voltscript]/[Primitive Tests]/[Test singles, not matching]">
+      <failure>Expected: 6.02E+23, but was: 6.12E+23
+      </failure>
+    </testcase>
+    <testcase name="Test longs, matching" classname="Primitive Tests" time="0" displayname="Test longs, matching" id="[engine:testsuite-voltscript]/[Primitive Tests]/[Test longs, matching]">
+    </testcase>
+    <testcase name="Test longs, not matching" classname="Primitive Tests" time="0" displayname="Test longs, not matching" id="[engine:testsuite-voltscript]/[Primitive Tests]/[Test longs, not matching]">
+      <failure>Expected: 2094070921, but was: 2094070922
+      </failure>
+    </testcase>
+    <testcase name="Test booleans, matching" classname="Primitive Tests" time="0" displayname="Test booleans, matching" id="[engine:testsuite-voltscript]/[Primitive Tests]/[Test booleans, matching]">
+    </testcase>
+    <testcase name="Test booleans, not matching" classname="Primitive Tests" time="0" displayname="Test booleans, not matching" id="[engine:testsuite-voltscript]/[Primitive Tests]/[Test booleans, not matching]">
+      <failure>Expected: true, but was: false
+      </failure>
+    </testcase>
+    <testcase name="Test number and string" classname="Primitive Tests" time="0" displayname="Test number and string" id="[engine:testsuite-voltscript]/[Primitive Tests]/[Test number and string]">
+    </testcase>
+    <testcase name="Test strings, matching" classname="Primitive Tests" time="0" displayname="Test strings, matching" id="[engine:testsuite-voltscript]/[Primitive Tests]/[Test strings, matching]">
+    </testcase>
+    <testcase name="Test strings, not matching" classname="Primitive Tests" time="0" displayname="Test strings, not matching" id="[engine:testsuite-voltscript]/[Primitive Tests]/[Test strings, not matching]">
+      <failure>Expected: foo but was: bar
+      </failure>
+    </testcase>
+    <testcase name="Missing assertion" classname="Primitive Tests" time="0" displayname="Missing assertion" id="[engine:testsuite-voltscript]/[Primitive Tests]/[Missing assertion]">
+      <failure>No assertion
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Complex Variants Tests" time="0" displayname="Complex Variants Tests" id="[engine:testsuite-voltscript]/[Complex Variants Tests]">
+    <testcase name="Test 1.0 = true" classname="Complex Variants Tests" time="0" displayname="Test 1.0 = true" id="[engine:testsuite-voltscript]/[Complex Variants Tests]/[Test 1.0 = true]">
+      <failure>Expected: 1, but was: -1
+      </failure>
+    </testcase>
+    <testcase name="Test 1 = true" classname="Complex Variants Tests" time="0" displayname="Test 1 = true" id="[engine:testsuite-voltscript]/[Complex Variants Tests]/[Test 1 = true]">
+      <failure>Expected: 1, but was: -1
+      </failure>
+    </testcase>
+    <testcase name="Test -1.0 = true" classname="Complex Variants Tests" time="0" displayname="Test -1.0 = true" id="[engine:testsuite-voltscript]/[Complex Variants Tests]/[Test -1.0 = true]">
+    </testcase>
+    <testcase name="Test -1 = true" classname="Complex Variants Tests" time="0" displayname="Test -1 = true" id="[engine:testsuite-voltscript]/[Complex Variants Tests]/[Test -1 = true]">
+    </testcase>
+    <testcase name="Test True = 1" classname="Complex Variants Tests" time="0" displayname="Test True = 1" id="[engine:testsuite-voltscript]/[Complex Variants Tests]/[Test True = 1]">
+    </testcase>
+    <testcase name="Test True = -1" classname="Complex Variants Tests" time="0" displayname="Test True = -1" id="[engine:testsuite-voltscript]/[Complex Variants Tests]/[Test True = -1]">
+    </testcase>
+    <testcase name="Test True = 2" classname="Complex Variants Tests" time="0" displayname="Test True = 2" id="[engine:testsuite-voltscript]/[Complex Variants Tests]/[Test True = 2]">
+    </testcase>
+    <testcase name="Test False = 0" classname="Complex Variants Tests" time="0" displayname="Test False = 0" id="[engine:testsuite-voltscript]/[Complex Variants Tests]/[Test False = 0]">
+    </testcase>
+    <testcase name="Test -1.0 = 'True'" classname="Complex Variants Tests" time="0" displayname="Test -1.0 = 'True'" id="[engine:testsuite-voltscript]/[Complex Variants Tests]/[Test -1.0 = 'True']">
+      <failure>Type mismatch between expected : -1 and actual: True
+      </failure>
+    </testcase>
+    <testcase name="Test 1.0 = 'Foo'" classname="Complex Variants Tests" time="0" displayname="Test 1.0 = 'Foo'" id="[engine:testsuite-voltscript]/[Complex Variants Tests]/[Test 1.0 = 'Foo']">
+      <failure>Type mismatch between expected : -1 and actual: Foo
+      </failure>
+    </testcase>
+    <testcase name="Test a is Double" classname="Complex Variants Tests" time="0" displayname="Test a is Double" id="[engine:testsuite-voltscript]/[Complex Variants Tests]/[Test a is Double]">
+    </testcase>
+    <testcase name="Test a is String" classname="Complex Variants Tests" time="0" displayname="Test a is String" id="[engine:testsuite-voltscript]/[Complex Variants Tests]/[Test a is String]">
+      <failure>Expected: STRING, but was: DOUBLE
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Variant Array Tests" time="0" displayname="Variant Array Tests" id="[engine:testsuite-voltscript]/[Variant Array Tests]">
+    <testcase name="Test array and not array" classname="Variant Array Tests" time="0" displayname="Test array and not array" id="[engine:testsuite-voltscript]/[Variant Array Tests]/[Test array and not array]">
+      <failure>Invalid array comparison - expected is  an array, actual is  not an array
+      </failure>
+    </testcase>
+    <testcase name="Test unequal array length" classname="Variant Array Tests" time="0" displayname="Test unequal array length" id="[engine:testsuite-voltscript]/[Variant Array Tests]/[Test unequal array length]">
+      <failure>Elements in arrays not equal, expected: 8, actual: 1
+      </failure>
+    </testcase>
+    <testcase name="Test equal arrays" classname="Variant Array Tests" time="0" displayname="Test equal arrays" id="[engine:testsuite-voltscript]/[Variant Array Tests]/[Test equal arrays]">
+    </testcase>
+    <testcase name="Test first element different" classname="Variant Array Tests" time="0" displayname="Test first element different" id="[engine:testsuite-voltscript]/[Variant Array Tests]/[Test first element different]">
+      <failure>Expected: [0 1 2 3 4 5 6 7], but was: [1 1 2 3 4 5 6 7]
+Error Element 1: Expected: 0, but was: 1(1400) on line 1335
+      </failure>
+    </testcase>
+    <testcase name="Test first and third elements different" classname="Variant Array Tests" time="0" displayname="Test first and third elements different" id="[engine:testsuite-voltscript]/[Variant Array Tests]/[Test first and third elements different]">
+      <failure>Expected: [0 1 2 3 4 5 6 7], but was: [1 1 1 3 4 5 6 7]
+Error Element 1: Expected: 0, but was: 1(1400) on line 1335
+Error Element 3: Expected: 2, but was: 1(1400) on line 1335
+      </failure>
+    </testcase>
+    <testcase name="Test lots of elements different" classname="Variant Array Tests" time="0" displayname="Test lots of elements different" id="[engine:testsuite-voltscript]/[Variant Array Tests]/[Test lots of elements different]">
+      <failure>Expected: [0 1 2 3 4 5 6 7], but was: [1 1 1 1 1 1 1 1]
+Error Element 1: Expected: 0, but was: 1(1400) on line 1335
+Error Element 3: Expected: 2, but was: 1(1400) on line 1335
+Error Element 4: Expected: 3, but was: 1(1400) on line 1335
+Error Element 5: Expected: 4, but was: 1(1400) on line 1335
+Error Element 6: Expected: 5, but was: 1(1400) on line 1335
+...and others
+      </failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Not Equal" time="0" displayname="Not Equal" id="[engine:testsuite-voltscript]/[Not Equal]">
+    <testcase name="Test foo not equal to bar" classname="Not Equal" time="0" displayname="Test foo not equal to bar" id="[engine:testsuite-voltscript]/[Not Equal]/[Test foo not equal to bar]">
+    </testcase>
+    <testcase name="Test foo not equal to foo" classname="Not Equal" time="0" displayname="Test foo not equal to foo" id="[engine:testsuite-voltscript]/[Not Equal]/[Test foo not equal to foo]">
+      <failure>Expected: Foo matches actual: Foo
+      </failure>
+    </testcase>
+    <testcase name="Test 1 not equal to 2" classname="Not Equal" time="0" displayname="Test 1 not equal to 2" id="[engine:testsuite-voltscript]/[Not Equal]/[Test 1 not equal to 2]">
+    </testcase>
+    <testcase name="Test 1 not equal to 1" classname="Not Equal" time="0" displayname="Test 1 not equal to 1" id="[engine:testsuite-voltscript]/[Not Equal]/[Test 1 not equal to 1]">
+      <failure>Expected: 1 matches actual: 1
+      </failure>
+    </testcase>
+    <testcase name="Test 1 not equal to 2_1" classname="Not Equal" time="0" displayname="Test 1 not equal to 2_1" id="[engine:testsuite-voltscript]/[Not Equal]/[Test 1 not equal to 2_1]">
+    </testcase>
+    <testcase name="Test 1 not equal to 1_1" classname="Not Equal" time="0" displayname="Test 1 not equal to 1_1" id="[engine:testsuite-voltscript]/[Not Equal]/[Test 1 not equal to 1_1]">
+      <failure>Expected: 1 matches actual: 1
+      </failure>
+    </testcase>
+    <testcase name="Test integers, not equal" classname="Not Equal" time="0" displayname="Test integers, not equal" id="[engine:testsuite-voltscript]/[Not Equal]/[Test integers, not equal]">
+    </testcase>
+    <testcase name="Test integers, not equal fails" classname="Not Equal" time="0" displayname="Test integers, not equal fails" id="[engine:testsuite-voltscript]/[Not Equal]/[Test integers, not equal fails]">
+      <failure>Expected: 1 matches actual: 1
+      </failure>
+    </testcase>
+    <testcase name="Test doubles, not equal" classname="Not Equal" time="0" displayname="Test doubles, not equal" id="[engine:testsuite-voltscript]/[Not Equal]/[Test doubles, not equal]">
+    </testcase>
+    <testcase name="Test doubles, not equal fails" classname="Not Equal" time="0" displayname="Test doubles, not equal fails" id="[engine:testsuite-voltscript]/[Not Equal]/[Test doubles, not equal fails]">
+      <failure>Expected: 2.5 matches actual: 2.5
+      </failure>
+    </testcase>
+    <testcase name="Test singles, not equal" classname="Not Equal" time="0" displayname="Test singles, not equal" id="[engine:testsuite-voltscript]/[Not Equal]/[Test singles, not equal]">
+    </testcase>
+    <testcase name="Test singles, not equal fails" classname="Not Equal" time="0" displayname="Test singles, not equal fails" id="[engine:testsuite-voltscript]/[Not Equal]/[Test singles, not equal fails]">
+      <failure>Expected: 6.02E+23 matches actual: 6.02E+23
+      </failure>
+    </testcase>
+    <testcase name="Test longs, not equal" classname="Not Equal" time="0" displayname="Test longs, not equal" id="[engine:testsuite-voltscript]/[Not Equal]/[Test longs, not equal]">
+    </testcase>
+    <testcase name="Test longs, not equal fails" classname="Not Equal" time="0" displayname="Test longs, not equal fails" id="[engine:testsuite-voltscript]/[Not Equal]/[Test longs, not equal fails]">
+      <failure>Expected: 2094070921 matches actual: 2094070921
+      </failure>
+    </testcase>
+    <testcase name="Test numeric, not equal" classname="Not Equal" time="0" displayname="Test numeric, not equal" id="[engine:testsuite-voltscript]/[Not Equal]/[Test numeric, not equal]">
+    </testcase>
+    <testcase name="Test numeric, not equal fails" classname="Not Equal" time="0" displayname="Test numeric, not equal fails" id="[engine:testsuite-voltscript]/[Not Equal]/[Test numeric, not equal fails]">
+      <failure>Expected: 1 matches actual: 1
+      </failure>
+    </testcase>
+    <testcase name="Test a is not Integer" classname="Not Equal" time="0" displayname="Test a is not Integer" id="[engine:testsuite-voltscript]/[Not Equal]/[Test a is not Integer]">
+      <failure>Expected: INTEGER matches actual: INTEGER
+      </failure>
+    </testcase>
+    <testcase name="Test a is not String" classname="Not Equal" time="0" displayname="Test a is not String" id="[engine:testsuite-voltscript]/[Not Equal]/[Test a is not String]">
+    </testcase>
+    <testcase name="Test primitive not matches" classname="Not Equal" time="0" displayname="Test primitive not matches" id="[engine:testsuite-voltscript]/[Not Equal]/[Test primitive not matches]">
+    </testcase>
+    <testcase name="Test primitive not matches fails" classname="Not Equal" time="0" displayname="Test primitive not matches fails" id="[engine:testsuite-voltscript]/[Not Equal]/[Test primitive not matches fails]">
+      <failure>Expected: 1 matches actual: 1
+      </failure>
+    </testcase>
+    <testcase name="Test primitive not matches array" classname="Not Equal" time="0" displayname="Test primitive not matches array" id="[engine:testsuite-voltscript]/[Not Equal]/[Test primitive not matches array]">
+    </testcase>
+    <testcase name="Test array not matches" classname="Not Equal" time="0" displayname="Test array not matches" id="[engine:testsuite-voltscript]/[Not Equal]/[Test array not matches]">
+    </testcase>
+    <testcase name="Test array not matches fails" classname="Not Equal" time="0" displayname="Test array not matches fails" id="[engine:testsuite-voltscript]/[Not Equal]/[Test array not matches fails]">
+      <failure>Expected: [0,1,2] matches actual: [0,1,2]
+      </failure>
+    </testcase>
+    <testcase name="Test primitive integer and string" classname="Not Equal" time="0" displayname="Test primitive integer and string" id="[engine:testsuite-voltscript]/[Not Equal]/[Test primitive integer and string]">
+    </testcase>
+  </testsuite>
+</testrun>

@@ -1,0 +1,5 @@
+# Where to Write Your Tests
+
+In experience, test suites are best written as functions in the same script as the functions they are testing. Typically we locate these at the end of the script, for clearer separation. Including the functions in the same script they are testing allows use of private variables e.g. to mock actual objects, route logic differently, write errors elsewhere etc.
+
+A separate unit test / integration script can be used to trigger the test functions. This typically handles errors internally to ensure all test suites are run. But if a test suite fails, an error is bubbled up to the runtime, with sufficient information to identify which test or tests failed. When tests are run from CI/CD, this ensures the VoltScript Runtime process exits with an error, which notifies CI/CD that that the build should be aborted.

@@ -1,16 +1,16 @@
-# Bali Unit Testing Framework
+# VoltScript Testing Framework
 
-Bali Unit Testing Framework is a framework for testing code written using VoltScript, the evolution of LotusScript delivered as part of HCL Volt MX Go. The framework can also be used for LotusScript, with modifications (see below on new language functions used). There are deliberately no dependencies on any LSXs (e.g nlsxbe.dll). None should be added, it will make it dependent on a particular implementation. Create separate classes derived from BaliCustomTester to test individual LSXs or custom classes.
+VoltScript Testing Framework is a framework for testing code written using VoltScript, the evolution of LotusScript delivered as part of HCL Volt MX Go. The framework can also be used for LotusScript, with modifications (see below on new language functions used). There are deliberately no dependencies on any LSXs (e.g nlsxbe.dll). None should be added, it will make it dependent on a particular implementation. Create separate classes derived from CustomTester to test individual LSXs or custom classes.
 
-## Writing BaliUnit Tests
+## Writing VoltScript Tests
 
-See [Writing Units Tests](/docs/Writing-Unit-Tests/index.md).
+See [Writing Units Tests](/docs/howto/writingtests.md).
 
 ## Core Functions Used
 
-Obviously the code runs certain core language functions. These are documented in [Core Functions](/docs/CoreFunctions.md).
+Obviously the code runs certain core language functions. These are documented in [Core Functions](/docs/references/CoreFunctions.md).
 
-There are three new VoltScript language functions used - Try/Catch/Finally and GetThreadInfo(12) in BaliTestRunner.bss and ++/-- in SampleBeforeAfterTester.bss.
+There are three new VoltScript language functions used - Try/Catch/Finally and GetThreadInfo(12) in TestRunner.bss and ++/-- in SampleBeforeAfterTester.bss.
 
 ### Documentation
 

@@ -1,5 +1,5 @@
 %REM
-	Copyright 2022 Paul Withers
+	Copyright 2022-2023 HCL America, Inc.
 	Licensed under the Apache License, Version 2.0 (the "License"); 
 	you may not use this file except in compliance with the License. 
 	You may obtain a copy of the License at
@@ -13,12 +13,12 @@
 %END REM
 %REM
 	Agent BasicTester
-	Created Mar 14, 2022 by Paul Withers/UK/PNPHCL
-	Description: Tests core functionality of a TestSuite, no custom tester, no before/after code
+	Created Mar 14, 2022 by Paul Withers
+	Description: Tests core functionality of a VoltScript Testing Framework, no custom tester, no before/after code
 %END REM
 Option Public
 Option Declare
-Use "../src/VoltScriptTesting"
+Use "VoltScriptTesting"
 Sub Initialize
 	
 	Dim runner As TestRunner
@@ -36,7 +36,6 @@ Sub Initialize
 	Call testNotEqual(runner)
 	
 End Sub
-
 %REM
 	testPrimitive
 	Runs tests for all primitive types against assertEqualsPrimitive
@@ -67,12 +66,8 @@ Sub testPrimitives(runner As TestRunner)
 	Call testSuite.describe(|Test booleans, matching|).assertEqualsPrimitive(e, True)
 	Call testSuite.describe(|Test booleans, not matching|).assertEqualsPrimitive(e, False)
 	
-	Call testSuite.describe(|Test number and string|).assertEqualsPrimitive(1, |1|)
-
 	Call testSuite.describe(|Test strings, matching|).assertEqualsPrimitive(|foo|, |foo|)
 	Call testSuite.describe(|Test strings, not matching|).assertEqualsPrimitive(|foo|, |bar|)
-
-	Call testSuite.describe(|Missing assertion|)
 			
 End Sub
 %REM
@@ -118,16 +113,6 @@ Sub testNumbers(runner As TestRunner)
 	Call testSuite.describe(|Test numeric, not matching|).assertEqualsNumeric(a, b)
 	b = 1.0
 	Call testSuite.describe(|Test numeric, matching|).assertEqualsNumeric(a, b)
-
-	Call testSuite.describe(|Test between|).assertIsBetween(1, 5, 1)
-	Call testSuite.describe(|Test not between - less|).assertIsBetween(1, 5, 0)
-	Call testSuite.describe(|Test not between - more|).assertIsBetween(1, 5, 8)
-
-	Call testSuite.describe(|Test greater than|).assertIsGreaterThan(1, 5)
-	Call testSuite.describe(|Test greater than - less|).assertIsGreaterThan(1, 0)
-
-	Call testSuite.describe(|Test less than|).assertIsLessThan(1, 0)
-	Call testSuite.describe(|Test less than - more|).assertIsLessThan(1, 5)
 	
 End Sub
 %REM
@@ -217,7 +202,7 @@ Sub testVariants(runner As TestRunner)
 End Sub
 %REM
 	Sub testBooleansAndStrings
-	Description: Tests TestSuite against booleans and strings
+	Description: Tests against booleans and strings
 %END REM
 Sub testBooleansAndStrings(runner As TestRunner)
 	Dim testSuite As New TestSuite(|Boolean and String Tests|)
@@ -300,6 +285,5 @@ Sub testNotEqual(runner As TestRunner)
 	Call testSuite.describe(|Test primitive not matches array|).assertNotEqualPrimitiveOrPrimitiveArray(e, f)
 	Call testSuite.describe(|Test array not matches|).assertNotEqualPrimitiveOrPrimitiveArray(f, g)
 	Call testSuite.describe(|Test array not matches fails|).assertNotEqualPrimitiveOrPrimitiveArray(f, f)
-	Call testSuite.describe(|Test primitive integer and string|).assertNotEqualPrimitiveOrPrimitiveArray(e, "1")
-
+	
 End Sub
