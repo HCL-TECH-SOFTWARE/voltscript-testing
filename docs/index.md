@@ -2,17 +2,21 @@
 hide:
     - navigation
 ---
-# VoltScript Testing Framework
+# Welcome to VoltScript Testing Framework documentation
 
 VoltScript Testing Framework is a framework for testing code written using VoltScript, the evolution of LotusScript delivered as part of HCL Volt MX Go. The framework can also be used for LotusScript, with modifications (see below on new language functions used).
 
 There are deliberately no dependencies on any LotusScript Extensions (LSX, e.g nlsxbe.dll). None should be added, it will make it dependent on a particular implementation.
 
-## Navigating Our Site
+---
+## How the documentation is organized
 
-The documentation is organised according to the Diátaxis framework into distinct areas:
+The Volt MX Go documentation is based on the [Diátaxis framework](https://diataxis.fr/){: target="_blank"}, which organizes documentation into the following modes to address users' documentation needs at different times and in different circumstances. Below shows an overview that guides you on where to look for needed information:
 
-- **Tutorials** contains practical tutorials into how to use VoltScroipt JSON Converter.
-- **How-To Guides** covers how to achieve certain outcomes.
-- **Topic Guides** help give an understanding of key concepts in VoltScript JSON Converter.
-- **References** contain API documentation and test reports.
+**[Tutorials](tutorials/index.md)** - Hands-on introduction on how to use VoltScript JSON Converter
+
+**[How-to guides](howto/index.md)** - Practical step-by-step guides for performing tasks and operation
+
+**[Topic guides](topicguides/index.md)** - High-level discussion and explanation of key topics and concepts in VoltScript JSON Converter
+
+**[References](references/index.md)** - Contain API documentation and test reports
