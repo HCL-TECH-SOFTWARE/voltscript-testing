@@ -1,4 +1,4 @@
-# How to Write a Standalone TestSuite
+# Write a standalone test suite
 
 [SimpleBeforeAfterTester](./BeforeAfterTester.md) uses this approach.
 

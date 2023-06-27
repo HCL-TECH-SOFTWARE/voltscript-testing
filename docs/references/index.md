@@ -6,8 +6,8 @@
 
 ## Repository Structure
 
-- All the required code itself is in **src/VoltScriptTesting.bss**.
-- Tests are in **test** directory. Output will be written to unit-test-reports directory.
+- All the required code itself is in `src/VoltScriptTesting.bss`.
+- Tests are in **test** directory. Output are written to unit-test-reports directory.
 - A starter for writing your own tests is in [assets/example_code/TestBootstrap.bss](../assets/example_code/TestBootstrap.bss).
 
 ## API Documentation
@@ -26,4 +26,4 @@
 - [Basic Tester](../assets/example_code/BasicTester.txt){: target="_new"}
 - [SampleBeforeAfterTester](../assets/example_code/SampleBeforeAfterTester.txt){: target="_new"}
 - [SampleCustomTester](../assets/example_code/SampleCustomTester.txt){: target="_new"}
-- [TestBootstrap](../assets/example_code/TestBootstrap.txt"){: target="_new"}
+- [TestBootstrap](../assets/example_code/TestBootstrap.txt){: target="_new"}

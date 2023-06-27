@@ -1,4 +1,4 @@
-# How to Write a Custom Tester
+# Write a custom tester
 
 ## Custom Class
 

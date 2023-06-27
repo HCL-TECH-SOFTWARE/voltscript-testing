@@ -1,4 +1,4 @@
-# How to Aggregate Test Suites
+# Aggregate test suites
 
 There are two hierarchies:
 

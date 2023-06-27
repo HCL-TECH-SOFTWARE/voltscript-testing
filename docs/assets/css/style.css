@@ -21,12 +21,13 @@ pre {
       background-color: #eeeeee;
     }
     header {
-      background-color: #000000;
+      background-color: #4051b5;
     }
     footer {
       background-color: #000000;
     }
-    .md-search__inner {
+    
+    /*.md-search__inner {
       background-color: #1d2123;
     }
   
@@ -38,7 +39,7 @@ pre {
     }
     .md-header {
       background-color: #000000;
-    }
+    }*/
     @font-face {
       font-family: 'HCLTech Roobert';
       src: url(../font/HCLTechRoobert-Regular.otf);

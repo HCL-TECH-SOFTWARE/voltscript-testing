@@ -1,3 +1,4 @@
 nav:
-    - "Aims for the Framework": aims.md
+    - index.md
+    - aims.md
     - approach.md

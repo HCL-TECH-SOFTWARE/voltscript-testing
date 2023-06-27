@@ -1,4 +1,4 @@
-# How to Use VoltScript Testing Framework for Validation
+# Use VoltScript Testing Framework for validation
 
 Imagine we have the following class:
 

@@ -1,4 +1,4 @@
-# How to Write Tests
+# Write tests
 
 ## Creating a Test
 

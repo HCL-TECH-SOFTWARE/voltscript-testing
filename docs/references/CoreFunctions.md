@@ -1,12 +1,12 @@
-# Core Language Functions Used
+# Core language functions used
 
-Core Functions in VoltScriptTesting.bss
+Core Functions in `VoltScriptTesting.bss`
 
 `%REM` and `%END REM` are used throughout. `'` for a single-line comment is also used.
 
-When listing keywords, sub/function names where the keyword is used are in brackets. Sub/function location is not used for common functions, datatypes or As.
+When listing keywords, sub/function names where the keyword is used are in brackets. Sub/function location is not used for common functions, datatypes, or As.
 
-In Declarations the following language keywords are used:
+In Declarations, the following language keywords are used:
 
 - Type
 - End Type

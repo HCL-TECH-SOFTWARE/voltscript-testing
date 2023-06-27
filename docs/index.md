@@ -4,9 +4,9 @@ hide:
 ---
 # Welcome to VoltScript Testing Framework documentation
 
-VoltScript Testing Framework is a framework for testing code written using VoltScript, the evolution of LotusScript delivered as part of HCL Volt MX Go. The framework can also be used for LotusScript, with modifications (see below on new language functions used).
+VoltScript Testing Framework is a framework for testing code written using VoltScript, the evolution of LotusScript, delivered as part of HCL Volt MX Go. The framework can be used for LotusScript with modifications.
 
-There are deliberately no dependencies on any LotusScript Extensions (LSX, e.g nlsxbe.dll). None should be added, it will make it dependent on a particular implementation.
+There are no dependencies on any LotusScript Extensions (LSX), such as `nlsxbe.dll`. None should be added. It makes it dependent on a particular implementation.
 
 ---
 ## How the documentation is organized
