@@ -1,4 +1,4 @@
-# Aims for the Framework
+# Aims for VoltScript Testing
 
 - Make it easy to write terse, clear, readable tests.
 - Support unit testing and integration testing.
