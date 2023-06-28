@@ -16,21 +16,21 @@ Lists and describes [core language functions](CoreFunctions.md) used in VoltScri
 
 ## API documentation
 
-- [VoltScript Testing Framework Class Documentation](./apidocs/index.html){: target="_new"}
+- [VoltScript Testing Framework Class Documentation](./apidocs/index.html){: target="_new" rel="noopener noreferrer”}
 
 ## Unit test output
 
-- [Basic Tester](./unit-test-reports/BasicTester/index.html){: target="_new"}
-- [Basic Tester XML output](./unit-test-reports/BasicTester/BasicTester.xml){: target="_new"}
-- [Custom Before/After Tester](./unit-test-reports/CustomBeforeAfterTester.html){: target="_new"}
-- [DateTime Tester](./unit-test-reports/DateTimeTests.html){: target="_new"}
+- [Basic Tester](./unit-test-reports/BasicTester/index.html){: target="_new" rel="noopener noreferrer”}
+- [Basic Tester XML output](./unit-test-reports/BasicTester/BasicTester.xml){: target="_new" rel="noopener noreferrer”}
+- [Custom Before/After Tester](./unit-test-reports/CustomBeforeAfterTester.html){: target="_new" rel="noopener noreferrer”}
+- [DateTime Tester](./unit-test-reports/DateTimeTests.html){: target="_new" rel="noopener noreferrer”}
 
 ## Unit tests
 
-- [Basic Tester](../assets/example_code/BasicTester.txt){: target="_new"}
-- [SampleBeforeAfterTester](../assets/example_code/SampleBeforeAfterTester.txt){: target="_new"}
-- [SampleCustomTester](../assets/example_code/SampleCustomTester.txt){: target="_new"}
-- [TestBootstrap](../assets/example_code/TestBootstrap.txt){: target="_new"}
+- [Basic Tester](../assets/example_code/BasicTester.txt){: target="_new" rel="noopener noreferrer”}
+- [SampleBeforeAfterTester](../assets/example_code/SampleBeforeAfterTester.txt){: target="_new" rel="noopener noreferrer”}
+- [SampleCustomTester](../assets/example_code/SampleCustomTester.txt){: target="_new" rel="noopener noreferrer”}
+- [TestBootstrap](../assets/example_code/TestBootstrap.txt){: target="_new" rel="noopener noreferrer”}
 
 ## FAQs
 

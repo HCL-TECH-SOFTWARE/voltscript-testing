@@ -1,4 +1,4 @@
-# Use VoltScript Testing Framework for validation
+# Use VoltScript Testing for validation
 
 Imagine we have the following class:
 
@@ -16,7 +16,7 @@ End Class
 
 We may want to validate that a Person has been set up correctly, because properties are not set and validated during the constructor.
 
-## Setting up Person
+## Set up Person
 
 ```vbscript
 Dim person as New Person()
@@ -27,7 +27,7 @@ person.age = 42
 
 We will create the Person and set property values, ready for validation. In reality, this might be a JSON object received or a VoltScript object pre-populated outside the script that wants to validate it.
 
-## Test Code
+## Test code
 
 ```vbscript linenums="1"
 Dim testSuite as New TestSuite("Validator")
@@ -43,7 +43,7 @@ We need to pass a name to the TestSuite in line 1, even though it's not being us
 
 In lines 3 - 8 we run the tests. Age is an integer, so could potentially be a negative integer, or much bigger than the age a person could be.
 
-## Checking The Validation Ran
+## Check the validation run
 
 ```vbscript linenums="1"
 If testSuite.ranSuccessfully() Then
