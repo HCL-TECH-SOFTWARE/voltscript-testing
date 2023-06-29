@@ -1,2 +1,3 @@
 nav:
-    - Simple Unit Test: 1-simple.md
+    - index.md
+    - Create a TestRunner: 1-simple.md

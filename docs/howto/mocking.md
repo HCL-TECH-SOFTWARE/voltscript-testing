@@ -1,4 +1,4 @@
-## How to Mock Calls
+# Mock calls
 
 Unlike other frameworks, the language engine does not permit bypassing API calls during testing. As a result, code may need to be [restructured to be testable](./untestable-to-testable.md). This is not completely unique to VoltScript. In other languages there are also cases where it is better to [refactor code to be more testable](https://www.baeldung.com/mockito-mock-static-methods#a-quick-word-on-testing-static-methods){: target="_new"}.
 

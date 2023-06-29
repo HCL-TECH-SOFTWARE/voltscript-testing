@@ -1,11 +1,11 @@
-site_name: VoltScript Testing Framework
+site_name: VoltScript Testing 
 site_url: https://github.com/pages/HCL_TECH_SOFTWARE/voltscript-testing/
 site_description: >-
   VoltScript Testing Framework: Unit and Integration Testing framework for VoltScript
 # Theme Configuration
 theme:
   name: material
-  logo: 
+  logo: assets/images/VoltMXGoLogo.png
   language: en
   features:
     - navigation.indexes
@@ -20,10 +20,10 @@ theme:
   #custom_dir: theme_overrides/
   icon:
     repo: fontawesome/brands/github
-  font:
-    text: Roboto
-    code: Roboto Mono
-  favicon: favicon.ico
+  font: false
+  #  text: Roboto
+  #  code: Roboto Mono
+  favicon: assets/images/favicon.png
   palette:
     - scheme: default
       primary: indigo
@@ -58,6 +58,8 @@ markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
+  - toc:
+     title: On this page
 
 # Copyright
 copyright: >-
@@ -85,8 +87,15 @@ repo_name: HCL-TECH-SOFTWARE/voltscript-testing
 edit_uri: edit/main/docs
 
 use_directory_urls: false
+
+# Customization
+extra_css:
+  - ../assets/css/style.css
+
 plugins:
   - awesome-pages
   - search
   - tags
   - section-index
+  - git-revision-date-localized:
+      type: date

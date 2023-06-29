@@ -1,4 +1,4 @@
-# How to Change Functions to be Testable
+# Change functions to be testable
 
 Functions may need to be changed or written differently. It's easy to convert an example on a [blog post about writing testable code](https://www.toptal.com/qa/how-to-write-testable-code-and-why-it-matters){: target="_new"} for VoltScript. Imagine the following function:
 

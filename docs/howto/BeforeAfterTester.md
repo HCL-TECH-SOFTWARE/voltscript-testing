@@ -1,4 +1,4 @@
-# How to Write Code to BeforeAll, BeforeEach etc
+# Write code to BeforeAll, BeforeEach etc
 
 The full code can be found in [SampleBeforeAfterTester](../assets/example_code/SampleBeforeAfterTester.txt).
 

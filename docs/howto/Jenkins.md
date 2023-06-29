@@ -1,4 +1,4 @@
-# How to Integrate with CI/CD
+# Integrate with CI/CD
 
 If the test is set to output an XML file, this can be automatically picked up by your CI/CD environment, e.g. Jenkins. This needs to be set on the highest level of the hierarchy, changing the output format.
 
