@@ -37,7 +37,7 @@ The tutorial guides you in creating a TestRunner with two TestSuites and outputs
     Call testSuite2.describe("Test x less than 0").assertIsLessThan(0, x)
     ```
     
-    !!!info "Code explanation"
+    !!!question "What does the code mean?"
 
         Line 1 creates a TestRunner to hold the tests. Lines 2 and 3 create two test suites.
         Line 6 adds the first TestSuite to the test runner. The following lines add tests. 

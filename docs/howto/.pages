@@ -9,3 +9,4 @@ nav:
     - Write a custom tester: customtester.md
     - validation.md
     - untestable-to-testable.md
+    - Know where to write your tests: location.md

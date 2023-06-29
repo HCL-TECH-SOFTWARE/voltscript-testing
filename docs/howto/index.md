@@ -11,3 +11,4 @@ How-to guides instruct users in completing key goals and tasks related to VoltSc
 - [Write a custom tester](customtester.md)
 - [Use VoltScript Testing for validation](validation.md)
 - [Change functions to be testable](untestable-to-testable.md)
+- [Know where to write your tests](location.md)

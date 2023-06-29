@@ -1,4 +1,4 @@
-# Where to write your tests
+# Know where to write your tests
 
 Test suites are best written as functions in the same script as the functions they're testing. Typically, they're located at the end of the script for clearer separation. Including the functions in the same script they're testing allows use of private variables, such as to mock actual objects, route logic differently, and write errors elsewhere.
 
