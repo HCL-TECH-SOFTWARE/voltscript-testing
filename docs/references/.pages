@@ -1,4 +1,6 @@
 nav:
     - index.md
+    - whatsnew.md
     - CoreFunctions.md
+    - API documentation: ./references/apidocs/index.html
     - FAQs.md

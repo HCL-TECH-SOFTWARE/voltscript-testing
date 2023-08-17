@@ -2,10 +2,9 @@
 
 References provide technical references and descriptions for using VoltScript Testing.
 
+## What's new
 
-!!! note
-
-    The sample unit test output includes errors. These are not unit tests for the unit testing framework, they are samples to show the full range of output options, including failing tests, missing assertions etc.
+Check the [latest information](whatsnew.md) about VoltScript Testing.
 
 ## Repository structure
 
@@ -23,6 +22,10 @@ Lists and describes [core language functions](CoreFunctions.md) used in VoltScri
 
 ## Unit test output
 
+!!! note
+
+    The sample unit test output includes errors. These are not unit tests for the unit testing framework, they are samples to show the full range of output options, including failing tests, missing assertions etc.
+
 - [Basic Tester](./unit-test-reports/BasicTester/index.html){: target="_new" rel="noopener noreferrer”}
 - [Basic Tester XML output](./unit-test-reports/BasicTester/BasicTester.xml){: target="_new" rel="noopener noreferrer”}
 - [Custom Before/After Tester](./unit-test-reports/CustomBeforeAfterTester.html){: target="_new" rel="noopener noreferrer”}
@@ -38,3 +41,24 @@ Lists and describes [core language functions](CoreFunctions.md) used in VoltScri
 ## FAQs
 
 List of [frequently asked questions](FAQs.md) related to VoltScript Testing.  
+
+## Documentation and source code
+
+- [HCL Volt MX Go Documentation](https://opensource.hcltechsw.com/voltmxgo-documentation/index.html){: target="blank"}
+- VoltScript
+    - Documentation
+    - Source code 
+- VoltScript Collections
+    - [Documentation](https://opensource.hcltechsw.com/voltscript-collections){: target="blank"}
+    - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-collections){: target="blank"}
+- VoltScript JSON Converter
+    - [Documentation](https://opensource.hcltechsw.com/voltscript-json-converter){: target="blank"}
+    - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-json-converter){: target="blank"}
+- VoltScript Console Colors
+    - [Documentation](https://opensource.hcltechsw.com/voltscript-console-colors){: target="blank"}
+    - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-console-colors){: target="blank"}
+
+
+## Support
+
+To share information, ask questions, and learn about VoltScript Testing, go to the [Community](https://support.hcltechsw.com/community?id=community_forum&sys_id=999cdacbdb82ed9055f38d6d13961961){: target="blank"}.
