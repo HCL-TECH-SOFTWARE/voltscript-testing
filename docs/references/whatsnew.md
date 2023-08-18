@@ -2,6 +2,10 @@
 
 The section provides information on the latest features, improvements, and resolved issues related to VoltScript Testing.
 
-## Early Access v1
+## v1.1.0
 
-- First release of the early access version of VoltScript Testing.
+- Changed naming instances of *Bali Unit* to *VoltScript*, and removed *Bali* references. 
+
+## v1.0.0
+
+- First release version of VoltScript Testing.
