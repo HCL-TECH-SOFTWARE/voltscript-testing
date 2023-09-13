@@ -2,6 +2,7 @@ site_name: VoltScript Testing
 site_url: https://github.com/pages/HCL_TECH_SOFTWARE/voltscript-testing/
 site_description: >-
   VoltScript Testing Framework: Unit and Integration Testing framework for VoltScript
+use_directory_urls: false
 # Theme Configuration
 theme:
   name: material
