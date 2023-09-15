@@ -47,18 +47,17 @@ List of [frequently asked questions](FAQs.md) related to VoltScript Testing.
 - [HCL Volt MX Go Documentation](https://opensource.hcltechsw.com/voltmxgo-documentation/index.html){: target="blank"}
 - VoltScript
     - Documentation
-    - Source code 
 - VoltScript Collections
-    - [Documentation](https://opensource.hcltechsw.com/voltscript-collections){: target="blank"}
-    - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-collections){: target="blank"}
+    - [Documentation](https://opensource.hcltechsw.com/voltscript-collections){: target="_blank" rel="noopener noreferrer"}
+    - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-collections){: target="_blank" rel="noopener noreferrer"}
 - VoltScript JSON Converter
-    - [Documentation](https://opensource.hcltechsw.com/voltscript-json-converter){: target="blank"}
-    - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-json-converter){: target="blank"}
+    - [Documentation](https://opensource.hcltechsw.com/voltscript-json-converter){: target="_blank" rel="noopener noreferrer"}
+    - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-json-converter){: target="_blank" rel="noopener noreferrer"}
 - VoltScript Console Colors
-    - [Documentation](https://opensource.hcltechsw.com/voltscript-console-colors){: target="blank"}
-    - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-console-colors){: target="blank"}
+    - [Documentation](https://opensource.hcltechsw.com/voltscript-console-colors){: target="_blank" rel="noopener noreferrer"}
+    - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-console-colors){: target="_blank" rel="noopener noreferrer"}
 
 
 ## Support
 
-To share information, ask questions, and learn about VoltScript Testing, go to the [Community](https://support.hcltechsw.com/community?id=community_forum&sys_id=999cdacbdb82ed9055f38d6d13961961){: target="blank"}.
+To share information, ask questions, and learn about VoltScript Testing, go to the [Community](https://support.hcltechsw.com/community?id=community_forum&sys_id=999cdacbdb82ed9055f38d6d13961961){: target="_blank" rel="noopener noreferrer"}.
