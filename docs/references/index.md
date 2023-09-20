@@ -46,7 +46,7 @@ List of [frequently asked questions](FAQs.md) related to VoltScript Testing.
 
 - [HCL Volt MX Go Documentation](https://opensource.hcltechsw.com/voltmxgo-documentation/index.html){: target="blank"}
 - VoltScript
-    - Documentation
+    - [Documentation](https://help.hcltechsw.com/docs/voltscript/early-access/index.html){: target="_blank" rel="noopener noreferrer"}
 - VoltScript Collections
     - [Documentation](https://opensource.hcltechsw.com/voltscript-collections){: target="_blank" rel="noopener noreferrer"}
     - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-collections){: target="_blank" rel="noopener noreferrer"}
@@ -54,7 +54,6 @@ List of [frequently asked questions](FAQs.md) related to VoltScript Testing.
     - [Documentation](https://opensource.hcltechsw.com/voltscript-json-converter){: target="_blank" rel="noopener noreferrer"}
     - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-json-converter){: target="_blank" rel="noopener noreferrer"}
 - VoltScript Console Colors
-    - [Documentation](https://opensource.hcltechsw.com/voltscript-console-colors){: target="_blank" rel="noopener noreferrer"}
     - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-console-colors){: target="_blank" rel="noopener noreferrer"}
 
 
