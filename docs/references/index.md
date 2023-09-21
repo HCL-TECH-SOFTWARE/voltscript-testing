@@ -8,9 +8,13 @@ Check the [latest information](whatsnew.md) about VoltScript Testing.
 
 ## Repository structure
 
-- All the required code itself is in `src/VoltScriptTesting.bss`.
+- All the required code itself is in `src/VoltScriptTesting.vss`.
 - Tests are in **test** directory. Output are written to unit-test-reports directory.
-- A starter for writing your own tests is in [assets/example_code/TestBootstrap.bss](../assets/example_code/TestBootstrap.bss).
+- A starter for writing your own tests is in [assets/example_code/TestBootstrap.vss](../assets/example_code/TestBootstrap.vss).
+
+## Dependency Management
+
+For using VoltScript Testing Framework via VoltScript Build Manager extension in Visual Studio Code, follow the instruction on the [how-to guide](../howto/archipelago.md).
 
 ## Core language functions
 

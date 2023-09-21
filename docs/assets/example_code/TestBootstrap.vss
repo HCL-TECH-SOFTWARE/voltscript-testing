@@ -19,7 +19,7 @@
 %END REM
 Option Public
 Option Declare
-Use "VoltScriptTesting"
+Use "../libs/VoltScriptTesting"
 Sub Initialize
 	Dim testRunner As TestRunner
 	Dim results As Integer

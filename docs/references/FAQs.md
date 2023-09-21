@@ -2,7 +2,7 @@
 
 ## Where do I find the output?
 
-The output, by default, is in a `unit-test-reports` directory defined by the `BASE_REPORT_LOC` constant in `TestRunner.bss`. The directory is under the directory of the program running the tests.
+The output, by default, is in a `unit-test-reports` directory defined by the `BASE_REPORT_LOC` constant in `TestRunner.vss`. The directory is under the directory of the program running the tests.
 
 ## How do I change the output directory?
 

@@ -7,13 +7,13 @@ The tutorial guides you in creating a TestRunner with two TestSuites and outputs
 
 ## To create a TestRunner
 
-1. Add the `VoltScriptTesting.bss` script to your project directory. 
+1. Add the `VoltScriptTesting.vss` script to your project directory - the recommended method is to use [dependency management](../howto/archipelago.md). 
 
     !!!tip
-        The best practice structure for the project directory is the `src` directory for main runnable scripts, `libs` directory for VoltScript dependencies, and `test` for unit and integration test runnable scripts. In this structure, `VoltScripttesting.bss` would go into `libs`.
+        The best practice structure for the project directory is the `src` directory for main runnable scripts, `libs` directory for VoltScript dependencies, and `test` for unit and integration test runnable scripts. In this structure, `VoltScripttesting.vss` would go into `libs`.
 
-2. Create a .bss script file in `test`.
-3. Add `Use "../libs/VoltScriptTesting"` at the top. This navigates up a directory, across to the `libs` directory and down to the `VoltScriptTesting.bss` within it. Your `Use` statement shouldn't include the .bss suffix.
+2. Create a .vss script file in `test`.
+3. Add `Use "../libs/VoltScriptTesting"` at the top. This navigates up a directory, across to the `libs` directory and down to the `VoltScriptTesting.vss` within it. Your `Use` statement shouldn't include the .vss suffix.
 
     !!!tip
         Best practice options settings to add are `Option Declare`. You can also add `Option Public` to make all methods and classes public by default.

@@ -5,6 +5,7 @@
 - Updating atlas.json
 - Updating .bss to .vss
 - Updated API doc
+- Adding details about dependency management
 
 ## [1.0.0 RC2] - 2023-04-21
 
