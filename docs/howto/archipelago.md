@@ -7,7 +7,7 @@ Dependency management is available in the documentation for each project, but al
 
 ## Authentication
 
-You'll need a [Personal Access Token](../howto/writing/archipelago.md#github-personal-access-token) to use GitHub REST APIs. You'll then need to add this to the JSON object in your [atlas-settings.json](../howto/writing/archipelago.md#atlas-settingsjson), in the .vss directory of your user home directory:
+You'll need a [Personal Access Token](https://help.hcltechsw.com/docs/voltscript/early-access/howto/writing/archipelago.md#github-personal-access-token) to use GitHub REST APIs. You'll then need to add this to the JSON object in your [atlas-settings.json](https://help.hcltechsw.com/docs/voltscript/early-access/howto/writing/archipelago.md#atlas-settingsjson), in the .vss directory of your user home directory:
 
 ```json
     "hcl-github": {
