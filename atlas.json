@@ -13,12 +13,14 @@
     "sourceDir": "src",
     "testDir": "test",
     "libsDir": "",
-    "lsxsDir": "",
+    "vsesDir": "",
     "mainScripts": [
-        "VoltScriptTesting.bss"
+        "VoltScriptTesting.vss"
     ],
     "unitTestScripts": [
-        "BasicTester.bss"
+        "BasicTester.vss",
+        "SampleBeforeAftertester.vss",
+        "SampleCustomTester.vss"
     ],
     "integrationTestScripts": [
         
@@ -31,6 +33,6 @@
     "testDependencies": [
 
     ],
-    "dependenciesLSX": {
+    "vseDependencies": {
     }
 }
