@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<!-- {{balidocgenerated}} -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Class: JSONParser</title>
+	<meta name="date" content="2023-09-21">
+	<meta name="keywords" content="New()"><meta name="keywords" content="LoadFromJSON()"><meta name="keywords" content="LoadFromObject()"><meta name="keywords" content="GetRootObject()"><meta name="keywords" content="ToString()"><meta name="keywords" content="LoadFromFile()"><meta name="keywords" content="JsonVSE.JsonLSX.JSONParser Class">
+	<link rel="stylesheet" type="text/css" href="..\..\resources/balidoc.css" title="balistyle">
+	<script type="text/javascript" src="..\..\resources/script.js"></script>
+</head>
+<body>
+<script type="text/javascript"></script>
+<noscript><div>JavaScript is disabled on your browser.</div></noscript>
+
+
+<header id="masterHeader" class="dark master-header dark-master">
+	<div id="header-topbar" class="header-topbar">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-6 text-left">
+					<a href="https://www.hcltechsw.com/" target="_blank" class="logo-hcl" rel="nofollow"><img src="..\..\resources/hcl-white.png" class="img-responsive"></a>
+				</div>
+				<div class="col-xs-6 text-right">
+					<a href="https://www.hcltechsw.com/" target="_blank" class="logo-hcl-tech" rel="nofollow">HCL Software</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav">
+	<a name="navbar.top">
+	<!--   -->
+	</a>
+	<div class="skipNav"><a href="#skip.navbar.top" title="Skip navigation links">Skip navigation links</a></div>
+	<a name="navbar.top.firstrow">
+	<!--   -->
+	</a>	
+	<ul class="navList" title="Navigation">
+		<!-- -->
+		<li><a href="..\JsonVSE_SETI.html" title="Navigate to JsonVSE">JsonVSE</a></li><li><a href="..\JsonLSX_VSE.html" title="Navigate to JsonVSE.JsonLSX">JsonLSX</a></li> 
+		<li class="navBarCell1Rev">JSONParser</li>
+	</ul>
+</div>
+
+<div class="subNav">
+	<ul class="navList">
+	<!-- --> 
+	</ul>
+	<div><!--  -->
+		<script type="text/javascript"><!--
+		navcontentLink = document.getElementById("navcontent_navbar_top");
+		if (!!navcontentLink) {
+		  if(window==top) {
+			navcontentLink.style.display = "block";
+		  }
+		  else {
+			navcontentLink.style.display = "none";
+		  }
+		}
+		  //-->
+		</script>
+	</div>
+	<div>
+		<ul class="subNavList">
+			
+		</ul>
+	</div>
+	<a name="skip.navbar.top">
+	<!--   -->
+	</a>
+</div>
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<!-- Class -->
+
+<!-- ======== START OF CLASS DATA ======== -->
+<div class="header">
+	<h1 title="Class JSONParser" class="title">Class JSONParser</h1>
+</div>
+
+<div class="contentContainer">
+	<ul class="inheritance">
+		<!-- --> 
+
+		<ul class="inheritance">
+		<!-- --> 
+
+			<ul class="inheritance">
+				<li><h2>JsonVSE.JsonLSX.JSONParser</h2></li>
+			</ul>
+		</ul>
+	</ul>
+
+	<hr />
+
+	<div class="description">	<ul class="blockList">		<li class="blockList">			<div class="comments"><!-- comment --><pre>Class for parsing strings and files of JSON.</pre></div>			<hr />		</li>	</ul></div>
+	<ul class="blockList">	<li class="blockList">		<a name="class.summary"><!--   --></a>		<h3>Class Summary</h3>		<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Class Summary Table">			<thead>						</thead>			<tbody>			<tr class="altColor"><td class="colFirst"><span class="memberNameLabel" title="{{fqn}}">Project ID</span></td><td class="colLast">85258A0800611BA4852587F200501561</td></tr><tr class="rowColor"><td class="colFirst"><span class="memberNameLabel" title="{{fqn}}">Version</span></td><td class="colLast">3</td></tr><tr class="altColor"><td class="colFirst"><span class="memberNameLabel" title="{{fqn}}">Class ID</span></td><td class="colLast">85258A0800611BA4852587F3006DF3B9</td></tr><tr class="rowColor"><td class="colFirst"><span class="memberNameLabel" title="{{fqn}}">VSE Class ID</span></td><td class="colLast">3</td></tr><tr class="altColor"><td class="colFirst"><span class="memberNameLabel" title="{{fqn}}">Class Type</span></td><td class="colLast">Base</td></tr><tr class="rowColor"><td class="colFirst"><span class="memberNameLabel" title="{{fqn}}">Attributes</span></td><td class="colLast"></td></tr>			</tbody>		</table>	</li></ul>
+	
+	<div class="summary">
+		<ul class="blockList">
+			<li class="blockList">
+				
+				 
+				
+				  
+				
+				<ul class="blockList">	<li class="blockList">		<a name="methods.summary"><!--   --></a>		<h3>Method Summaries</h3>		<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods and comments">			<thead>						</thead>			<tbody>			<tr class="altColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#JsonVSE.JsonLSX.JSONParser.GetRootObject-">GetRootObject</a></span>() As JSONObject</code></td></tr><tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#JsonVSE.JsonLSX.JSONParser.LoadFromFile-">LoadFromFile</a></span>(FilePath As String) As Boolean</code></td></tr><tr class="altColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#JsonVSE.JsonLSX.JSONParser.LoadFromJSON-">LoadFromJSON</a></span>(JSON As String) As Boolean</code></td></tr><tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#JsonVSE.JsonLSX.JSONParser.LoadFromObject-">LoadFromObject</a></span>(Object As JSONObject) As Boolean</code></td></tr><tr class="altColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#JsonVSE.JsonLSX.JSONParser.New-">New</a></span>() As JSONParser</code></td></tr><tr class="rowColor"><td class="colFirst"><code><span class="memberNameLink"><a href="#JsonVSE.JsonLSX.JSONParser.ToString-">ToString</a></span>(PrettyPrint As Boolean) As String</code></td></tr>			</tbody>		</table>	</li></ul> 
+			</li>
+		</ul>
+	</div>
+
+	<div class="details">
+		<ul class="blockList">
+			<li class="blockList">
+				
+				
+				
+				
+				
+				<!-- ============ METHOD DETAIL ========== --><ul class="blockList">	<li class="blockList">		<a name="method.detail"><!--   --></a>		<h3>Methods Detail</h3>		<!-- Method Detail Element --><a name="JsonVSE.JsonLSX.JSONParser.GetRootObject-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="JsonVSE.JsonLSX.JSONParser.GetRootObject"><!--   --></a>		<h4>GetRootObject</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="GetRootObject method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Function GetRootObject<em>()</em> As JSONObject</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="JsonVSE.JsonLSX.JSONParser.GetRootObject.comments"><!--   --></a>Gets the parsed JSON as a JsonObject.</td></tr>		<tr><td>&nbsp;</td></tr><tr><th class="colFirst" scope="col" colspan="5">Code Sample</th></tr><tr class="altColor"><td class="colFirst" colspan="5" style="padding-top:0;"><a name="JsonVSE.JsonLSX.JSONParser.GetRootObject.codesample"><!--   --></a><pre class="codesample">%REM<br />    The following example loads a string of JSON and accesses the content as a JsonObject<br />%END REM<br />Dim parser as New JSONParser()<br />Dim jsonObj as JSONObject<br />Call parser.loadFromJson(|{"hello":"world"}|)<br />Set jsonObj = parser.getRootObject()</pre></td></tr>		</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="JsonVSE.JsonLSX.JSONParser.LoadFromFile-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="JsonVSE.JsonLSX.JSONParser.LoadFromFile"><!--   --></a>		<h4>LoadFromFile</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="LoadFromFile method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Sub LoadFromFile<em>(FilePath As String)</em> As Boolean</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="JsonVSE.JsonLSX.JSONParser.LoadFromFile.comments"><!--   --></a>Reads a file and parses it as JSON.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="JsonVSE.JsonLSX.JSONParser.LoadFromFile.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>FilePath</strong></td><td class="colOne">String</td><td class="colOne attributes"></td><td class="colLast comment"><em>File consisting of JSON.&nbsp;</em></td></tr>	<tr><td>&nbsp;</td></tr><tr><th class="colFirst" scope="col" colspan="5">Code Sample</th></tr><tr class="altColor"><td class="colFirst" colspan="5" style="padding-top:0;"><a name="JsonVSE.JsonLSX.JSONParser.LoadFromFile.codesample"><!--   --></a><pre class="codesample">%REM<br />    The following example loads JSOn from a file and returns it as a JSONObject<br />%END REM<br />Dim parser as New JSONParser()<br />Dim jsonObj as JSONObject()<br />Call parser.loadFromFile(CurDir & "atlas.json")<br />Set jsonObj = parser.getRootObject()</pre></td></tr>		</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="JsonVSE.JsonLSX.JSONParser.LoadFromJSON-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="JsonVSE.JsonLSX.JSONParser.LoadFromJSON"><!--   --></a>		<h4>LoadFromJSON</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="LoadFromJSON method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Sub LoadFromJSON<em>(JSON As String)</em> As Boolean</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="JsonVSE.JsonLSX.JSONParser.LoadFromJSON.comments"><!--   --></a>Parses a string of JSON. If the string passed is not valid JSON, th method throws an error 400, "JSON text is not valid".</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="JsonVSE.JsonLSX.JSONParser.LoadFromJSON.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>JSON</strong></td><td class="colOne">String</td><td class="colOne attributes"></td><td class="colLast comment"><em>String of JSON to parse&nbsp;</em></td></tr>	<tr><td>&nbsp;</td></tr><tr><th class="colFirst" scope="col" colspan="5">Code Sample</th></tr><tr class="altColor"><td class="colFirst" colspan="5" style="padding-top:0;"><a name="JsonVSE.JsonLSX.JSONParser.LoadFromJSON.codesample"><!--   --></a><pre class="codesample">%REM<br />    The following example parses a compact string of JSON and pretty-prints it<br />%END REM<br />Dim parser as New JSONParser()<br />Call parser.loadFromJson(|{"hello":"world"}|)<br />Print parser.toString(True)</pre></td></tr>		</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="JsonVSE.JsonLSX.JSONParser.LoadFromObject-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="JsonVSE.JsonLSX.JSONParser.LoadFromObject"><!--   --></a>		<h4>LoadFromObject</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="LoadFromObject method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Sub LoadFromObject<em>(Object As JSONObject)</em> As Boolean</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="JsonVSE.JsonLSX.JSONParser.LoadFromObject.comments"><!--   --></a>Parses a JSON object from a passed JsonObject.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="JsonVSE.JsonLSX.JSONParser.LoadFromObject.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>Object</strong></td><td class="colOne">JSONObject</td><td class="colOne attributes"></td><td class="colLast comment"><em>JsonObject to pass through the parser&nbsp;</em></td></tr>	<tr><td>&nbsp;</td></tr><tr><th class="colFirst" scope="col" colspan="5">Code Sample</th></tr><tr class="altColor"><td class="colFirst" colspan="5" style="padding-top:0;"><a name="JsonVSE.JsonLSX.JSONParser.LoadFromObject.codesample"><!--   --></a><pre class="codesample">%REM<br />    The following code loads a specific JsonObject and passes it to another JsonObject.<br />%END REM<br />Dim parser as New JsonParser()<br />Dim jsonObj as JsonObject<br />Dim childObj as New JsonObject<br />Call childObj.insertValue("hello", "world")<br />Call parser.loadfromObject(childObj)<br />Set jsonObj = parser.getrootobject<br />Print jsonObj.toString(false)</pre></td></tr>		</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="JsonVSE.JsonLSX.JSONParser.New-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="JsonVSE.JsonLSX.JSONParser.New"><!--   --></a>		<h4>New</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="New method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Function New<em>()</em> As JSONParser</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="JsonVSE.JsonLSX.JSONParser.New.comments"><!--   --></a>Constructor</td></tr>				</tbody>		</table>			</li></ul><!-- Method Detail Element --><a name="JsonVSE.JsonLSX.JSONParser.ToString-"><!--  --></a><ul class="blockList">	<li class="blockList">		<a name="JsonVSE.JsonLSX.JSONParser.ToString"><!--   --></a>		<h4>ToString</h4>		<table class="methoddetail" border="0" cellpadding="3" cellspacing="0" summary="ToString method detail table">			<thead>				<tr><th class="colFirst" scope="col" colspan="5"><pre>Function ToString<em>(PrettyPrint As Boolean)</em> As String</pre></th></tr>			</thead>			<tbody>	<tr class="altColor"><td class="colFirst" colspan="5"><a name="JsonVSE.JsonLSX.JSONParser.ToString.comments"><!--   --></a>Outputs the root object of a JsonParser as a string, pretty-printed or compact.</td></tr>	<tr>	<th class="colFirst min" scope="col">idx</th>	<th class="colOne" scope="col"><a name="JsonVSE.JsonLSX.JSONParser.ToString.arguments"><!--   --></a>Argument</th>	<th class="colOne" scope="col">Data Type</th>	<th class="colOne attributes" scope="col">Attributes</th>	<th class="colLast comment" scope="col">Comments</th></tr><tr class="altColor"><td class="colFirst min">1</strong></td><td class="colOne"><strong>PrettyPrint</strong></td><td class="colOne">Boolean</td><td class="colOne attributes">BY_VAL</td><td class="colLast comment"><em>Whether or not to pretty-print the JSON&nbsp;</em></td></tr>	<tr><td>&nbsp;</td></tr><tr><th class="colFirst" scope="col" colspan="5">Code Sample</th></tr><tr class="altColor"><td class="colFirst" colspan="5" style="padding-top:0;"><a name="JsonVSE.JsonLSX.JSONParser.ToString.codesample"><!--   --></a><pre class="codesample">%REM<br />   The following example loads a compact string of JSON and pretty-prints it.<br />%END REM<br />Dim parser as New JsonParser()<br />Call parser.loadFromJson(|{"hello":"world"}|)<br />Print parser.toString(True)</pre></td></tr>		</tbody>		</table>			</li></ul>	</li></ul>
+			</li>
+		</ul>
+	</div> 
+
+</div>
+<!-- ========= END OF CLASS DATA ========= -->
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav">
+	<a name="navbar.bottom"><!--   --></a>
+	<div class="skipNav"><a href="#skip.navbar.bottom" title="Skip navigation links">Skip navigation links</a></div>
+	
+	<a name="navbar.bottom.firstrow"><!--   --></a>
+	<ul class="navList" title="Navigation">
+		<!--  -->
+	</ul>
+</div>
+
+<div class="subNav">
+	<ul class="navList">
+		<!-- 
+		<li><a href="prevelement (class or package)url.html" title="previous element (class or package) fqn in parent/package"><span element (class or package)="typeNameLink">Previous element (class or package) Name</span></a></li>
+		{{link_prevelement}}
+		-->
+
+		<!-- 
+		<li><a href="nextelement (class or package)url.html" title="next element (class or package) fqn in parent/package"><span element (class or package)="typeNameLink">Next element (class or package) Name</span></a></li>
+		{{link_nextelement}}
+		-->
+	</ul>
+	<ul class="navList">
+	<!-- 
+		<li><a href="../../../../index.html?url for frames" target="_top">Frames</a></li>
+		<li><a href="{{elementurl}}" target="_top">No&nbsp;Frames</a></li>
+	-->
+	</ul>
+	<ul class="navList" id="navcontent_navbar_bottom">
+	<!-- 
+		<li><a href="../../../nav-content-noframe.html">All&nbsp;Classes</a></li>
+	 -->
+	</ul>
+	
+	<div>
+		<script type="text/javascript"><!--
+		  navcontentLink = document.getElementById("navcontent_navbar_bottom");
+		  if(window==top) {
+			navcontentLink.style.display = "block";
+		  }
+		  else {
+			navcontentLink.style.display = "none";
+		  }
+		  //-->
+		</script>
+	</div>
+	
+	<div>
+		<ul class="subNavList">
+		<!-- 
+			<li>Summary:&nbsp;</li>
+			<li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
+			<li><a href="#method.summary">Method</a></li>
+		 -->
+		</ul>
+		<ul class="subNavList">
+		<!-- 
+			<li>Detail:&nbsp;</li>
+			<li>Field&nbsp;|&nbsp;</li>
+			<li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
+			<li><a href="#method.detail">Method</a></li>
+		 -->
+		</ul>
+	</div>
+	
+	<a name="skip.navbar.bottom"><!--   --></a>
+</div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+<p class="legalCopy"><small>Copyright &#169; <a href="https://www.hcltechsw.com/">HCL America, Inc.</a> 1999, 2023. All Rights Reserved.</small></p>
+</body>
+</html>
