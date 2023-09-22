@@ -1,6 +1,6 @@
 # Core language functions used
 
-Core Functions in `VoltScriptTesting.bss`
+Core Functions in `VoltScriptTesting.vss`
 
 `%REM` and `%END REM` are used throughout. `'` for a single-line comment is also used.
 

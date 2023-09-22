@@ -504,35 +504,36 @@ td.colOne, th.colOne {
     vertical-align:top;
 }
 
-.arguments, .methoddetail, .variabledetail {
+.arguments, .methoddetail, .variabledetail, .constantdetail {
 	width:99%;
 }
 
 .arguments th.colFirst, .arguments th.colOne, .arguments th.colLast, 
 .methoddetail th.colFirst, .methoddetail th.colOne, .methoddetail th.colLast, 
-.variabledetail th.colFirst, .variabledetail th.colOne, .variabledetail th.colLast { 
+.variabledetail th.colFirst, .variabledetail th.colOne, .variabledetail th.colLast, 
+.constantdetail th.colFirst, .constantdetail th.colOne, .constantdetail th.colLast { 
     width:auto;
     vertical-align:top;
     font-size:smaller;
 }
 
 
-table.methoddetail, table.variabledetail  {
+table.methoddetail, table.variabledetail, table.constantdetail  {
 	border-collapse:collapse;
 	table-layout:fixed;
 	width:100%
 }
 
-.methoddetail th, .variabledetail th {
+.methoddetail th, .variabledetail th, .constantdetail th {
 	white-space:normal;
 	background-color:#FFF;
 }
 
-.methoddetail pre, .variabledetail pre {
+.methoddetail pre, .variabledetail pre, .constantdetail pre {
 	white-space:pre-wrap;
 }
 
-.methoddetail em, .variabledetail em {
+.methoddetail em, .variabledetail em, .constantdetail em {
 	color:darkblue;
 }
 

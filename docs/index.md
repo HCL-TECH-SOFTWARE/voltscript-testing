@@ -14,6 +14,11 @@ There are no dependencies on any LotusScript Extensions (LSX), such as `nlsxbe.d
 For the latest release information about VoltScript Testing, see [What's new](references/whatsnew.md)
 
 ---
+## Using via dependency management
+
+For using with dependency management, see [Using dependency management](howto/archipelago.md)
+
+---
 ## How the documentation is organized
 
 The documentation is based on the [Diátaxis framework](https://diataxis.fr/){: target="_blank" rel="noopener noreferrer”}, which organizes documentation into the following modes to address users' documentation needs at different times and in different circumstances. Below shows an overview that guides you on where to look for needed information:

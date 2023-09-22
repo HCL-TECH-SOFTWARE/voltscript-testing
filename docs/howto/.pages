@@ -1,5 +1,6 @@
 nav:
     - index.md
+    - archipelago.md
     - Standalone.md
     - Aggregate test suites: TestRunner.md
     - writingtests.md

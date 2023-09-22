@@ -2,6 +2,46 @@
 
 VoltScript Testing Framework is a framework for testing code written using VoltScript, the evolution of LotusScript delivered as part of HCL Volt MX Go. The framework can also be used for LotusScript, with modifications (see below on new language functions used). There are deliberately no dependencies on any LSXs (e.g nlsxbe.dll). None should be added, it will make it dependent on a particular implementation. Create separate classes derived from CustomTester to test individual LSXs or custom classes.
 
+## Using dependency management
+
+Dependency management is available in the documentation for each project, but also aggregated here:
+
+### Authentication
+
+You'll need a [Personal Access Token](../howto/writing/archipelago.md#github-personal-access-token) to use GitHub REST APIs. You'll then need to add this to the JSON object in your [atlas-settings.json](../howto/writing/archipelago.md#atlas-settingsjson), in the .vss directory of your user home directory:
+
+```json
+    "hcl-github": {
+        "type": "github",
+        "token": "${env.TOKEN}"
+    }
+```
+
+### Repository
+
+You'll need to add to your **repositories** object in the atlas.json of your project:
+
+```json
+        {
+            "id": "hcl-github",
+            "type": "github",
+            "url": "https://api.github.com/HCL-TECH-SOFTWARE"
+        }
+```
+
+### Dependency
+
+You'll need the relevant dependency to add to your **dependencies** or **testDependencies** object in the atlas.json of your project:
+
+```json
+        {
+            "library": "voltscript-testing",
+            "version": "1.0.0",
+            "module": "VoltScriptTesting.vss",
+            "repository": "hcl-github"
+        }
+```
+
 ## Writing VoltScript Tests
 
 See [Writing Units Tests](/docs/howto/writingtests.md).
@@ -10,17 +50,18 @@ See [Writing Units Tests](/docs/howto/writingtests.md).
 
 Obviously the code runs certain core language functions. These are documented in [Core Functions](/docs/references/CoreFunctions.md).
 
-There are three new VoltScript language functions used - Try/Catch/Finally and GetThreadInfo(12) in TestRunner.bss and ++/-- in SampleBeforeAfterTester.bss.
+There are three new VoltScript language functions used - Try/Catch/Finally and GetThreadInfo(12) in TestRunner.vss and ++/-- in SampleBeforeAfterTester.vss.
 
-### Documentation
+## Contributing
 
-Documentation uses [Material for MKDocs](https://squidfunk.github.io/mkdocs-material/getting-started/#installation), which uses Markdown files in the docs directory. The [awesome-pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin) is the only additional plugin in use.
+See [CONTRIBUTING.md](contributing.md).
 
-This can be previewed using a Docker container or locally. To run locally, follow the [Material for MKDocs documentation](https://squidfunk.github.io/mkdocs-material/getting-started/#with-pip) and the steps to install awesome-pages plugin on their GitHub.
+## Code of Conduct
 
-To use with Docker, a Dockerfile has been included. In a terminal, navigate to the docker directory. Issue the command `docker build -t mkdocs-plus .` This creates a Docker image based on MKDocs Material image, adding the additional plugin. If you are using a M1 Mac, a different starting image will be needed, `ghcr.io/afritzler/mkdocs-material`, see https://github.com/afritzler/mkdocs-material.
+See [CODE_OF_CONDUCT.md](code_of_conduct.md).
 
-Once the Docker container is created, it can be started as a temporary container by:
+## Issues and discussions
 
-1. Open a terminal and navigate to this directory.
-2. Issue the command `docker run --rm -it -p 8000:8000 -v ${PWD}:/docs mkdocs-plus`. On Windows, `${PWD}` maps to the current directory for PowerShell, `%cd%` for a normal Windows cmd prompt. Other MKDocs commands can be appended, as required - see MKDocs documentation for more details.
+Let's chat on [OpenNTF Discord](https://openntf.org/discord).
+
+For long-running discussions, use Discussions area in GitHub. For bugs and feature requests **specific to VoltScript Testing Framework** use, Issues area.
