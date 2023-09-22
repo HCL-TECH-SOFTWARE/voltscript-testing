@@ -38,7 +38,7 @@ You'll need the relevant dependency to add to your **dependencies** or **testDep
             "library": "voltscript-testing",
             "version": "1.0.0",
             "module": "VoltScriptTesting.vss",
-            "repository": "hcl-github
+            "repository": "hcl-github"
         }
 ```
 
