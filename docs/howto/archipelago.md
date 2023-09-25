@@ -24,7 +24,7 @@ You'll need to add to your **repositories** object in the atlas.json of your pro
         {
             "id": "hcl-github",
             "type": "github",
-            "url": "https://api.github.com/HCL-TECH-SOFTWARE"
+            "url": "https://api.github.com/repos/HCL-TECH-SOFTWARE"
         }
 ```
 
