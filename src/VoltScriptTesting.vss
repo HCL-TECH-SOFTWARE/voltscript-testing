@@ -1,56 +1,89 @@
 %REM
-	Copyright 2022-2023 HCL America, Inc.
-	Licensed under the Apache License, Version 2.0 (the "License"); 
-	you may not use this file except in compliance with the License. 
-	You may obtain a copy of the License at
-
-	http://www.apache.org/licenses/LICENSE-2.0
-
-	Unless required by applicable law or agreed to in writing, 
-	software distributed under the License is distributed on an "AS IS" BASIS, 
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-	See the License for the specific language governing permissions and limitations under the License	
+	Library VoltScriptTesting 
+	VoltScript Unit and Integration Testing Framework
+ 
 %END REM
 
+'{{VSID_COPYRIGHT_NOTICE_
 %REM
-	Library VoltScriptTesting
-	Created Mar 14, 2022 by Paul Withers
-	Unit Testing Framework for VoltScript and LotusScript
+    Copyright HCL America, Inc. 1999, 2023
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 %END REM
-Option Public
+'}}
+
 Option Declare
+Option Public
+
+
+'{{Public Constants
+Const BASE_REPORT_LOC = "unit-test-reports/"
+'}}
+
+'{{SETI_AUTHOR_CODE_VoltScriptTesting_Private_Constants
+'}}
+
+'{{SETI_AUTHOR_CODE_VoltScriptTesting_Private_Variables
+'}}
+
+
 
 %REM
-	Type used to hold results of an individual unit test
+	Type TestCase 
+	Type used to hold results of an individual unit test.
+ 
 %END REM
-Type TestCase
-	
-	description As String
+Type TestCase 
+
+	'{{Public Variables
 	outcome As String
 	errorMsg As String
+	description As String
 	errorStack As String
-
-End Type
-
-' Default location for writing reports
-Const BASE_REPORT_LOC = |unit-test-reports/|
+	'}}
 
 
+End Type 
 
-' Core unit testing suite
-Class TestSuite
-	
-    '{{SETI_AUTHOR_CODE_Internal_Member_Init
-	Public customBeforeAfter As AbstractCustomBeforeAfter
-	Public displayName As String
+'{{SETI_AUTHOR_CODE_VoltScriptTesting_Private_Types
+'}}
+
+'{{SETI_AUTHOR_CODE_VoltScriptTesting_Private_Properties
+'}}
+
+
+
+%REM
+	Class TestSuite 
+	Core unit testing suite.
+ 
+%END REM
+Class TestSuite 
+
+	'{{Public Variables
+	Public title As String
+	Public tests As Integer
+	Public runTime As String
 	Public errors As Integer
 	Public failures As Integer
-	Public missingAssertions as Integer
 	Public results List As TestCase
-	Public runTime As String
-	Public suppressReport as Boolean
-	Public tests As Integer
-	Public title As String
+	Public displayName As String
+	Public suppressReport As Boolean
+	Public missingAssertions As Integer
+	Public customBeforeAfter As AbstractCustomBeforeAfter
+	'}}
+
+	'{{SETI_AUTHOR_CODE_TestSuite_Private_Variables
 	Private description As String
 	Private outputLoc As String
 	Private outputFormat As String
@@ -61,25 +94,103 @@ Class TestSuite
 	Private hasTestRunner As Boolean
 	Private testRunnerName as String
 	'}}
-	
+
+	'{{SETI_AUTHOR_CODE_TestSuite_Private_Properties
+	'}}
+
+
 	%REM
-		Adds object containing custom beforeAll, beforeEach, afterEach and/or afterAll code.
-		@param customBeforeAfter Containing before and after functions
-		@return					Fluent
+		Sub delete 
+		Destructor
+	
 	%END REM
-	Function addCustomBeforeAfter(customBeforeAfter As AbstractCustomBeforeAfter) As TestSuite
-		'{{SETI_AUTHOR_CODE_addCustomBeforeAfter
-		Set Me.customBeforeAfter = customBeforeAfter
-		Set addCustomBeforeAfter = Me
+	Sub delete() 
+		'{{SETI_AUTHOR_CODE_delete_implementation
+		Call Me.completeReport()
 		'}}
-	End Function
-	
+
+	End Sub
+
+
 	%REM
-		Checks whether an assertion has been run yet and, if not, starts the timer
-		and runs beforeAll if a CustomBeforeAfter has been passed in.
+		Sub endTimer 
+		Sets endime to Timer
+	
 	%END REM
-	Sub checkStarted()
-		'{{SETI_AUTHOR_CODE_checkStarted
+	Sub endTimer() 
+		'{{SETI_AUTHOR_CODE_endTimer_implementation
+		endTime = Timer
+		'}}
+
+	End Sub
+
+
+	%REM
+		Sub completeReport 
+		Ends time, triggers afterAll if a CustomBeforeAfter has been passed in, and prints out the report.
+	
+	%END REM
+	Sub completeReport() 
+		'{{SETI_AUTHOR_CODE_completeReport_implementation
+		On Error GoTo trapError
+
+		Call endTimer
+
+		If (Not Me.customBeforeAfter Is Nothing) Then
+			Me.customBeforeAfter.afterAll
+		End If
+
+		If suppressReport Then Exit Sub
+
+		Call printSummary()
+
+		If (Me.outputFormat = "HTML" Or Me.outputFormat = "BOTH") Then
+			If (Not hasTestRunner) Then
+				Me.title = Me.title & |-| & FormatTimeForOutput(Now)
+			End If
+
+			Dim testSuiteReport As New TestSuiteReport(Me.outputLoc)
+			Call testSuiteReport.printoutReport(Me)
+		End If
+
+	exitSub:		
+		Exit Sub
+
+	trapError:
+		MsgBox |Error | & Error(Err) & | on line | & CStr(Erl)
+		Resume exitSub
+		'}}
+
+	End Sub
+
+
+	%REM
+		Sub New 
+		Constructor
+	
+		@param	title 	Title for the report
+
+	%END REM
+	Sub New(title As String) 
+		'{{SETI_AUTHOR_CODE_New_implementation
+		Me.title = title
+		Me.errors = 0
+		Me.failures = 0
+		Me.tests = 0
+		Me.missingAssertions = 0
+		Me.outputFormat = "HTML"
+		'}}
+
+	End Sub
+
+
+	%REM
+		Sub checkStarted 
+		Checks whether an assertion has been run yet and, if not, starts the timer and runs beforeAll if a CustomBeforeAfter has been passed in.
+	
+	%END REM
+	Sub checkStarted() 
+		'{{SETI_AUTHOR_CODE_checkStarted_implementation
 		If (Not started) Then
 			stTime = Timer
 			started = True
@@ -88,60 +199,140 @@ Class TestSuite
 			End If
 		End If
 		'}}
+
 	End Sub
-	
+
+
 	%REM
-		Ends timer, triggers afterAll if a CustomBeforeAfter has been passed in,
-		and prints out the report.
+		Sub addError 
+		Adds a test error to the results.
+	
+		@param	errorMsg 	A message to explain the error
+
+		@param	errorStack 	More detailed stack for the error
+
 	%END REM
-	Sub completeReport()
-		'{{SETI_AUTHOR_CODE_completeReport
-		On Error GoTo trapError
-		
-		Call endTimer
-		
+	Sub addError(errorMsg As String, errorStack As Variant) 
+		'{{SETI_AUTHOR_CODE_addError_implementation
+		If (|| = FullTrim(Me.Description)) Then
+			Me.tests = Me.tests + 1
+			Me.description = |Test | & CStr(Me.tests)
+		Else
+			Me.missingAssertions = Me.missingAssertions - 1
+		End If
+		Me.results(Me.description).description = Me.description
+		Me.results(Me.description).outcome = |Error|
+		Me.results(Me.description).errorMsg = errorMsg
+		Me.results(Me.description).errorStack = convertErrorStack(errorStack)
+		Me.errors = Me.errors + 1
+		Me.description = ""
+		'}}
+
+	End Sub
+
+
+	%REM
+		Sub addResult 
+		Adds a test success or failure to the results
+	
+		@param	success 	Whether the test was successful or not
+
+		@param	failMessage 	A message to write to explain the failure
+
+	%END REM
+	Sub addResult(success As Boolean, failMessage As String) 
+		'{{SETI_AUTHOR_CODE_addResult_implementation
+		If (|| = FullTrim(Me.Description)) Then
+			Me.tests = Me.tests + 1
+			Me.description = |Test | & CStr(Me.tests)
+		Else
+			Me.missingAssertions = Me.missingAssertions - 1
+		End If
+		Me.results(Me.description).description = Me.description
+		If (success) Then
+			Me.results(Me.description).outcome = |Passed|
+			Me.results(Me.description).errorMsg = ||
+		Else
+			Me.results(Me.description).outcome = |Failed|
+			Me.results(Me.description).errorMsg = failMessage
+			Me.failures = Me.failures + 1
+		End If
+		Me.description = ""
+		'}}
+
+	End Sub
+
+
+	%REM
+		Sub runAfterEach 
+		Tests whether a AbstractCustomBeforeAfter has been passed in and, if so, calls afterEach. Triggered from automatically all in-built assertions.
+	
+	%END REM
+	Sub runAfterEach() 
+		'{{SETI_AUTHOR_CODE_runAfterEach_implementation
 		If (Not Me.customBeforeAfter Is Nothing) Then
-			Me.customBeforeAfter.afterAll
+			Me.customBeforeAfter.afterEach
 		End If
+		'}}
 
-		If suppressReport Then Exit Sub
-		
-		Call printSummary()
-		
-		If (Me.outputFormat = "HTML" Or Me.outputFormat = "BOTH") Then
-			If (Not hasTestRunner) Then
-				Me.title = Me.title & |-| & FormatTimeForOutput(Now)
-			End If
-		
-			Dim testSuiteReport As New TestSuiteReport(Me.outputLoc)
-			Call testSuiteReport.printoutReport(Me)
+	End Sub
+
+
+	%REM
+		Sub runBeforeEach 
+		Tests whether an AbstractCustomBeforeAfter has been passed in and, if so, calls beforeEach. Triggered from automatically all in-built assertions.
+	
+	%END REM
+	Sub runBeforeEach() 
+		'{{SETI_AUTHOR_CODE_runBeforeEach_implementation
+		If (Not Me.customBeforeAfter Is Nothing) Then
+			Me.customBeforeAfter.beforeEach
 		End If
+		'}}
 
-	exitSub:		
-		Exit Sub
-		
-	trapError:
-		MsgBox |Error | & Error(Err) & | on line | & CStr(Erl)
-		Resume exitSub
-		'}}
 	End Sub
-	
+
+
 	%REM
-		Destructor.
+		Function getOutputFormat 
+		Getter for output format, default is HTML
+	
+		@return	String
 	%END REM
-	Sub Delete
-		'{{SETI_AUTHOR_CODE_delete
-		Call Me.completeReport()
+	Function getOutputFormat() As String 
+		'{{SETI_AUTHOR_CODE_getOutputFormat_implementation
+		getOutputFormat = outputFormat
 		'}}
-	End Sub
-	
+
+	End Function
+
+
 	%REM
-		Adds a unique description for the next test.
-		@param description		Proposed description
-		@return					Fluent
+		Function duration 
+		Duration of tests
+	
+		@return	String
 	%END REM
-	Function describe(description As String) As TestSuite
-		'{{SETI_AUTHOR_CODE_describe
+	Function duration() As String 
+		'{{SETI_AUTHOR_CODE_duration_implementation
+		Dim dur As Double
+		dur = endTime - stTime
+		duration = CStr(Round(dur, |0.01|))
+		'}}
+
+	End Function
+
+
+	%REM
+		Function describe 
+		Adds a unique description fr the next test
+	
+		@param	description 	Proposed description
+
+		@return	TestSuite
+	%END REM
+	Function describe(description As String) As TestSuite 
+		'{{SETI_AUTHOR_CODE_describe_implementation
 		Dim uniqueDesc As String
 		uniqueDesc = makeDescriptionUnique(description)
 		Me.description = uniqueDesc
@@ -153,84 +344,34 @@ Class TestSuite
 		Me.results(Me.description).errorMsg = "No assertion"
 		Set describe = Me
 		'}}
+
 	End Function
-	
-	%REM
-		Duration of tests.
-		@return					Time the test ran for in seconds, as a string
-	%END REM
-	Function duration As String
-		'{{SETI_AUTHOR_CODE_duration
-		Dim dur As Double
-		dur = endTime - stTime
-		duration = CStr(Round(dur, |0.01|))
-		'}}
-	End Function
-	
-	%REM
-		Sets endTime to Timer.
-	%END REM
-	Sub endTimer
-		'{{SETI_AUTHOR_CODE_endTimer
-		endTime = Timer
-		'}}
-	End Sub
+
 
 	%REM
+		Function getErrorMsg 
 		Converts error message to human readable format.
-		@return					Human readable error description, number and line
+	
+		@return	String
 	%END REM
-	Function getErrorMsg as String
-		'{{SETI_AUTHOR_CODE_getErrorMsg
+	Function getErrorMsg() As String 
+		'{{SETI_AUTHOR_CODE_getErrorMsg_implementation
 		getErrorMsg = |Error | & Error & |(| & Err() & |) on line | & Erl
 		'}}
+
 	End Function
-	
+
+
 	%REM
-		Getter for output format, default is HTML.
-		@return					"HTML", "XML" or "BOTH"
-	%END REM
-	Function getOutputFormat() As String
-		'{{SETI_AUTHOR_CODE_getOutputFormat
-		getOutputFormat = outputFormat
-		'}}
-	End Function
+		Function outputTo 
+		Sets a directory to write reports to, overriding default "unit-test-reports"
 	
-	%REM
-		Sets this test as included in a TestRunner. Called by TestRunner.addTestSuite.
-		@param testRunnerName 	TestRunner name test is included in
-		@returns				Fluent
+		@param	outputLoc 	Directory to write reports
+
+		@return	TestSuite
 	%END REM
-	Function includeInTestRunner(testRunnerName as String) As TestSuite
-		'{{SETI_AUTHOR_CODE_includeInTestRunner
-		Me.hasTestRunner = True
-		Me.testRunnerName = testRunnerName
-		Set includeInTestRunner = Me
-		'}}
-	End Function
-	
-	%REM
-		Constructor
-		@param title 			Title for the report
-	%END REM
-	Sub New(title As String)
-		'{{SETI_AUTHOR_CODE_constructor
-		Me.title = title
-		Me.errors = 0
-		Me.failures = 0
-		Me.tests = 0
-		Me.missingAssertions = 0
-		Me.outputFormat = "HTML"
-		'}}
-	End Sub
-	
-	%REM
-		Sets a directory to write reports to, overriding default "unit-test-reports".
-		@param outputLoc		Directory to write reports
-		@return					Fluent
-	%END REM
-	Function outputTo(outputLoc As String) As TestSuite
-		'{{SETI_AUTHOR_CODE_outputTo
+	Function outputTo(outputLoc As String) As TestSuite 
+		'{{SETI_AUTHOR_CODE_outputTo_implementation
 		Dim lastChar As String
 		lastChar = Right(FullTrim(outputLoc), 1)
 		If (lastChar <> |\\| And lastChar <> |/|) Then
@@ -239,125 +380,42 @@ Class TestSuite
 		Me.outputLoc = outputLoc
 		Set outputTo = Me
 		'}}
+
 	End Function
-	
+
+
 	%REM
-		Whether there are errors, failures or missing assertions.
-		@return					True if no errors, failures or missing assertions
+		Function ranSuccessfully 
+		Whether there are errors, failures or missing assertions
+	
+		@return	Boolean
 	%END REM
-	Function ranSuccessfully as Boolean
-		'{{SETI_AUTHOR_CODE_ranSuccessfully
+	Function ranSuccessfully() As Boolean 
+		'{{SETI_AUTHOR_CODE_ranSuccessfully_implementation
 		If (Me.errors = 0 And Me.failures = 0 And Me.missingAssertions = 0) Then
 			ranSuccessfully = True
 		End If
 		'}}
+
 	End Function
-	
+
+
 	%REM
-		Tests whether a AbstractCustomBeforeAfter has been passed in and, if so, calls afterEach.
-		Triggered automatically from all in-built assertiopns.
-	%END REM
-	Sub runAfterEach()
-		'{{SETI_AUTHOR_CODE_runAfterEach
-		If (Not Me.customBeforeAfter Is Nothing) Then
-			Me.customBeforeAfter.afterEach
-		End If
-		'}}
-	End Sub
+		Function assertFalse 
+		Tests whether the value passed is a boolean False
 	
-	%REM
-		Tests whether a AbstractCustomBeforeAfter has been passed in and, if so, calls beforeEach.
+		@param	actual 	Value to be tested
+
+		@return	Boolean
 	%END REM
-	Sub runBeforeEach()
-		'{{SETI_AUTHOR_CODE_runBeforeEach
-		If (Not Me.customBeforeAfter Is Nothing) Then
-			Me.customBeforeAfter.beforeEach
-		End If
-		'}}
-	End Sub
-	
-	%REM
-		Sets the display name to show in reports.
-		@param displayName		A more readable explanation of the report. Used in XML output for Jenkins.
-		@return					Fluent
-	%END REM
-	Public Function setDisplayName(displayName As String) As TestSuite
-		'{{SETI_AUTHOR_CODE_setDisplayName
-		Me.displayName = displayName
-		Set setDisplayName = Me
-		'}}
-	End Function
-	
-	%REM
-		Sets the output format for the reports.
-		@param formatType 		Format for reports, "HTML", "XML" or "BOTH"
-		@return					Fluent
-		@throws Error 1400, invalid format type if formatType is not "HTML", "XML" or "BOTH"
-	%END REM
-	Function setOutputFormat(formatType As String) As TestSuite
-		'{{SETI_AUTHOR_CODE_setOutputFormat
-		Select Case formatType
-			Case "HTML", "XML", "BOTH":
-				
-			Case Else
-			Error 1400, "Invalid format type, only HTML, XML or BOTH are supported"
-		End Select
-		
-		outputFormat = formatType
-		Set setOutputFormat = Me
-		'}}
-	End Function
-	
-	
-	%REM
-		********************************************************
-		START OF ASSERTIONS
-		
-		All assertions run beforeEach and afterEach, if required
-		********************************************************
-	%END REM
-	
-	%REM
-		Tests whether the value passed is a boolean True and returns assertion outcome.
-		@param actual			Value to be tested
-		@return					Assertion outcome
-	%END REM
-	Function assertTrue(actual As Boolean) As Boolean
-		'{{SETI_AUTHOR_CODE_assertTrue
+	Function assertFalse(actual As Boolean) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertFalse_implementation
 		checkStarted
-		
-		' runBeforeEach will already have been called
+
 		If (Not Me.isDelegatedAssertion) Then
 			runBeforeEach
 		End If
-		
-		If (actual) Then
-			addResult True, ||
-			assertTrue = True
-		Else
-			addResult False, |Expected: true, but was: false|
-			assertTrue = False
-		End If
-		
-		If (Not Me.isDelegatedAssertion) Then
-			runAfterEach
-		End If
-		'}}
-	End Function
-	
-	%REM
-		Tests whether the value passed is a boolean False.
-		@param actual			Value to be tested
-		@return					Assertion outcome
-	%END REM
-	Function assertFalse(actual As Boolean) As Boolean
-		'{{SETI_AUTHOR_CODE_assertFalse
-		checkStarted
-		
-		If (Not Me.isDelegatedAssertion) Then
-			runBeforeEach
-		End If
-		
+
 		If (Not actual) Then
 			addResult True, ||
 			assertFalse = True
@@ -365,367 +423,105 @@ Class TestSuite
 			addResult False, |Expected: false, but was: true|
 			assertFalse = True
 		End If
-		
+
 		If (Not Me.isDelegatedAssertion) Then
 			runAfterEach
 		End If
 		'}}
-	End Function
-	
-	%REM
-		Tests whether two strings match, applying basic case sensitivity as required (LCase-ing expected and actual).
-		@param expected			String to test against
-		@param actual			String to test
-		@param caseInsensitive	Whether to compare in current case or as lower case
-		@return					Assertion outcome
-	%END REM
-	Function assertEqualsString(expected As String, actual As Variant, caseInsensitive As Boolean) As Boolean
-		'{{SETI_AUTHOR_CODE_assertEqualsString
-		checkStarted
-		
-		Try
-			If (Not Me.isDelegatedAssertion) Then
-				runBeforeEach
-			End If
-		
-			Dim expectedForReport As String, actualForReport As String
-			Dim expectedForComparison As String, actualForComparison As String
 
-			If (TypeName(expected) <> "STRING") Then
-				addResult False, |Expected is not a String, instead is: | & TypeName(expected)
-				assertEqualsString = False
-				Exit Try
-			ElseIf(TypeName(actual) <> "STRING") Then
-				addResult False, |Actual is not a String, instead is: | & TypeName(actual)
-				assertEqualsString = False
-				Exit Try
-			End If
-		
-			expectedForReport = expected
-			actualForReport = actual
-		
-			If (caseInsensitive) Then
-				expectedForComparison = LCase(expected)
-				actualForComparison = LCase(actual)
-			Else
-				expectedForComparison = expected
-				actualForComparison = actual
-			End If
-		
-			If (expectedForComparison = actualForComparison) Then
-				addResult True, ||
-				assertEqualsString = True
-			Else
-				addResult False, |Expected: | & expectedForReport & | but was: | & actualForReport
-				assertEqualsString = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), ||
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
-				runAfterEach
-			End If
-		End Try
-		'}}
 	End Function
-	
-	%REM
-		Tests whether two strings do not match.
-		@param expected			String to test against
-		@param actual			String to test
-		@return					Assertion outcome
-	%END REM
-	Function assertNotEqualString(expected As Variant, actual As Variant) As Boolean
-		'{{SETI_AUTHOR_CODE_assertNotEqualString
-		checkStarted
-		
-		Try
-			If (Not Me.isDelegatedAssertion) Then
-				runBeforeEach
-			End If
-		
-			If (TypeName(expected) <> "STRING") Then
-				addResult False, |Expected is not a String, instead is: | & TypeName(expected)
-				assertNotEqualString = False
-				Exit Try
-			ElseIf(TypeName(actual) <> "STRING") Then
-				addResult False, |Actual is not a String, instead is: | & TypeName(actual)
-				assertNotEqualString = False
-				Exit Try
-			End If
 
-			If (expected <> actual) Then
-				addResult True, ||
-				assertNotEqualString = True
-			Else
-				addResult False, |Expected: | & expected & | matches actual: | & actual
-				assertNotEqualString = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), ||
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
-				runAfterEach
-			End If
-		End Try
-		'}}
-	End Function
-	
-	%REM
-		Tests whether two integers match.
-		@param expected			Integer to test against
-		@param actual			Integer to test
-		@return					Assertion outcome
-	%END REM
-	Function assertEqualsInteger(expected As Integer, actual As Integer) As Boolean
-		'{{SETI_AUTHOR_CODE_assertEqualsInteger
-		checkStarted
-		
-		Try
-			If (Not Me.isDelegatedAssertion) Then
-				runBeforeEach
-			End If
 
-			If (expected = actual) Then
-				addResult True, ||
-				assertEqualsInteger = True
-			Else
-				addResult False, |Expected: | & CStr(expected) & |, but was: | & CStr(actual)
-				assertEqualsInteger = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), ||
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
-				runAfterEach
-			End If
-		End Try
-		'}}
-	End Function
-	
 	%REM
-		Tests whether two integers do not match.
-		@param expected 		Integer to test against
-		@param actual			Integer to test
-		@return					Assertion outcome
+		Function assertTrue 
+		Tests whether the value passed is a boolean True and returns assertion outcome.
+	
+		@param	actual 	Value to be tested
+
+		@return	Boolean
 	%END REM
-	Function assertNotEqualInteger(expected As Integer, actual As Integer) As Boolean
-		'{{SETI_AUTHOR_CODE_assertNotEqualInteger
+	Function assertTrue(actual As Boolean) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertTrue_implementation
 		checkStarted
-		
+
+		' runBeforeEach will already have been called
 		If (Not Me.isDelegatedAssertion) Then
 			runBeforeEach
 		End If
 
-		Try
-			If (expected <> actual) Then
-				addResult True, ||
-				assertNotEqualInteger = True
-			Else
-				addResult False, |Expected: | & CStr(expected) & | matches actual: | & CStr(actual)
-				assertNotEqualInteger = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), ||
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
-				runAfterEach
-			End If
-		End Try
-		'}}
-	End Function
-	
-	%REM
-		Tests whether two doubles match, CStr-ing expected and actual to avoid bit-level issues.
-		@param expected 		Double to test against
-		@param actual			Double to test
-		@return					Assertion outcome
-	%END REM
-	Function assertEqualsDouble(expected As Double, actual As Double) As Boolean
-		'{{SETI_AUTHOR_CODE_assertEqualsDouble
-		checkStarted
-		
-		If (Not Me.isDelegatedAssertion) Then
-			runBeforeEach
+		If (actual) Then
+			addResult True, ||
+			assertTrue = True
+		Else
+			addResult False, |Expected: true, but was: false|
+			assertTrue = False
 		End If
 
-		Try
-			If (CStr(expected) = CStr(actual)) Then
-				addResult True, ||
-				assertEqualsDouble = True
-			Else
-				addResult False, |Expected: | & CStr(expected) & |, but was: | & CStr(actual)
-				assertEqualsDouble = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), ||
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
-				runAfterEach
-			End If
-		End Try
-		'}}
-	End Function
-	
-	%REM
-		Tests whether two doubles do not match, CStr-ing to avoid false positives.
-		@param expected			Double to test against
-		@param actual			Double to test
-		@return					Assertion outcome
-	%END REM
-	Function assertNotEqualDouble(expected As Double, actual As Double) As Boolean
-		'{{SETI_AUTHOR_CODE_assertNotEqualDouble
-		checkStarted
-		
 		If (Not Me.isDelegatedAssertion) Then
-			runBeforeEach
+			runAfterEach
 		End If
+		'}}
 
-		Try
-			If (CStr(expected) <> CStr(actual)) Then
-				addResult True, ||
-				assertNotEqualDouble = True
-			Else
-				addResult False, |Expected: | & CStr(expected) & | matches actual: | & CStr(actual)
-				assertNotEqualDouble = False
-			End If
-		Catch
-			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), GetThreadInfo(12)
-			Else
-				Error 1501, getErrorMsg()
-			End If
-		Finally
-			If (Not Me.isDelegatedAssertion) Then
-				runAfterEach
-			End If
-		End Try
-		'}}
 	End Function
-	
-	%REM
-		Tests whether a double is between two bounds ("between", not "strictly between"). 
-		Note, this cannot be a delegated assertion.
-		@param expected1		Lower bound to test, the actual must be greater than or equal to this
-		@param expected2		Upper bound to test, the actual must be less than or equal to this
-		@param actual			Double to test
-		@return					Assertion outcome
-	%END REM
-	Function assertIsBetween(expected1 As Double, expected2 As Double, actual As Double) As Boolean
-		'{{SETI_AUTHOR_CODE_assertIsBetween
-		checkStarted
-		
-		Try
-			runBeforeEach
 
-			If (actual >= expected1 And actual <= expected2) Then
-				addResult True, ||
-				assertIsBetween = True
-			Else
-				addResult False, |Expected: Between | & CStr(expected1) & | and | & CStr(expected2) & |, but was: | & CStr(actual)
-				assertIsBetween = False
-			End If
-		Catch
-			addError getErrorMsg(), GetThreadInfo(12)
-		Finally
-			runAfterEach
-		End Try
-		'}}
-	End Function
-	
+
 	%REM
-		Tests whether a double is NOT between two bounds ("between", not "strictly between"). 
-		Note, this cannot be a delegated assertion.
-		@param expected1 		Lower bound to test, the actual must be less than this
-		@param expected2		Upper bound to test, the actual must be greater than this
-		@param actual			Double to test
-		@return					Assertion outcome
-	%END REM
-	Function assertIsNotBetween(expected1 As Double, expected2 As Double, actual As Double) As Boolean
-		'{{SETI_AUTHOR_CODE_assertIsNotBetween
-		checkStarted
-		
-		Try
-			runBeforeEach
-		
-			If (actual < expected1) Then
-				addResult True, ||
-				assertIsNotBetween = True
-			ElseIf (actual > expected2) Then
-				addResult True, ||
-				assertIsNotBetween = True
-			Else
-				addResult False, |Expected: Not between | & CStr(expected1) & | and | & CStr(expected2) & |, but was: | & CStr(actual)
-				assertIsNotBetween = False
-			End If
-		Catch
-			addError getErrorMsg(), GetThreadInfo(12)
-		Finally
-			runAfterEach
-		End Try
-		'}}
-	End Function
+		Function setDisplayName 
+		Sets the display name to show in reports.
 	
-	%REM
-		Tests whether a double is greater than an expected value. Note, this cannot be a delegated assertion.
-		@param expected 		Lower bound to test
-		@param actual			Double to test
-		@return					Assertion outcome
+		@param	displayName 	A more readable explanation of the report. Used in XML output for Jenkins
+
+		@return	TestSuite
 	%END REM
-	Function assertIsGreaterThan(expected As Double, actual As Double) As Boolean
-		'{{SETI_AUTHOR_CODE_assertIsGreaterThan
-		checkStarted
-		
-		Try
-			runBeforeEach
-		
-			If (actual > expected) Then
-				addResult True, ||
-				assertIsGreaterThan = True
-			Else
-				addResult False, |Expected: Greater than | & CStr(expected) & |, but was: | & CStr(actual)
-				assertIsGreaterThan = False
-			End If
-		Catch
-			addError getErrorMsg(), GetThreadInfo(12)
-		Finally
-			runAfterEach
-		End Try
+	Function setDisplayName(displayName As String) As TestSuite 
+		'{{SETI_AUTHOR_CODE_setDisplayName_implementation
+		Me.displayName = displayName
+		Set setDisplayName = Me
 		'}}
+
 	End Function
-	
+
+
 	%REM
-		Tests whether a double is less than an expected value.
-		@param expected			Upper bound to test
-		@param actual			Double to test
-		@return					Assertion outcome
+		Function setOutputFormat 
+		Sets the output format for the reports.
+	
+		@param	formatType 	Format for the reports, "HTML", "XML", or "BOTH"
+
+		@return	TestSuite
 	%END REM
-	Function assertIsLessThan(expected As Double, actual As Double) As Boolean
-		'{{SETI_AUTHOR_CODE_assertIsLessThan
+	Function setOutputFormat(formatType As String) As TestSuite 
+		'{{SETI_AUTHOR_CODE_setOutputFormat_implementation
+		Select Case formatType
+			Case "HTML", "XML", "BOTH":
+
+			Case Else
+			Error 1400, "Invalid format type, only HTML, XML or BOTH are supported"
+		End Select
+
+		outputFormat = formatType
+		Set setOutputFormat = Me
+		'}}
+
+	End Function
+
+
+	%REM
+		Function assertIsLessThan 
+		Tests whether a double is less than an expected value
+	
+		@param	expected 	Upper bound to test
+
+		@param	actual 	Double to test
+
+		@return	Boolean
+	%END REM
+	Function assertIsLessThan(expected As Double, actual As Double) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertIsLessThan_implementation
 		checkStarted
-		
+
 		runBeforeEach
-		
+
 		If (actual < expected) Then
 			addResult True, ||
 			assertIsLessThan = True
@@ -733,19 +529,25 @@ Class TestSuite
 			addResult False, |Expected: Greater than | & CStr(expected) & |, but was: | & CStr(actual)
 			assertIsLessThan = False
 		End If
-		
+
 		runAfterEach
 		'}}
+
 	End Function
-	
+
+
 	%REM
-		Tests whether two Longs match.
-		@param expected			Long to test against
-		@param actual			Long to test
-		@return					Assertion outcome
+		Function assertEqualsLong 
+		Tests whether two Longs match
+	
+		@param	expected 	Long to test against
+
+		@param	actual 	Long to test
+
+		@return	Boolean
 	%END REM
-	Function assertEqualsLong(expected As Long, actual As Long) As Boolean
-		'{{SETI_AUTHOR_CODE_assertEqualsLong
+	Function assertEqualsLong(expected As Long, actual As Long) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertEqualsLong_implementation
 		checkStarted
 
 		Try
@@ -772,18 +574,24 @@ Class TestSuite
 			End If
 		End Try
 		'}}
+
 	End Function
-	
+
+
 	%REM
-		Tests whether two Longs do not match.
-		@param expected			Long to test against
-		@param actual 			Long to test
-		@return					Assertion outcome
+		Function assertNotEqualLong 
+		Tests whether two Longs do not match
+	
+		@param	expected 	Long to test against
+
+		@param	actual 	Long to test
+
+		@return	Boolean
 	%END REM
-	Function assertNotEqualLong(expected As Long, actual As Long) As Boolean
-		'{{SETI_AUTHOR_CODE_assertNotEqualLong
+	Function assertNotEqualLong(expected As Long, actual As Long) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertNotEqualLong_implementation
 		checkStarted
-		
+
 		Try
 			If (Not Me.isDelegatedAssertion) Then
 				runBeforeEach
@@ -808,33 +616,39 @@ Class TestSuite
 			End If
 		End Try
 		'}}
+
 	End Function
-	
+
+
 	%REM
-		Tests whether two Singles match.
-		@param expected 		Single to test against
-		@param actual			Single to test
-		@return					Assertion outcome
+		Function assertEqualsInteger 
+		Tests whether two integers match
+	
+		@param	expected 	Integer to test against
+
+		@param	actual 	Integer to test
+
+		@return	Boolean
 	%END REM
-	Function assertEqualsSingle(expected As Single, actual As Single) As Boolean
-		'{{SETI_AUTHOR_CODE_assertEqualsSingle
+	Function assertEqualsInteger(expected As Integer, actual As Integer) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertEqualsInteger_implementation
 		checkStarted
-		
+
 		Try
 			If (Not Me.isDelegatedAssertion) Then
 				runBeforeEach
 			End If
 
-			If (CStr(expected) = CStr(actual)) Then
+			If (expected = actual) Then
 				addResult True, ||
-				assertEqualsSingle = True
+				assertEqualsInteger = True
 			Else
 				addResult False, |Expected: | & CStr(expected) & |, but was: | & CStr(actual)
-				assertEqualsSingle = False
+				assertEqualsInteger = False
 			End If
 		Catch
 			If (Not Me.isDelegatedAssertion) Then
-				addError getErrorMsg(), GetThreadInfo(12)
+				addError getErrorMsg(), ||
 			Else
 				Error 1501, getErrorMsg()
 			End If
@@ -844,18 +658,24 @@ Class TestSuite
 			End If
 		End Try
 		'}}
+
 	End Function
-	
+
+
 	%REM
-		Tests whether two Singles do not match.
-		@param expected			Single to test against
-		@param actual			Single to test
-		@return					Assertion outcome
+		Function assertNotEqualSingle 
+		Tests whether two Singles do not match
+	
+		@param	expected 	Single to test against
+
+		@param	actual 	Single to test
+
+		@return	Boolean
 	%END REM
-	Function assertNotEqualSingle(expected As Single, actual As Single) As Boolean
-		'{{SETI_AUTHOR_CODE_assertNotEqualSingle
+	Function assertNotEqualSingle(expected As Single, actual As Single) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertNotEqualSingle_implementation
 		checkStarted
-		
+
 		Try
 			If (Not Me.isDelegatedAssertion) Then
 				runBeforeEach
@@ -880,156 +700,68 @@ Class TestSuite
 			End If
 		End Try
 		'}}
+
 	End Function
-	
+
+
 	%REM
-		Tests whether two numeric values match, converting them to double and calling assertEqualsDouble.
-		@param expected			Numeric to test against
-		@param actual			Numeric to test
-		@return					Assertion outcome
+		Function assertEqualsSingle 
+		Tests whether two Single match
+	
+		@param	expected 	Single to test against
+
+		@param	actual 	Single to test
+
+		@return	Boolean
 	%END REM
-	Function assertEqualsNumeric(expected As Variant, actual As Variant) As Boolean
-		'{{SETI_AUTHOR_CODE_assertEqualsNumeric
+	Function assertEqualsSingle(expected As Single, actual As Single) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertEqualsSingle_implementation
 		checkStarted
-		
-		Try
-			runBeforeEach
-		
-			If (Not IsNumeric(actual)) Then
-				addResult False, |Actual is not numeric: | & CStr(actual)
-				assertEqualsNumeric = False
-			Else
-				Me.isDelegatedAssertion = True
-				assertEqualsNumeric = assertEqualsDouble(CDbl(expected), CDbl(actual))
-				Me.isDelegatedAssertion = False
-			End If
-		Catch
-			addError Error(), GetThreadInfo(12)
-		Finally
-			runAfterEach
-		End Try
-		'}}
-	End Function
-	
-	%REM
-		Tests whether two numeric values do not match, converting them to double and calling assertNotEqualDouble.
-		@param expected			Numeric to test against
-		@param actual			Numeric to test
-		@return					Assertion outcome
-	%END REM
-	Function assertNotEqualNumeric(expected As Variant, actual As Variant) As Boolean
-		'{{SETI_AUTHOR_CODE_assertNotEqualNumeric
-		checkStarted
-		
-		Try
-			runBeforeEach
-		
-			If (Not IsNumeric(actual)) Then
-				addResult False, |Actual is not numeric: | & CStr(actual)
-				assertNotEqualNumeric = False
-			Else
-				Me.isDelegatedAssertion = True
-				assertNotEqualNumeric = assertNotEqualDouble(CDbl(expected), CDbl(actual))
-				Me.isDelegatedAssertion = False
-			End If
-		Catch
-			addError Error(), GetThreadInfo(12)
-		Finally
-			runAfterEach
-		End Try
-		'}}
-	End Function
-	
-	
-	%REM
-		******************************************************
-		TYPE COMPARISONS
-		******************************************************
-	%END REM
-	
-	%REM
-		Tests whether a variant's type matches an expected type. Compares both type names as lower case.
-		@param expectedType		Type name expected for actual object
-		@param actual			Scalar or object to test
-		@return					Assertion outcome
-	%END REM
-	Function assertIs(expectedType As String, actual As Variant) As Boolean
-		'{{SETI_AUTHOR_CODE_assertIs
-		checkStarted
-		
-		Dim actualType As String
 
 		Try
-			runBeforeEach
-		
-			actualType = TypeName(actual)
-			If (LCase(expectedType) = LCase(actualType)) Then
+			If (Not Me.isDelegatedAssertion) Then
+				runBeforeEach
+			End If
+
+			If (CStr(expected) = CStr(actual)) Then
 				addResult True, ||
-				assertIs = True
+				assertEqualsSingle = True
 			Else
-				addResult False, |Expected: | & expectedType & |, but was: | & actualType
-				assertIs = false
+				addResult False, |Expected: | & CStr(expected) & |, but was: | & CStr(actual)
+				assertEqualsSingle = False
 			End If
 		Catch
-			addError getErrorMsg(), GetThreadInfo(12)
-		Finally
-			runAfterEach
-		End Try
-		'}}
-	End Function
-	
-	%REM
-		Tests that a variant's type does not match an expected type. Compares both type names as lower case.
-		@param expectedType		Type name expected for actual object
-		@param actual			Scalar or object to test
-		@return					Assertion outcome
-	%END REM
-	Function assertIsNot(expectedType As String, actual As Variant) As Boolean
-		'{{SETI_AUTHOR_CODE_assertIsNot
-		checkStarted
-		
-		Dim actualType As String
-		
-		Try
-			runBeforeEach
-		
-			actualType = TypeName(actual)
-			If (LCase(expectedType) <> LCase(actualType)) Then
-				addResult True, ||
-				assertIsNot = True
+			If (Not Me.isDelegatedAssertion) Then
+				addError getErrorMsg(), GetThreadInfo(12)
 			Else
-				addResult False, |Expected: | & expectedType & | matches actual: | & actualType
-				assertIsNot = false
+				Error 1501, getErrorMsg()
 			End If
-		Catch
-			addError getErrorMsg(), GetThreadInfo(12)
 		Finally
-			runAfterEach
+			If (Not Me.isDelegatedAssertion) Then
+				runAfterEach
+			End If
 		End Try
 		'}}
+
 	End Function
-	
-	
-	
-	
+
+
 	%REM
-	****************************************************************
-	START OF MULTI DATA-TYPE COMPARISONS
-	****************************************************************
-	%END REM
+		Function assertEqualsPrimitive 
+		Tests two primitive variants are the same, ignoring data type and CStr-ing values
 	
-	%REM
-		Tests two primitive variants are the same, ignoring data type and CStr-ing values.
-		@param expected			Variant to test against
-		@param actual			Variant to test
-		@return					Assertion outcome
+		@param	expected 	Variant to test against
+
+		@param	actual 	Variant to test
+
+		@return	Boolean
 	%END REM
-	Function assertEqualsPrimitive(expected As Variant, actual As Variant) As Boolean
-		'{{SETI_AUTHOR_CODE_assertEqualsPrimitive
+	Function assertEqualsPrimitive(expected As Variant, actual As Variant) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertEqualsPrimitive_implementation
 		checkStarted
-		
+
 		Dim typeExpected As String
-		
+
 		Try
 			typeExpected = TypeName(expected)
 			Select Case typeExpected
@@ -1067,46 +799,419 @@ Class TestSuite
 			End If
 		End Try
 		'}}
+
 	End Function
-	
+
+
 	%REM
-		Tests two variants or variant arrays are the same.
-		@param expected			Variant to test against
-		@param actual			Variant to test
-		@return					Assertion outcome
+		Function assertNotEqualInteger 
+		Tests whether two integers do not match
+	
+		@param	expected 	Integer to test against
+
+		@param	actual 	Integer to test
+
+		@return	Boolean
 	%END REM
-	Function assertEqualsPrimitiveOrPrimitiveArray(expected As Variant, actual As Variant) As Boolean
-		'{{SETI_AUTHOR_CODE_assertEqualsPrimitiveOrPrimitiveArray
+	Function assertNotEqualInteger(expected As Integer, actual As Integer) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertNotEqualInteger_implementation
 		checkStarted
-		
-		Dim areArrays As Boolean, result As Boolean
-		
-		If (testArrays(expected, actual, areArrays)) Then
-			If (areArrays) Then
-				result = processArray(Expected, Actual)
-			Else
-				result = assertEqualsPrimitive(expected, actual)
-			End If
+
+		If (Not Me.isDelegatedAssertion) Then
+			runBeforeEach
 		End If
-		
-		assertEqualsPrimitiveOrPrimitiveArray = result
+
+		Try
+			If (expected <> actual) Then
+				addResult True, ||
+				assertNotEqualInteger = True
+			Else
+				addResult False, |Expected: | & CStr(expected) & | matches actual: | & CStr(actual)
+				assertNotEqualInteger = False
+			End If
+		Catch
+			If (Not Me.isDelegatedAssertion) Then
+				addError getErrorMsg(), ||
+			Else
+				Error 1501, getErrorMsg()
+			End If
+		Finally
+			If (Not Me.isDelegatedAssertion) Then
+				runAfterEach
+			End If
+		End Try
 		'}}
+
 	End Function
-	
+
+
 	%REM
-		Compares two variants or variant arrays and tests they are not the same.
-		@param expected			Variant to test against
-		@param actual			Variant to test
-		@return					Assertion outcome
+		Function includeInTestRunner 
+		Sets this test as included in a TestRunner. Called by TestRunner.addTestSuite().
+	
+		@param	testRunnerName 	TestRunner name test is included in
+
+		@return	TestSuite
 	%END REM
-	Function assertNotEqualPrimitiveOrPrimitiveArray(expected As Variant, actual As Variant) As Boolean
-		'{{SETI_AUTHOR_CODE_assertNotEqualPrimitiveOrPrimitiveArray
+	Function includeInTestRunner(testRunnerName As String) As TestSuite 
+		'{{SETI_AUTHOR_CODE_includeInTestRunner_implementation
+		Me.hasTestRunner = True
+		Me.testRunnerName = testRunnerName
+		Set includeInTestRunner = Me
+		'}}
+
+	End Function
+
+
+	%REM
+		Function assertIsGreaterThan 
+		Tests whether a double is greater than an expected value. Note, this cannot be a delegated assertion.
+	
+		@param	expected 	Lower bound to test
+
+		@param	actual 	Double to test
+
+		@return	Boolean
+	%END REM
+	Function assertIsGreaterThan(expected As Double, actual As Double) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertIsGreaterThan_implementation
+		checkStarted
+
+		Try
+			runBeforeEach
+
+			If (actual > expected) Then
+				addResult True, ||
+				assertIsGreaterThan = True
+			Else
+				addResult False, |Expected: Greater than | & CStr(expected) & |, but was: | & CStr(actual)
+				assertIsGreaterThan = False
+			End If
+		Catch
+			addError getErrorMsg(), GetThreadInfo(12)
+		Finally
+			runAfterEach
+		End Try
+		'}}
+
+	End Function
+
+
+	%REM
+		Function assertNotEqualDouble 
+		Tests whether two doubles do not match, CStr-ing to avoid false positives.
+	
+		@param	expected 	Double to test against
+
+		@param	actual 	Double to test
+
+		@return	Boolean
+	%END REM
+	Function assertNotEqualDouble(expected As Double, actual As Double) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertNotEqualDouble_implementation
+		checkStarted
+
+		If (Not Me.isDelegatedAssertion) Then
+			runBeforeEach
+		End If
+
+		Try
+			If (CStr(expected) <> CStr(actual)) Then
+				addResult True, ||
+				assertNotEqualDouble = True
+			Else
+				addResult False, |Expected: | & CStr(expected) & | matches actual: | & CStr(actual)
+				assertNotEqualDouble = False
+			End If
+		Catch
+			If (Not Me.isDelegatedAssertion) Then
+				addError getErrorMsg(), GetThreadInfo(12)
+			Else
+				Error 1501, getErrorMsg()
+			End If
+		Finally
+			If (Not Me.isDelegatedAssertion) Then
+				runAfterEach
+			End If
+		End Try
+		'}}
+
+	End Function
+
+
+	%REM
+		Function assertEqualsDouble 
+		Tests whether two doubles match, CStr-ing expected and actual to avoid bit-level issues
+	
+		@param	expected 	Double to test against
+
+		@param	actual 	Double to test
+
+		@return	Boolean
+	%END REM
+	Function assertEqualsDouble(expected As Double, actual As Double) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertEqualsDouble_implementation
+		checkStarted
+
+		If (Not Me.isDelegatedAssertion) Then
+			runBeforeEach
+		End If
+
+		Try
+			If (CStr(expected) = CStr(actual)) Then
+				addResult True, ||
+				assertEqualsDouble = True
+			Else
+				addResult False, |Expected: | & CStr(expected) & |, but was: | & CStr(actual)
+				assertEqualsDouble = False
+			End If
+		Catch
+			If (Not Me.isDelegatedAssertion) Then
+				addError getErrorMsg(), ||
+			Else
+				Error 1501, getErrorMsg()
+			End If
+		Finally
+			If (Not Me.isDelegatedAssertion) Then
+				runAfterEach
+			End If
+		End Try
+		'}}
+
+	End Function
+
+
+	%REM
+		Function assertIs 
+		Tests whether a variant's type matches an expected type. Compares both type names as lower case.
+	
+		@param	expectedType 	Type name expected for actual object
+
+		@param	actual 	Scalar o object to test
+
+		@return	Boolean
+	%END REM
+	Function assertIs(expectedType As String, actual As Variant) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertIs_implementation
+		checkStarted
+
+		Dim actualType As String
+
+		Try
+			runBeforeEach
+
+			actualType = TypeName(actual)
+			If (LCase(expectedType) = LCase(actualType)) Then
+				addResult True, ||
+				assertIs = True
+			Else
+				addResult False, |Expected: | & expectedType & |, but was: | & actualType
+				assertIs = false
+			End If
+		Catch
+			addError getErrorMsg(), GetThreadInfo(12)
+		Finally
+			runAfterEach
+		End Try
+		'}}
+
+	End Function
+
+
+	%REM
+		Function assertIsNot 
+		Tests that a varian'ts type does not match an expected type. Compares both type names as lower case.
+	
+		@param	expectedType 	Type name expected for actual object
+
+		@param	actual 	Scalar or object to test
+
+		@return	Boolean
+	%END REM
+	Function assertIsNot(expectedType As String, actual As Variant) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertIsNot_implementation
+		checkStarted
+
+		Dim actualType As String
+
+		Try
+			runBeforeEach
+
+			actualType = TypeName(actual)
+			If (LCase(expectedType) <> LCase(actualType)) Then
+				addResult True, ||
+				assertIsNot = True
+			Else
+				addResult False, |Expected: | & expectedType & | matches actual: | & actualType
+				assertIsNot = false
+			End If
+		Catch
+			addError getErrorMsg(), GetThreadInfo(12)
+		Finally
+			runAfterEach
+		End Try
+		'}}
+
+	End Function
+
+
+	%REM
+		Function assertNotEqualString 
+		Tests whether two strings do not match
+	
+		@param	expected 	String to test against
+
+		@param	actual 	String to test
+
+		@return	Boolean
+	%END REM
+	Function assertNotEqualString(expected As Variant, actual As Variant) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertNotEqualString_implementation
+		checkStarted
+
+		Try
+			If (Not Me.isDelegatedAssertion) Then
+				runBeforeEach
+			End If
+
+			If (TypeName(expected) <> "STRING") Then
+				addResult False, |Expected is not a String, instead is: | & TypeName(expected)
+				assertNotEqualString = False
+				Exit Try
+			ElseIf(TypeName(actual) <> "STRING") Then
+				addResult False, |Actual is not a String, instead is: | & TypeName(actual)
+				assertNotEqualString = False
+				Exit Try
+			End If
+
+			If (expected <> actual) Then
+				addResult True, ||
+				assertNotEqualString = True
+			Else
+				addResult False, |Expected: | & expected & | matches actual: | & actual
+				assertNotEqualString = False
+			End If
+		Catch
+			If (Not Me.isDelegatedAssertion) Then
+				addError getErrorMsg(), ||
+			Else
+				Error 1501, getErrorMsg()
+			End If
+		Finally
+			If (Not Me.isDelegatedAssertion) Then
+				runAfterEach
+			End If
+		End Try
+		'}}
+
+	End Function
+
+
+	%REM
+		Function addCustomBeforeAfter 
+		Adds object containing custom beforeAll, beforeEach, afterEach and/or afterAll code
+	
+		@param	customBeforeAfter 	Containing before and after functions
+
+		@return	TestSuite
+	%END REM
+	Function addCustomBeforeAfter(customBeforeAfter As AbstractCustomBeforeAfter) As TestSuite 
+		'{{SETI_AUTHOR_CODE_addCustomBeforeAfter_implementation
+		Set Me.customBeforeAfter = customBeforeAfter
+		Set addCustomBeforeAfter = Me
+		'}}
+
+	End Function
+
+
+	%REM
+		Function assertEqualsNumeric 
+		Tests whether two numeric values match, converting them to double and calling assertEqualsDouble
+	
+		@param	expected 	Numeric to test against
+
+		@param	actual 	Numeric to test
+
+		@return	Boolean
+	%END REM
+	Function assertEqualsNumeric(expected As Variant, actual As Variant) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertEqualsNumeric_implementation
+		checkStarted
+
+		Try
+			runBeforeEach
+
+			If (Not IsNumeric(actual)) Then
+				addResult False, |Actual is not numeric: | & CStr(actual)
+				assertEqualsNumeric = False
+			Else
+				Me.isDelegatedAssertion = True
+				assertEqualsNumeric = assertEqualsDouble(CDbl(expected), CDbl(actual))
+				Me.isDelegatedAssertion = False
+			End If
+		Catch
+			addError Error(), GetThreadInfo(12)
+		Finally
+			runAfterEach
+		End Try
+		'}}
+
+	End Function
+
+
+	%REM
+		Function assertNotEqualNumeric 
+		Tests whether two numeric values do not match, converting them to double and calling assertNotEqualDouble
+	
+		@param	expected 	Numeric to test against
+
+		@param	actual 	Numeric to test
+
+		@return	Boolean
+	%END REM
+	Function assertNotEqualNumeric(expected As Variant, actual As Variant) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertNotequalNumeric_implementation
+		checkStarted
+
+		Try
+			runBeforeEach
+
+			If (Not IsNumeric(actual)) Then
+				addResult False, |Actual is not numeric: | & CStr(actual)
+				assertNotEqualNumeric = False
+			Else
+				Me.isDelegatedAssertion = True
+				assertNotEqualNumeric = assertNotEqualDouble(CDbl(expected), CDbl(actual))
+				Me.isDelegatedAssertion = False
+			End If
+		Catch
+			addError Error(), GetThreadInfo(12)
+		Finally
+			runAfterEach
+		End Try
+		'}}
+
+	End Function
+
+
+	%REM
+		Function assertNotEqualPrimitiveOrPrimitiveArray 
+		Compares two variants or variant arrays and tests they are not the same, CStr-ing non-arrays
+	
+		@param	expected 	Variant to test against
+
+		@param	actual 	Variant to test
+
+		@return	Boolean
+	%END REM
+	Function assertNotEqualPrimitiveOrPrimitiveArray(expected As Variant, actual As Variant) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertNotEqualPrimitiveOrPrimitiveArray_implementation
 		Dim i As Integer
 		Dim result As Boolean
-		
+
 		checkStarted
 		result = False
-		
+
 		Try
 			If (TypeName(expected) <> TypeName(actual)) Then
 				addResult True, ||
@@ -1141,77 +1246,190 @@ Class TestSuite
 					End If
 				End If
 			End If
-		
+
 			assertNotEqualPrimitiveOrPrimitiveArray = result
 		Catch
 			addError getErrorMsg, GetThreadInfo(12)
 		End Try
 		'}}
+
 	End Function
-	
-	
+
+
 	%REM
-		******************************************************
-		FUNCTIONS FOR ADDING TO RESULTS LIST
-		******************************************************
-	%END REM
+		Function assertIsNotBetween 
+		Tests whether a double is NOT between two bounds ("between", not "strictly between"). Note, this cannot be a delegated assertion.
 	
-	%REM
-		Adds a test success or failure to the results.
-		@param success			Whether the test was successful or not
-		@param failMessage		A message to write to explain the failure
+		@param	expected1 	Lower bound to test, the actual must be less than this
+
+		@param	expected2 	Upper bound to test, the actual must be greater than this
+
+		@param	actual 	Double to test
+
+		@return	Boolean
 	%END REM
-	Sub addResult(success As Boolean, failMessage As String)
-		'{{SETI_AUTHOR_CODE_addResult
-		If (|| = FullTrim(Me.Description)) Then
-			Me.tests = Me.tests + 1
-			Me.description = |Test | & CStr(Me.tests)
-		Else
-			Me.missingAssertions = Me.missingAssertions - 1
-		End If
-		Me.results(Me.description).description = Me.description
-		If (success) Then
-			Me.results(Me.description).outcome = |Passed|
-			Me.results(Me.description).errorMsg = ||
-		Else
-			Me.results(Me.description).outcome = |Failed|
-			Me.results(Me.description).errorMsg = failMessage
-			Me.failures = Me.failures + 1
-		End If
-		Me.description = ""
+	Function assertIsNotBetween(expected1 As Double, expected2 As Double, actual As Double) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertIsNotBetween_implementation
+		checkStarted
+
+		Try
+			runBeforeEach
+
+			If (actual < expected1) Then
+				addResult True, ||
+				assertIsNotBetween = True
+			ElseIf (actual > expected2) Then
+				addResult True, ||
+				assertIsNotBetween = True
+			Else
+				addResult False, |Expected: Not between | & CStr(expected1) & | and | & CStr(expected2) & |, but was: | & CStr(actual)
+				assertIsNotBetween = False
+			End If
+		Catch
+			addError getErrorMsg(), GetThreadInfo(12)
+		Finally
+			runAfterEach
+		End Try
 		'}}
-	End Sub
-	
-	
+
+	End Function
+
+
 	%REM
-		Adds a test error to the results.
-		@param errorMsg			A message to explain the error
-		@param errorStack		More detailed stack for the error
+		Function assertIsBetween 
+		Tests whether a double is between two bounds ("between", not "strictly between"). Note, this cannot be a delegated assertion.
+	
+		@param	expected1 	Lower bound to test against, the actual must be greater than or equal to this
+
+		@param	expected2 	Upper bound to test against, the actual must be less than or equal to this
+
+		@param	actual 	Double to test
+
+		@return	Boolean
 	%END REM
-	Sub addError(errorMsg As String, errorStack As Variant)
-		'{{SETI_AUTHOR_CODE_addError
-		If (|| = FullTrim(Me.Description)) Then
-			Me.tests = Me.tests + 1
-			Me.description = |Test | & CStr(Me.tests)
-		Else
-			Me.missingAssertions = Me.missingAssertions - 1
-		End If
-		Me.results(Me.description).description = Me.description
-		Me.results(Me.description).outcome = |Error|
-		Me.results(Me.description).errorMsg = errorMsg
-		Me.results(Me.description).errorStack = convertErrorStack(errorStack)
-		Me.errors = Me.errors + 1
-		Me.description = ""
+	Function assertIsBetween(expected1 As Double, expected2 As Double, actual As Double) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertIsBetween_implementation
+		checkStarted
+
+		Try
+			runBeforeEach
+
+			If (actual >= expected1 And actual <= expected2) Then
+				addResult True, ||
+				assertIsBetween = True
+			Else
+				addResult False, |Expected: Between | & CStr(expected1) & | and | & CStr(expected2) & |, but was: | & CStr(actual)
+				assertIsBetween = False
+			End If
+		Catch
+			addError getErrorMsg(), GetThreadInfo(12)
+		Finally
+			runAfterEach
+		End Try
 		'}}
-	End Sub
+
+	End Function
+
+
+	%REM
+		Function assertEqualsString 
+		Tests whether two strings match, applying basic case sensitivity as required (LCase-ing expected and actual).
 	
-    '*********************************************************************
-    '*
-    '* Internal Method Definitions
-    '*
-    '*********************************************************************
-    '{{SETI_AUTHOR_CODE_Internal Methods
+		@param	expected 	String to test against
+
+		@param	actual 	String to test
+
+		@param	caseInsensitive 	Whether to compare in current case or as lower case
+
+		@return	Boolean
+	%END REM
+	Function assertEqualsString(expected As String, actual As String, caseInsensitive As Boolean) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertEqualsString_implementation
+		checkStarted
+
+		Try
+			If (Not Me.isDelegatedAssertion) Then
+				runBeforeEach
+			End If
+
+			Dim expectedForReport As String, actualForReport As String
+			Dim expectedForComparison As String, actualForComparison As String
+
+			If (TypeName(expected) <> "STRING") Then
+				addResult False, |Expected is not a String, instead is: | & TypeName(expected)
+				assertEqualsString = False
+				Exit Try
+			ElseIf(TypeName(actual) <> "STRING") Then
+				addResult False, |Actual is not a String, instead is: | & TypeName(actual)
+				assertEqualsString = False
+				Exit Try
+			End If
+
+			expectedForReport = expected
+			actualForReport = actual
+
+			If (caseInsensitive) Then
+				expectedForComparison = LCase(expected)
+				actualForComparison = LCase(actual)
+			Else
+				expectedForComparison = expected
+				actualForComparison = actual
+			End If
+
+			If (expectedForComparison = actualForComparison) Then
+				addResult True, ||
+				assertEqualsString = True
+			Else
+				addResult False, |Expected: | & expectedForReport & | but was: | & actualForReport
+				assertEqualsString = False
+			End If
+		Catch
+			If (Not Me.isDelegatedAssertion) Then
+				addError getErrorMsg(), ||
+			Else
+				Error 1501, getErrorMsg()
+			End If
+		Finally
+			If (Not Me.isDelegatedAssertion) Then
+				runAfterEach
+			End If
+		End Try
+		'}}
+
+	End Function
+
+
+	%REM
+		Function assertEqualsPrimitiveOrPrimitiveArray 
+		Tests two variant or variant arrays are the same.
 	
+		@param	expected 	Variant to test against
+
+		@param	actual 	Variant to test
+
+		@return	Boolean
+	%END REM
+	Function assertEqualsPrimitiveOrPrimitiveArray(expected As Variant, actual As Variant) As Boolean 
+		'{{SETI_AUTHOR_CODE_assertEqualsPrimitiveOrPrimitiveArray_implementation
+		checkStarted
+
+		Dim areArrays As Boolean, result As Boolean
+
+		If (testArrays(expected, actual, areArrays)) Then
+			If (areArrays) Then
+				result = processArray(Expected, Actual)
+			Else
+				result = assertEqualsPrimitive(expected, actual)
+			End If
+		End If
+
+		assertEqualsPrimitiveOrPrimitiveArray = result
+		'}}
+
+	End Function
+
+	'{{SETI_AUTHOR_CODE_TestSuite_Private_Methods
+
 	%REM
 		Adds a test failure and message to error stack to the results
 		@param failMessage		A message to explain the error
@@ -1229,17 +1447,17 @@ Class TestSuite
 		Me.failures = Me.failures + 1
 		Me.description = ""
 	End Sub
-	
+
 	%REM
 		Converts a variant / variant array of errors to a string with HTML line breaks
 		@param errorStack 		Variant or variant array of error stacks
 		@return					String with HTML line breaks separating each element
 	%END REM
 	Private Function convertErrorStack(errorStack As Variant) As String
-		
+
 		Dim returnVal As String
 		Dim i As Integer
-		
+
 		If (Not IsArray(errorStack)) Then
 			returnVal = CStr(errorStack)
 		Else
@@ -1250,11 +1468,11 @@ Class TestSuite
 				returnVal = returnVal & errorStack(i)
 			Next
 		End If
-		
+
 		convertErrorStack = returnVal
-		
+
 	End Function
-	
+
 	%REM
 		Private function to ensure proposed description is unique
 		@param description		Proposed description
@@ -1262,14 +1480,14 @@ Class TestSuite
 	Private Function makeDescriptionUnique(description) As String
 		Dim newDesc As String
 		Dim i As Integer
-		
+
 		newDesc = description
 		i = 1
 		While (IsElement(Me.results(newDesc)))
 			newDesc = description & |_| & CStr(i)
 			i = i + 1
 		Wend
-		
+
 		makeDescriptionUnique = newDesc
 	End Function
 
@@ -1293,9 +1511,8 @@ Class TestSuite
 		End If
 		Print msg & |: Tests | & Format(Me.tests,"@@") & |, Errors | & Format(Me.errors,"@@") &_
 			 |, failures | & Format(Me.failures,"@@")  & |, missing assertions | & Format(Me.missingAssertions,"@@")
-		'}}
 	End Sub
-	
+
 	%REM
 		Tests two arrays, testing each element matches. Called from assertEqualsPrimitiveOrPrimitiveArray 
 		once both variants have been validated as arrays.
@@ -1309,7 +1526,7 @@ Class TestSuite
 		Dim tmpDescription As String
 		Dim tmpErrors As Integer, tmpFailures As Integer, tmpTests As Integer, i As Integer, j As integer
 		Dim tmpMissingAssertions as Integer
-		
+
 		' Testing each element in the array will increment errors and failure
 		' We will need to reset them and manually increment afterwards
 		success = True
@@ -1326,7 +1543,7 @@ Class TestSuite
 		Try
 
 			runBeforeEach
-		
+
 			Me.isDelegatedAssertion = True
 			For i = 0 To UBound(expected)
 				Try
@@ -1350,7 +1567,7 @@ Class TestSuite
 				Me.tests = tmpTests
 			Next
 			Me.isDelegatedAssertion = False
-		
+
 			Me.missingAssertions = tmpMissingAssertions - 1
 			If (Not success) Then
 				addArrayFailure |Expected: [| & Join(expected) & |], but was: [| & Join(actual) & |]|, errorStack
@@ -1367,11 +1584,11 @@ Class TestSuite
 		Finally
 			runAfterEach
 		End Try
-		
+
 		processArray = success
 
 	End Function
-	
+
 	%REM
 		Tests whether two variants are both arrays.
 		@param expected			Variant to test is an array
@@ -1389,11 +1606,11 @@ Class TestSuite
 			If (IsArray(expected)) Then
 				expectedIsArray = True
 			End If
-		
+
 			If (IsArray(actual)) Then
 				actualIsArray = True
 			End If
-		
+
 			If (expectedIsArray <> actualIsArray) Then
 				errMsg = |Invalid array comparison - expected is |
 				If expectedIsArray Then
@@ -1430,370 +1647,88 @@ Class TestSuite
 		testArrays = success
 	End Function
 
-	'}}
-
-End Class
-
-
-' Class for the HTML report for a TestSuite
-Class TestSuiteReport
-	
-    '{{SETI_AUTHOR_CODE_Internal_Member_Init
-	Private htmlHead As String
-	Private htmlIntro As String
-	Private htmlOutro As String
-	Private reportLoc As String
-	'}}
-	
-	%REM
-		Constructor
-		@param outputLoc		Directory to write the HTML or XML report to
-	%END REM
-	Sub New(outputLoc As String)
-		'{{SETI_AUTHOR_CODE_constructor
-		If (outputLoc = ||) Then
-			Me.reportLoc = BASE_REPORT_LOC
-		Else
-			Me.reportLoc = outputLoc
-		End If
-		
-		htmlHead = |<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <style>
-body {
-  font-family: arial, sans-serif;
-}
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-
-.overall {
-  margin-bottom: 5px;
-}
-.overall::before {
-  display: table;
-  content: "";
-}
-.overall::after {
-  display: table;
-  content: "";
-}
-
-.container {
-  margin: 0 auto;
-  max-width: 1170px;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-.row {
-  margin-bottom: 15px;
-  margin-left: -15px;
-  margin-right: -15px;
-}
-
-.overall-passed {
-  background-color: #009933;
-}
-
-.overall div {
-  width:33.33333333%;
-  float:left;
-}
-
-.overall-failed {
-  background-color: #cc3300;
-}
-
-.tests {
-  margin-left: -15px;
-  margin-right: -15px;
-}
-
-.tests .summary {
-  width: 49%;
-  padding-right: 5px;
-  float:left;
-}
-
-.tests .details {
-  width: 50%;
-  float:left;
-}
-
-.passed {
-  color: #009933;
-  cursor: pointer;
-}
-.passed::before {
-  content: '\2713'; /* tick */
-}
-
-.failed {
-  color: #003399;
-  cursor: pointer;
-}
-.failed::before {
-  content: '\2716' /* cross */
-}
-
-.error {
-  color: #cc3300;
-  cursor: pointer;
-}
-.error::before {
-  content: '\2716' /* cross */
-}
-
-.highlight {
-  background-color: #3333cc;
-  color: #ffffff;
-}
-    </style>
-    <script>
-      let elemCount = {{testsRun}};
-      function toggle(elemNum) {
-        for (let i = 1; i <= elemCount; i++) {
-          let elem = document.getElementById("test" + i);
-          elem.classList.remove("highlight");
-          let elemDetail = document.getElementById("testDetail" + i);
-          elemDetail.style = "display:none";
-        }
-        let highlightElem = document.getElementById("test" + elemNum);
-        highlightElem.classList.add("highlight");
-        let showElem = document.getElementById("testDetail" + elemNum);
-        showElem.style = "display:block";
-      }
-    </script>
-  </head>
-
-|	' End of htmlHead
-		
-		htmlIntro = |<body>
-    <div class="container">
-    <div class="row">
-      <h1>{{title}}</h1>
-      <div>Finished after: {{duration}} seconds</div>
-    </div>
-    <div class="overall row">
-      <div>Runs: {{testsRun}}</div>
-      <div>Errors: {{testsError}}</div>
-      <div>Fails: {{testsFail}}</div>
-    </div>
-    <br/>
-    <div class="{{overall-result}} row">&nbsp;</div>
-
-    <div class="tests">
-|
-		
-		htmlOutro = |
-    </div>
-  </div>
-  </body>
-</html>|
-	'}}
-	End Sub
-	
-	%REM
-		Write out the actual HTML report.
-		@param testSuite		Test suite to write out
-	%END REM
-	Sub printoutReport(testSuite As TestSuite)
-		'{{SETI_AUTHOR_CODE_printoutReport
-		Dim fileName As String
-		Dim fileNum As Integer
-		Dim htmlHeadMod As String
-		Dim htmlIntroMod As String
-		Dim oldStrings(5) As String
-		Dim newStrings(5) As String
-		Dim nowTime As String
-		Dim testHtml As String
-		Dim testErrorHtml As String
-		Dim testCount As integer
-		
-		On Error GoTo trapError
-		
-		'Generate body HTML		
-		testCount = 0
-		testHtml = |<div class="summary">|
-		testErrorHtml = |<div class="details">|
-		
-		ForAll testCase In testSuite.results
-			testCount = testCount + 1
-			testHtml = testHtml & |<div id="test| & CStr(testCount)
-			testHtml = testHtml & |" class=| & testCase.outcome
-			testHtml = testHtml & | onclick="toggle(| & CStr(testCount)
-			testHtml = testHtml & |)">&nbsp;| &  testCase.description & |</div>|
-			
-			testErrorHtml = testErrorHtml & |<div id="testDetail| & CStr(testCount)
-			testErrorHtml = testErrorHtml & |" style="display:none">|
-			testErrorHtml = testErrorHtml & testCase.errorMsg
-			If (testCase.ErrorStack <> ||) Then
-				testErrorHtml = testErrorHtml & |<br/><br/>Stack:<br/>| & testCase.errorStack
-			End If
-			testErrorHtml = testErrorHtml & |</div>|
-		End Forall
-		
-		testHtml = testHtml & |</div>|
-		testErrorHtml = testErrorHtml & |</div>|
-		
-		' Get replace strings
-		oldStrings(0) = |{{title}}|
-		oldStrings(1)= |{{overall-result}}| 
-		oldStrings(2) = |{{testsRun}}|
-		oldStrings(3) = |{{testsFail}}|
-		oldStrings(4) = |{{testsError}}|
-		oldStrings(5) = |{{duration}}|
-		
-		newStrings(0) = testSuite.title
-		If (testSuite.errors = 0 And testSuite.failures = 0 And testSuite.missingAssertions = 0) Then
-			newStrings(1) = "overall-passed"
-		Else
-			newStrings(1) = "overall-failed"
-		End If
-		newStrings(2) = CStr(testCount)
-		newStrings(3) = CStr(testSuite.failures)
-		newStrings(4) = CStr(testSuite.errors)
-		newStrings(5) = testSuite.duration()
-		
-		'Open file and run
-		fileNum = FreeFile
-		fileName = Me.reportLoc
-		Call MakeDirsBaliUnit(fileName)
-		fileName = fileName & Replace(testSuite.title, | |, ||) & |.html|
-		Open filename For Output As filenum
-		
-		htmlHeadMod = Replace(htmlHead, |{{testsRun}}|, CStr(testCount))
-		Print #filenum, htmlHeadMod
-		
-		htmlIntroMod = Replace(htmlIntro, oldStrings, newStrings)
-		Print #fileNum, htmlIntroMod
-		
-		Print #fileNum, testHtml
-		Print #fileNum, testErrorHtml
-		
-		Print #filenum, htmlOutro
-		Close filenum
-exitSub:
-		Exit Sub
-		
-trapError:
-		MsgBox |Error | & Error(Err) & | on line | & CStr(Erl)
-		Resume exitSub
 		'}}
-	End Sub
 
-End Class
-
-
-' Class for creating custom tests, e.g. for a specific LSX
-Class AbstractCustomTester
-	
-    '{{SETI_AUTHOR_CODE_Internal_Member_Init
-	Public testSuite As TestSuite
-	'}}
-	
-	%REM
-		Constructor
-	%END REM
-	Sub New
-		'{{SETI_AUTHOR_CODE_constructor
-		
-		'}}
-	End Sub
-	
-	%REM
-		Loads a TestSuite into the tester, in which to record test results.
-		
-		@param testSuite		TestSuite in which to record results
-		@return					Fluent
-	%END REM
-	Function addTestSuite(testSuite As TestSuite) As AbstractCustomTester
-		'{{SETI_AUTHOR_CODE_addTestSuite
-		Set Me.testSuite = testSuite
-		Set addTestSuite = Me
-		'}}
-	End Function
-	
-	%REM
-		Main function to run tests. Must be overridden.
-	%END REM
-	Function runTests As Boolean
-		'{{SETI_AUTHOR_CODE_runTests
-		Error 1501, |Not implemented|
-		'}}
-	End Function
-
-End Class
+End Class 
 
 
 %REM
-	Class for custom beforeAll, beforeEach, afterEach and afterAll code
-	
-	beforeAll is automatically run during TestSuite.isStarted() function.
-	beforeEach is automatically run by core TestSuite assertions, but must be manually run in custom assertion tests.
-	afterEach is automatically run by core TestSuite assertions, but must be manually run in custom assertion tests.
-	afterAll is automatically run during TestSuite.delete() function, at the end of the scope for the TestSuite.
+	Class AbstractCustomTester 
+	Class for creating custom tests, e.g. for a specific LSX.
+ 
 %END REM
-Class AbstractCustomBeforeAfter
-	
-	%REM
-		Code to run before each assertion.
-	%END REM
-	Sub beforeEach()
-		'{{SETI_AUTHOR_CODE_beforeEach
+Class AbstractCustomTester 
 
-		'}}
-	End Sub
-	
-	%REM
-		Code to run before any assertion starts.
-	%END REM
-	Sub beforeAll()
-		'{{SETI_AUTHOR_CODE_beforeAll
+	'{{Public Variables
+	Public testSuite As TestSuite
+	'}}
 
-		'}}
-	End Sub
-	
-	%REM
-		Code to run after each assertion is completed.
-	%END REM
-	Sub afterEach()
-		'{{SETI_AUTHOR_CODE_afterEach
+	'{{SETI_AUTHOR_CODE_AbstractCustomTester_Private_Variables
+	'}}
 
-		'}}
-	End Sub
-	
-	%REM
-		Code to run after all assertions have completed.
-	%END REM
-	Sub afterAll()
-		'{{SETI_AUTHOR_CODE_afterAll
+	'{{SETI_AUTHOR_CODE_AbstractCustomTester_Private_Properties
+	'}}
 
+
+	%REM
+		Sub New 
+
+	%END REM
+	Sub New() 
+		'{{SETI_AUTHOR_CODE_New_implementation
 		'}}
+
 	End Sub
 
-End Class
 
-
-' Wrapper for outputting an index.html for multiple TestSuites
-Class TestRunner
+	%REM
+		Function runTests 
+		Main function to run tests. Must be overridden.
 	
-    '{{SETI_AUTHOR_CODE_Internal_Member_Init
+		@return	Boolean
+	%END REM
+	Function runTests() As Boolean 
+		'{{SETI_AUTHOR_CODE_runTests_implementation
+		Error 1501, |Not implemented|
+		'}}
+
+	End Function
+
+
+	%REM
+		Function addTestSuite 
+		Loads a TestSuite into the tester, in which to record the results
+	
+		@param	testSuite 	TestSuite in which to record results
+
+		@return	AbstractCustomTester
+	%END REM
+	Function addTestSuite(testSuite As TestSuite) As AbstractCustomTester 
+		'{{SETI_AUTHOR_CODE_addTestSuite_implementation
+		Set Me.testSuite = testSuite
+		Set addTestSuite = Me
+		'}}
+
+	End Function
+
+	'{{SETI_AUTHOR_CODE_AbstractCustomTester_Private_Methods
+	'}} 
+
+End Class 
+
+
+%REM
+	Class TestRunner 
+	Wrapper for outputting an index.htm for multiple TestSuites
+ 
+%END REM
+Class TestRunner 
+
+	'{{Public Variables
 	Public testSuites List As TestSuite
+	'}}
+
+	'{{SETI_AUTHOR_CODE_TestRunner_Private_Variables
 	Private title As String
 	Private nowTime As Variant
 	Private htmlHead As String
@@ -1803,36 +1738,18 @@ Class TestRunner
 	Private engine As String
 	Private outputFormat As String
 	'}}
-	
+
+	'{{SETI_AUTHOR_CODE_TestRunner_Private_Properties
+	'}}
+
+
 	%REM
-		Adds a TestSuite to this TestRunner.
-		@param testSuite		TestSuite to add to this TestRunner
-	%END REM
-	Sub addTestSuite(testSuite As TestSuite)
-		'{{SETI_AUTHOR_CODE_addTestSuite
-		Set me.testSuites(testSuite.title) = testSuite
-		Call testSuite.includeInTestRunner(me.title).outputTo(getFilePath())
-		'}}
-	End Sub
-	
-	%REM
-		Creates a new TestSuite with a label and adds it to this TestRunner.
-		@param title			Title for the test suite
-		@return					Created TestSuite
-	%END REM
-	Function createTestSuite(title As String) As TestSuite
-		'{{SETI_AUTHOR_CODE_createTestSuite
-		Set me.testSuites(title) = New TestSuite(title)
-		Set createTestSuite = me.testSuites(title)
-		createTestSuite.includeInTestRunner(me.title).outputTo(Me.getFilePath())
-		'}}
-	End Function
-	
-	%REM
+		Sub Delete 
 		Destructor. Prints out reports and erases test suites List.
+	
 	%END REM
-	Sub Delete
-		'{{SETI_AUTHOR_CODE_delete
+	Sub Delete() 
+		'{{SETI_AUTHOR_CODE_Delete_implementation
 		If (Me.outputFormat = "XML" Or Me.outputFormat = "BOTH") Then
 			Call printoutXmlReport()
 		End If
@@ -1841,38 +1758,24 @@ Class TestRunner
 		End If
 		Erase testSuites
 		'}}
+
 	End Sub
-	
-	%REM
-		Gets the directory to save the HTML / XML output to.
-		@return					Directory to save to
-	%END REM
-	Function getFilePath() As String
 
-		getFilePath = Me.outputLoc & Replace(Me.title, | |, ||) & "-" & Formattimeforoutput(Me.nowTime) & "/"
 
-	End Function
-	
 	%REM
-		Getter for output format, default is HTML
-	%END REM
-	Function getOutputFormat() As String
-		'{{SETI_AUTHOR_CODE_getOutputFormat
-		getOutputFormat = outputFormat
-		'}}
-	End Function
-	
-	%REM
+		Sub New 
 		Constructor
-		@param title			Title for the test run
+	
+		@param	title 	Title for the test run
+
 	%END REM
-	Sub New(title As String)
-		'{{SETI_AUTHOR_CODE_constructor
+	Sub New(title As String) 
+		'{{SETI_AUTHOR_CODE_New_implementation
 		Me.outputLoc = BASE_REPORT_LOC
 		Me.nowTime = Now
 		Me.title = title
 		Me.outputFormat = "HTML"
-		
+
 		Dim passedEngine As String
 		passedEngine = Environ("TestRunnerEngine")
 		If (passedEngine = "") Then
@@ -1881,15 +1784,64 @@ Class TestRunner
 			engine = passedEngine
 		End If
 		'}}
+
 	End Sub
-	
+
+
 	%REM
-		Sets a directory to write reports to.
-		@param outputLoc		Directory to write reports
-		@return					Fluent
+		Sub addTestSuite 
+		Adds a TestSuite to this TestRunner
+	
+		@param	testSuite 	TestSuite to add to this TestRunner
+
 	%END REM
-	Function outputTo(outputLoc As String) As TestRunner
-		'{{SETI_AUTHOR_CODE_outputTo
+	Sub addTestSuite(testSuite As TestSuite) 
+		'{{SETI_AUTHOR_CODE_addTestSuite_implementation
+		Set me.testSuites(testSuite.title) = testSuite
+		Call testSuite.includeInTestRunner(me.title).outputTo(getFilePath())
+		'}}
+
+	End Sub
+
+
+	%REM
+		Function getOutputFormat 
+		Getter for the output format, default is HTML.
+	
+		@return	String
+	%END REM
+	Function getOutputFormat() As String 
+		'{{SETI_AUTHOR_CODE_getOutputFormat_implementation
+		getOutputFormat = outputFormat
+		'}}
+
+	End Function
+
+
+	%REM
+		Function getFilePath 
+		Gets the directory to save the HTML / XML output to.
+	
+		@return	String
+	%END REM
+	Function getFilePath() As String 
+		'{{SETI_AUTHOR_CODE_getFilePath_implementation
+		getFilePath = Me.outputLoc & Replace(Me.title, | |, ||) & "-" & Formattimeforoutput(Me.nowTime) & "/"
+		'}}
+
+	End Function
+
+
+	%REM
+		Function outputTo 
+		Sets a directory to write reports to.
+	
+		@param	outputLoc 	Directory to write reports
+
+		@return	TestRunner
+	%END REM
+	Function outputTo(outputLoc As String) As TestRunner 
+		'{{SETI_AUTHOR_CODE_outputTo_implementation
 		Dim lastChar As String
 		lastChar = Right(FullTrim(outputLoc), 1)
 		If (lastChar <> |\\| And lastChar <> |/|) Then
@@ -1898,36 +1850,54 @@ Class TestRunner
 		Me.outputLoc = outputLoc
 		Set outputTo = Me
 		'}}
+
 	End Function
-	
+
+
 	%REM
-		Sets the output format for the reports
-		@param formatType 		Format for reports, "HTML", "XML" or "BOTH"
-		@return					Fluent
-		@throws Error 1400, invalid format type if formatType is not "HTML", "XML" or "BOTH"
+		Function createTestSuite 
+		Creates a new TestSuite with a label and adds it to this TestRunner
+	
+		@param	title 	Title for the test suite
+
+		@return	TestSuite
 	%END REM
-	Function setOutputFormat(formatType As String) As TestRunner
-		'{{SETI_AUTHOR_CODE_setOutputFormat
+	Function createTestSuite(title As String) As TestSuite 
+		'{{SETI_AUTHOR_CODE_createTestSuite_implementation
+		Set me.testSuites(title) = New TestSuite(title)
+		Set createTestSuite = me.testSuites(title)
+		createTestSuite.includeInTestRunner(me.title).outputTo(Me.getFilePath())
+		'}}
+
+	End Function
+
+
+	%REM
+		Function setOutputFormat 
+		Sets the output format for the reports
+	
+		@param	formatType 	Format for the reports, "HTML", "XML", or "BOTH"
+
+		@return	TestRunner
+	%END REM
+	Function setOutputFormat(formatType As String) As TestRunner 
+		'{{SETI_AUTHOR_CODE_setOutputFormat_implementation
 		On Error GoTo 0
 		Select Case formatType
 			Case "HTML", "XML", "BOTH":
-				
+
 			Case Else
 			Error 1400, "Invalid format type, only HTML, XML or BOTH are supported"
 		End Select
-		
+
 		outputFormat = formatType
 		Set setOutputFormat = Me
 		'}}
+
 	End Function
-	
-    '*********************************************************************
-    '*
-    '* Internal Method Definitions
-    '*
-    '*********************************************************************
-    '{{SETI_AUTHOR_CODE_Internal Methods
-	
+
+	'{{SETI_AUTHOR_CODE_TestRunner_Private_Methods
+
 	%REM
 		Function getTestRunnerXml
 		Description: Function to get testrunner level XML, including variable content
@@ -1938,7 +1908,7 @@ Class TestRunner
 		getTestRunnerXml = |<?xml version="1.0" encoding="UTF-8"?><testrun name="| & Me.title & |" | &_
 		|tests="| & CStr(tests) & |" time="| & runtime & |" failures="| & CStr(failures) & |" errors="| & CStr(errors) & |">|
 	End Function
-	
+
 	%REM
 		Function cleanXmlString
 		Description: Converts fouble quotes to single quotes
@@ -1954,7 +1924,6 @@ Class TestRunner
 		Prints out the HTML report
 	%END REM
 	Private Sub printoutReport
-		'{{SETI_AUTHOR_CODE_printoutReport
 		Dim fileName As String
 		Dim fileNum As Integer
 		Dim htmlHeadMod As String
@@ -2136,14 +2105,12 @@ exitSub:
 trapError:
 		MsgBox |Error | & Error(Err) & | on line | & CStr(Erl)
 		Resume exitSub
-		'}}
 	End Sub
 	
 	%REM
 		Prints out JUnit-compatible XML report
 	%END REM
 	Private Sub printoutXmlReport
-		'{{SETI_AUTHOR_CODE_printoutXmlReport
 		Dim fileName As String
 		Dim fileNum As Integer
 		Dim runTime As String
@@ -2225,33 +2192,400 @@ exitSub:
 trapError:
 		MsgBox |Error | & Error(Err) & | on line | & CStr(Erl)
 		Resume exitSub
+	End Sub
 		'}}
+
+End Class 
+
+
+%REM
+	Class TestSuiteReport 
+	Class for the HTML report for a TestSuite
+ 
+%END REM
+Class TestSuiteReport 
+
+	'{{SETI_AUTHOR_CODE_TestSuiteReport_Private_Variables
+	Private htmlHead As String
+	Private htmlIntro As String
+	Private htmlOutro As String
+	Private reportLoc As String
+	'}}
+
+	'{{SETI_AUTHOR_CODE_TestSuiteReport_Private_Properties
+	'}}
+
+
+	%REM
+		Sub New 
+		Constructor
+	
+		@param	outputLoc 	Directory to write the HTML or XML report to
+
+	%END REM
+	Sub New(outputLoc As String) 
+		'{{SETI_AUTHOR_CODE_New_implementation
+		If (outputLoc = ||) Then
+			Me.reportLoc = BASE_REPORT_LOC
+		Else
+			Me.reportLoc = outputLoc
+		End If
+
+		htmlHead = |<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <style>
+body {
+  font-family: arial, sans-serif;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.overall {
+  margin-bottom: 5px;
+}
+.overall::before {
+  display: table;
+  content: "";
+}
+.overall::after {
+  display: table;
+  content: "";
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1170px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.row {
+  margin-bottom: 15px;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.overall-passed {
+  background-color: #009933;
+}
+
+.overall div {
+  width:33.33333333%;
+  float:left;
+}
+
+.overall-failed {
+  background-color: #cc3300;
+}
+
+.tests {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.tests .summary {
+  width: 49%;
+  padding-right: 5px;
+  float:left;
+}
+
+.tests .details {
+  width: 50%;
+  float:left;
+}
+
+.passed {
+  color: #009933;
+  cursor: pointer;
+}
+.passed::before {
+  content: '\2713'; /* tick */
+}
+
+.failed {
+  color: #003399;
+  cursor: pointer;
+}
+.failed::before {
+  content: '\2716' /* cross */
+}
+
+.error {
+  color: #cc3300;
+  cursor: pointer;
+}
+.error::before {
+  content: '\2716' /* cross */
+}
+
+.highlight {
+  background-color: #3333cc;
+  color: #ffffff;
+}
+    </style>
+    <script>
+      let elemCount = {{testsRun}};
+      function toggle(elemNum) {
+        for (let i = 1; i <= elemCount; i++) {
+          let elem = document.getElementById("test" + i);
+          elem.classList.remove("highlight");
+          let elemDetail = document.getElementById("testDetail" + i);
+          elemDetail.style = "display:none";
+        }
+        let highlightElem = document.getElementById("test" + elemNum);
+        highlightElem.classList.add("highlight");
+        let showElem = document.getElementById("testDetail" + elemNum);
+        showElem.style = "display:block";
+      }
+    </script>
+  </head>
+
+|	' End of htmlHead
+
+		htmlIntro = |<body>
+    <div class="container">
+    <div class="row">
+      <h1>{{title}}</h1>
+      <div>Finished after: {{duration}} seconds</div>
+    </div>
+    <div class="overall row">
+      <div>Runs: {{testsRun}}</div>
+      <div>Errors: {{testsError}}</div>
+      <div>Fails: {{testsFail}}</div>
+    </div>
+    <br/>
+    <div class="{{overall-result}} row">&nbsp;</div>
+
+    <div class="tests">
+|
+
+		htmlOutro = |
+    </div>
+  </div>
+  </body>
+</html>|
+		'}}
+
 	End Sub
 
-	'}}
-	
-End Class
 
+	%REM
+		Sub printoutReport 
+		Write out the actual HTML report
+	
+		@param	testSuite 	Test suite to write out
+
+	%END REM
+	Sub printoutReport(testSuite As TestSuite) 
+		'{{SETI_AUTHOR_CODE_printoutReport_implementation
+		Dim fileName As String
+		Dim fileNum As Integer
+		Dim htmlHeadMod As String
+		Dim htmlIntroMod As String
+		Dim oldStrings(5) As String
+		Dim newStrings(5) As String
+		Dim nowTime As String
+		Dim testHtml As String
+		Dim testErrorHtml As String
+		Dim testCount As integer
+
+		On Error GoTo trapError
+
+		'Generate body HTML		
+		testCount = 0
+		testHtml = |<div class="summary">|
+		testErrorHtml = |<div class="details">|
+
+		ForAll testCase In testSuite.results
+			testCount = testCount + 1
+			testHtml = testHtml & |<div id="test| & CStr(testCount)
+			testHtml = testHtml & |" class=| & testCase.outcome
+			testHtml = testHtml & | onclick="toggle(| & CStr(testCount)
+			testHtml = testHtml & |)">&nbsp;| &  testCase.description & |</div>|
+
+			testErrorHtml = testErrorHtml & |<div id="testDetail| & CStr(testCount)
+			testErrorHtml = testErrorHtml & |" style="display:none">|
+			testErrorHtml = testErrorHtml & testCase.errorMsg
+			If (testCase.ErrorStack <> ||) Then
+				testErrorHtml = testErrorHtml & |<br/><br/>Stack:<br/>| & testCase.errorStack
+			End If
+			testErrorHtml = testErrorHtml & |</div>|
+		End Forall
+
+		testHtml = testHtml & |</div>|
+		testErrorHtml = testErrorHtml & |</div>|
+
+		' Get replace strings
+		oldStrings(0) = |{{title}}|
+		oldStrings(1)= |{{overall-result}}| 
+		oldStrings(2) = |{{testsRun}}|
+		oldStrings(3) = |{{testsFail}}|
+		oldStrings(4) = |{{testsError}}|
+		oldStrings(5) = |{{duration}}|
+
+		newStrings(0) = testSuite.title
+		If (testSuite.errors = 0 And testSuite.failures = 0 And testSuite.missingAssertions = 0) Then
+			newStrings(1) = "overall-passed"
+		Else
+			newStrings(1) = "overall-failed"
+		End If
+		newStrings(2) = CStr(testCount)
+		newStrings(3) = CStr(testSuite.failures)
+		newStrings(4) = CStr(testSuite.errors)
+		newStrings(5) = testSuite.duration()
+
+		'Open file and run
+		fileNum = FreeFile
+		fileName = Me.reportLoc
+		Call MakeDirsBaliUnit(fileName)
+		fileName = fileName & Replace(testSuite.title, | |, ||) & |.html|
+		Open filename For Output As filenum
+
+		htmlHeadMod = Replace(htmlHead, |{{testsRun}}|, CStr(testCount))
+		Print #filenum, htmlHeadMod
+
+		htmlIntroMod = Replace(htmlIntro, oldStrings, newStrings)
+		Print #fileNum, htmlIntroMod
+
+		Print #fileNum, testHtml
+		Print #fileNum, testErrorHtml
+
+		Print #filenum, htmlOutro
+		Close filenum
+exitSub:
+		Exit Sub
+
+trapError:
+		MsgBox |Error | & Error(Err) & | on line | & CStr(Erl)
+		Resume exitSub
+		'}}
+
+	End Sub
+
+	'{{SETI_AUTHOR_CODE_TestSuiteReport_Private_Methods
+	'}} 
+
+End Class 
+
+
+%REM
+	Class AbstractCustomBeforeAfter 
+	Class for custom beforeAll, beforeEach, afterEach and afterAll code.
+beforeAll is automatically run during TestSuite.isStarted() function.
+beforeEach is automatically run by core TestSuite assertions, but must be manually run in custom assertion tests.
+afterEach is automatically run by core TestSuite assertions, but must be run manually in custom assertion tests.
+afterAll is automatically run during TestSuite.delete() function, at the end of the scope for the TestSuite.
+ 
+%END REM
+Class AbstractCustomBeforeAfter 
+
+	'{{SETI_AUTHOR_CODE_AbstractCustomBeforeAfter_Private_Variables
+	'}}
+
+	'{{SETI_AUTHOR_CODE_AbstractCustomBeforeAfter_Private_Properties
+	'}}
+
+
+	%REM
+		Sub New 
+
+	%END REM
+	Sub New() 
+		'{{SETI_AUTHOR_CODE_New_implementation
+		'}}
+
+	End Sub
+
+
+	%REM
+		Sub beforeEach 
+		Code to run before each assertion.
+	
+	%END REM
+	Sub beforeEach() 
+		'{{SETI_AUTHOR_CODE_beforeEach_implementation
+		'}}
+
+	End Sub
+
+
+	%REM
+		Sub beforeAll 
+		Code to run before any assertion starts.
+	
+	%END REM
+	Sub beforeAll() 
+		'{{SETI_AUTHOR_CODE_beforeAll_implementation
+		'}}
+
+	End Sub
+
+
+	%REM
+		Sub afterEach 
+		Code to run after each assertion is completed.
+	
+	%END REM
+	Sub afterEach() 
+		'{{SETI_AUTHOR_CODE_afterEach_implementation
+		'}}
+
+	End Sub
+
+
+	%REM
+		Sub afterAll 
+		Code to run after all assertions have been completed.
+	
+	%END REM
+	Sub afterAll() 
+		'{{SETI_AUTHOR_CODE_afterAll_implementation
+		'}}
+
+	End Sub
+
+	'{{SETI_AUTHOR_CODE_AbstractCustomBeforeAfter_Private_Methods
+	'}} 
+
+End Class 
+'{{SETI_AUTHOR_CODE_VoltScriptTesting_Private_Classes
+'}}
+
+'{{SETI_AUTHOR_CODE_VoltScriptTesting_Private_Methods
 Private Function FormatTimeForOutput(dateVar As Variant) As String
-	
+
 	FormatTimeForOutput = Format(dateVar, |yymmddThhnnss|)
-	
+
 End Function
 %REM
 	Sub makeDirs
 	Description: Function to make final directory, if required, or suppress error, if not required
 %END REM
 Private Sub makeDirsBaliUnit (path As String)
-	
+
 	On Error GoTo skipErr
 	Dim fullPath As String
-	
+
 	fullPath = CurDir + "/" + path
-	
+
 	MkDir(fullPath)
-	
+
 	Exit Sub
-	
+
 skipErr:
 	If (Err <> 75) Then
 		MsgBox |Error | & Error(Err) & | on line | & CStr(Erl)
@@ -2259,3 +2593,4 @@ skipErr:
 	Resume next
 
 End Sub
+'}} 
