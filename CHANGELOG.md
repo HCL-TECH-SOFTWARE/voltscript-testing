@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [Unreleased]
+
+- Updated metadata and docs from VSID
+
 ## [1.0.0] - 2023-09-25
 
 - Updating atlas.json
