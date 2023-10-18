@@ -1,5 +1,5 @@
 /*
- * seti.js
+ * vsid.js
  * VoltScript Interface Designer 
  * Copyright HCL America, Inc. 2023. 
  * All Rights Reserved.   
