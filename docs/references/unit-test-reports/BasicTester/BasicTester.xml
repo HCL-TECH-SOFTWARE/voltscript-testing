@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="BasicTester" tests="85" time="230327T150254" failures="40" errors="1">
+<?xml version="1.0" encoding="UTF-8"?><testrun name="BasicTester" tests="85" time="231103T112624" failures="40" errors="1">
   <testsuite name="Boolean and String Tests" time="0" displayname="Boolean and String Tests" id="[engine:testsuite-voltscript]/[Boolean and String Tests]">
     <testcase name="Test fail basic boolean true" classname="Boolean and String Tests" time="0" displayname="Test fail basic boolean true" id="[engine:testsuite-voltscript]/[Boolean and String Tests]/[Test fail basic boolean true]">
       <failure>Expected: true, but was: false
@@ -185,22 +185,22 @@ BASICTESTER,INITIALIZE,31
     </testcase>
     <testcase name="Test first element different" classname="Variant Array Tests" time="0" displayname="Test first element different" id="[engine:testsuite-voltscript]/[Variant Array Tests]/[Test first element different]">
       <failure>Expected: [0 1 2 3 4 5 6 7], but was: [1 1 2 3 4 5 6 7]
-Error Element 1: Expected: 0, but was: 1(1400) on line 1335
+Error Element 1: Expected: 0, but was: 1(1400) on line 2180
       </failure>
     </testcase>
     <testcase name="Test first and third elements different" classname="Variant Array Tests" time="0" displayname="Test first and third elements different" id="[engine:testsuite-voltscript]/[Variant Array Tests]/[Test first and third elements different]">
       <failure>Expected: [0 1 2 3 4 5 6 7], but was: [1 1 1 3 4 5 6 7]
-Error Element 1: Expected: 0, but was: 1(1400) on line 1335
-Error Element 3: Expected: 2, but was: 1(1400) on line 1335
+Error Element 1: Expected: 0, but was: 1(1400) on line 2180
+Error Element 3: Expected: 2, but was: 1(1400) on line 2180
       </failure>
     </testcase>
     <testcase name="Test lots of elements different" classname="Variant Array Tests" time="0" displayname="Test lots of elements different" id="[engine:testsuite-voltscript]/[Variant Array Tests]/[Test lots of elements different]">
       <failure>Expected: [0 1 2 3 4 5 6 7], but was: [1 1 1 1 1 1 1 1]
-Error Element 1: Expected: 0, but was: 1(1400) on line 1335
-Error Element 3: Expected: 2, but was: 1(1400) on line 1335
-Error Element 4: Expected: 3, but was: 1(1400) on line 1335
-Error Element 5: Expected: 4, but was: 1(1400) on line 1335
-Error Element 6: Expected: 5, but was: 1(1400) on line 1335
+Error Element 1: Expected: 0, but was: 1(1400) on line 2180
+Error Element 3: Expected: 2, but was: 1(1400) on line 2180
+Error Element 4: Expected: 3, but was: 1(1400) on line 2180
+Error Element 5: Expected: 4, but was: 1(1400) on line 2180
+Error Element 6: Expected: 5, but was: 1(1400) on line 2180
 ...and others
       </failure>
     </testcase>
