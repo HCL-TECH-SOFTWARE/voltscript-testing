@@ -26,8 +26,8 @@ Option Declare
 Option Public
 
 
-'{{Public Constants
-Const BASE_REPORT_LOC = "unit-test-reports/"
+'{{Constants
+Public Const BASE_REPORT_LOC = "unit-test-reports/"
 '}}
 
 '{{SETI_AUTHOR_CODE_VoltScriptTesting_Private_Constants
@@ -43,9 +43,9 @@ Const BASE_REPORT_LOC = "unit-test-reports/"
 	Type used to hold results of an individual unit test.
  
 %END REM
-Type TestCase 
+Public Type TestCase 
 
-	'{{Public Variables
+	'{{Variables
 	outcome As String
 	errorMsg As String
 	description As String
@@ -64,13 +64,641 @@ End Type
 
 
 %REM
+	Class AbstractCustomBeforeAfter 
+	Class for custom beforeAll, beforeEach, afterEach and afterAll code.
+beforeAll is automatically run during TestSuite.isStarted() function.
+beforeEach is automatically run by core TestSuite assertions, but must be manually run in custom assertion tests.
+afterEach is automatically run by core TestSuite assertions, but must be run manually in custom assertion tests.
+afterAll is automatically run during TestSuite.delete() function, at the end of the scope for the TestSuite.
+ 
+%END REM
+Public Class AbstractCustomBeforeAfter 
+
+	'{{SETI_AUTHOR_CODE_AbstractCustomBeforeAfter_Private_Variables
+	'}}
+
+	'{{SETI_AUTHOR_CODE_AbstractCustomBeforeAfter_Private_Properties
+	'}}
+
+
+	%REM
+		Sub New 
+
+	%END REM
+	Public Sub New() 
+		'{{SETI_AUTHOR_CODE_New_implementation
+		'}}
+
+	End Sub
+
+
+	%REM
+		Sub beforeEach 
+		Code to run before each assertion.
+	
+	%END REM
+	Public Sub beforeEach() 
+		'{{SETI_AUTHOR_CODE_beforeEach_implementation
+		'}}
+
+	End Sub
+
+
+	%REM
+		Sub beforeAll 
+		Code to run before any assertion starts.
+	
+	%END REM
+	Public Sub beforeAll() 
+		'{{SETI_AUTHOR_CODE_beforeAll_implementation
+		'}}
+
+	End Sub
+
+
+	%REM
+		Sub afterEach 
+		Code to run after each assertion is completed.
+	
+	%END REM
+	Public Sub afterEach() 
+		'{{SETI_AUTHOR_CODE_afterEach_implementation
+		'}}
+
+	End Sub
+
+
+	%REM
+		Sub afterAll 
+		Code to run after all assertions have been completed.
+	
+	%END REM
+	Public Sub afterAll() 
+		'{{SETI_AUTHOR_CODE_afterAll_implementation
+		'}}
+
+	End Sub
+
+	'{{SETI_AUTHOR_CODE_AbstractCustomBeforeAfter_Private_Methods
+	'}} 
+
+End Class 
+
+
+%REM
+	Class AbstractCustomTester 
+	Class for creating custom tests, e.g. for a specific LSX.
+ 
+%END REM
+Public Class AbstractCustomTester 
+
+	'{{Variables
+	Public testSuite As TestSuite
+	'}}
+
+	'{{SETI_AUTHOR_CODE_AbstractCustomTester_Private_Variables
+	'}}
+
+	'{{SETI_AUTHOR_CODE_AbstractCustomTester_Private_Properties
+	'}}
+
+
+	%REM
+		Sub New 
+
+	%END REM
+	Public Sub New() 
+		'{{SETI_AUTHOR_CODE_New_implementation
+		'}}
+
+	End Sub
+
+
+	%REM
+		Function runTests 
+		Main function to run tests. Must be overridden.
+	
+		@return	Boolean
+	%END REM
+	Public Function runTests() As Boolean 
+		'{{SETI_AUTHOR_CODE_runTests_implementation
+		Error 1501, |Not implemented|
+		'}}
+
+	End Function
+
+
+	%REM
+		Function addTestSuite 
+		Loads a TestSuite into the tester, in which to record the results
+	
+		@param	testSuite 	TestSuite in which to record results
+
+		@return	AbstractCustomTester
+	%END REM
+	Public Function addTestSuite(testSuite As TestSuite) As AbstractCustomTester 
+		'{{SETI_AUTHOR_CODE_addTestSuite_implementation
+		Set Me.testSuite = testSuite
+		Set addTestSuite = Me
+		'}}
+
+	End Function
+
+	'{{SETI_AUTHOR_CODE_AbstractCustomTester_Private_Methods
+	'}} 
+
+End Class 
+
+
+%REM
+	Class TestRunner 
+	Wrapper for outputting an index.htm for multiple TestSuites
+ 
+%END REM
+Public Class TestRunner 
+
+	'{{Variables
+	Public testSuites List As TestSuite
+	'}}
+
+	'{{SETI_AUTHOR_CODE_TestRunner_Private_Variables
+	Private title As String
+	Private nowTime As Variant
+	Private htmlHead As String
+	Private htmlIntro As String
+	Private htmlOutro As String
+	Private outputLoc As String
+	Private engine As String
+	Private outputFormat As String
+	'}}
+
+	'{{SETI_AUTHOR_CODE_TestRunner_Private_Properties
+	'}}
+
+
+	%REM
+		Sub Delete 
+		Destructor. Prints out reports and erases test suites List.
+	
+	%END REM
+	Public Sub Delete() 
+		'{{SETI_AUTHOR_CODE_Delete_implementation
+		If (Me.outputFormat = "XML" Or Me.outputFormat = "BOTH") Then
+			Call printoutXmlReport()
+		End If
+		If (Me.outputFormat = "HTML" Or Me.outputFormat = "BOTH") Then
+			Call printoutReport()
+		End If
+		Erase testSuites
+		'}}
+
+	End Sub
+
+
+	%REM
+		Sub New 
+		Constructor
+	
+		@param	title 	Title for the test run
+
+	%END REM
+	Public Sub New(title As String) 
+		'{{SETI_AUTHOR_CODE_New_implementation
+		Me.outputLoc = BASE_REPORT_LOC
+		Me.nowTime = Now
+		Me.title = title
+		Me.outputFormat = "HTML"
+
+		Dim passedEngine As String
+		passedEngine = Environ("TestRunnerEngine")
+		If (passedEngine = "") Then
+			engine = "testsuite-voltscript"
+		Else
+			engine = passedEngine
+		End If
+		'}}
+
+	End Sub
+
+
+	%REM
+		Sub addTestSuite 
+		Adds a TestSuite to this TestRunner
+	
+		@param	testSuite 	TestSuite to add to this TestRunner
+
+	%END REM
+	Public Sub addTestSuite(testSuite As TestSuite) 
+		'{{SETI_AUTHOR_CODE_addTestSuite_implementation
+		Set me.testSuites(testSuite.title) = testSuite
+		Call testSuite.includeInTestRunner(me.title).outputTo(getFilePath())
+		'}}
+
+	End Sub
+
+
+	%REM
+		Function getOutputFormat 
+		Getter for the output format, default is HTML.
+	
+		@return	String
+	%END REM
+	Public Function getOutputFormat() As String 
+		'{{SETI_AUTHOR_CODE_getOutputFormat_implementation
+		getOutputFormat = outputFormat
+		'}}
+
+	End Function
+
+
+	%REM
+		Function getFilePath 
+		Gets the directory to save the HTML / XML output to.
+	
+		@return	String
+	%END REM
+	Public Function getFilePath() As String 
+		'{{SETI_AUTHOR_CODE_getFilePath_implementation
+		getFilePath = Me.outputLoc & Replace(Me.title, | |, ||) & "-" & Formattimeforoutput(Me.nowTime) & "/"
+		'}}
+
+	End Function
+
+
+	%REM
+		Function outputTo 
+		Sets a directory to write reports to.
+	
+		@param	outputLoc 	Directory to write reports
+
+		@return	TestRunner
+	%END REM
+	Public Function outputTo(outputLoc As String) As TestRunner 
+		'{{SETI_AUTHOR_CODE_outputTo_implementation
+		Dim lastChar As String
+		lastChar = Right(FullTrim(outputLoc), 1)
+		If (lastChar <> |\\| And lastChar <> |/|) Then
+			outputLoc = outputLoc & |/|
+		End If
+		Me.outputLoc = outputLoc
+		Set outputTo = Me
+		'}}
+
+	End Function
+
+
+	%REM
+		Function createTestSuite 
+		Creates a new TestSuite with a label and adds it to this TestRunner
+	
+		@param	title 	Title for the test suite
+
+		@return	TestSuite
+	%END REM
+	Public Function createTestSuite(title As String) As TestSuite 
+		'{{SETI_AUTHOR_CODE_createTestSuite_implementation
+		Set me.testSuites(title) = New TestSuite(title)
+		Set createTestSuite = me.testSuites(title)
+		createTestSuite.includeInTestRunner(me.title).outputTo(Me.getFilePath())
+		'}}
+
+	End Function
+
+
+	%REM
+		Function setOutputFormat 
+		Sets the output format for the reports
+	
+		@param	formatType 	Format for the reports, "HTML", "XML", or "BOTH"
+
+		@return	TestRunner
+	%END REM
+	Public Function setOutputFormat(formatType As String) As TestRunner 
+		'{{SETI_AUTHOR_CODE_setOutputFormat_implementation
+		On Error GoTo 0
+		Select Case formatType
+			Case "HTML", "XML", "BOTH":
+
+			Case Else
+			Error 1400, "Invalid format type, only HTML, XML or BOTH are supported"
+		End Select
+
+		outputFormat = formatType
+		Set setOutputFormat = Me
+		'}}
+
+	End Function
+
+	'{{SETI_AUTHOR_CODE_TestRunner_Private_Methods
+
+	%REM
+		Function getTestRunnerXml
+		Description: Function to get testrunner level XML, including variable content
+	%END REM
+	Private Function getTestRunnerXml(tests As Integer, failures As Integer, errors As Integer) As String
+		Dim runtime As String
+		runTime = FormatTimeForOutput(Now)
+		getTestRunnerXml = |<?xml version="1.0" encoding="UTF-8"?><testrun name="| & Me.title & |" | &_
+		|tests="| & CStr(tests) & |" time="| & runtime & |" failures="| & CStr(failures) & |" errors="| & CStr(errors) & |">|
+	End Function
+
+	%REM
+		Function cleanXmlString
+		Description: Converts fouble quotes to single quotes
+	%END REM
+	Private Function cleanXmlString(inputStr As String) As String
+		cleanXmlString = Replace(inputStr, |"|, |'|)
+		cleanXmlString = Replace(cleanXmlString, |<|, |&lt;|)
+		cleanXmlString = Replace(cleanXmlString, |>|, |&gt;|)
+		cleanXmlString = Replace(cleanXmlString, |&|, |&amp;|)
+	End Function
+
+	%REM
+		Prints out the HTML report
+	%END REM
+	Private Sub printoutReport
+		Dim fileName As String
+		Dim fileNum As Integer
+		Dim htmlHeadMod As String
+		Dim htmlIntroMod As String
+		Dim testCount As Integer
+		Dim fileOpened As Boolean
+
+		On Error GoTo trapError
+
+		htmlHead = |<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <style>
+body {
+  font-family: arial, sans-serif;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.overall {
+  margin-bottom: 5px;
+}
+.overall::before {
+  display: table;
+  content: "";
+}
+.overall::after {
+  display: table;
+  content: "";
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1170px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.row {
+  margin-bottom: 15px;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.overall-failed {
+  background-color: #cc3300;
+}
+
+.summary {
+  width: 20%;
+  float:left;
+  margin-right: 10px;
+}
+
+.body {
+  width: 79%;
+  float: left;
+}
+
+.passed {
+  color: #009933;
+  cursor: pointer;
+}
+.passed::before {
+  content: '\2713'; /* tick */
+}
+
+.failed {
+  color: #003399;
+  cursor: pointer;
+}
+.failed::before {
+  content: '\2716' /* cross */
+}
+
+.error {
+  color: #cc3300;
+  cursor: pointer;
+}
+.error::before {
+  content: '\2716' /* cross */
+}
+
+.highlight {
+  background-color: #3333cc;
+  color: #ffffff;
+}
+
+iframe {
+  width: 79%;
+  height: 100%;
+  border: 0px;
+}
+    </style>
+    <script>
+      let elemCount = {{testsRun}};
+      function display(elemNum, title) {
+        for (let i = 1; i <= elemCount; i++) {
+          let elem = document.getElementById("test" + i);
+          elem.classList.remove("highlight");
+        }
+        let highlightElem = document.getElementById("test" + elemNum);
+        highlightElem.classList.add("highlight");
+        let bodyElem = document.getElementById("bodyIframe");
+        bodyElem.src = title;
+      }
+    </script>
+  </head>
+
+|	' End of htmlHead
+
+		htmlIntro = |<body>
+    <div class="container">
+    <div class="summary">
+|
+
+		htmlOutro = |
+    </div>
+    <div class="body">
+      <iframe src="" title="Test Results" id="bodyIframe"></iframe>
+    </div>
+  </div>
+  </body>
+</html>|
+
+		'Open file and run
+		fileNum = FreeFile
+		fileName = Me.getFilePath()
+		Call MakeDirsBaliUnit(Me.outputLoc)
+		Call MakeDirsBaliUnit(fileName)
+		Open fileName & |index.html| For Output As filenum
+		fileOpened = True
+
+		testCount = 0
+		htmlIntroMod = htmlIntro
+		ForAll test In testSuites
+			testCount = testCount + 1
+			Dim testClass As String
+			Dim testFileName As String
+			If (test.ranSuccessfully) Then
+				testClass = "passed"
+			ElseIf (test.errors > 0) Then
+				testClass = "error"
+			ElseIf (test.failures > 0) Then
+				testClass="failed"
+			ElseIf (test.missingAssertions > 0) Then
+				testClass = "failed"
+			End If
+			htmlintroMod = htmlIntroMod & |<div class = "| & testClass & |" id="test| & CStr(testCount) & _
+			|" onclick="display(| & CStr(testCount) & |,'| & Replace(test.title, " ", "") & |.html')">&nbsp;| &_
+			 test.title & |</div>|
+		End ForAll
+
+		htmlHeadMod = Replace(htmlHead, |{{testsRun}}|, CStr(testCount))
+		Print #filenum, htmlHeadMod
+
+		Print #fileNum, htmlIntroMod
+
+		Print #filenum, htmlOutro
+exitSub:
+		If (fileOpened) Then
+			Close fileNum
+		End If
+		Exit Sub
+
+trapError:
+		MsgBox |Error | & Error(Err) & | on line | & CStr(Erl)
+		Resume exitSub
+	End Sub
+
+	%REM
+		Prints out JUnit-compatible XML report
+	%END REM
+	Private Sub printoutXmlReport
+		Dim fileName As String
+		Dim fileNum As Integer
+		Dim runTime As String
+		Dim testCount As Integer, errorCount As Integer, failCount As Integer
+		Dim fileOpened As Boolean
+		Dim testTitle As String, testDisplayName As String, testDescription As String
+
+		On Error GoTo trapError
+
+		runTime = FormatTimeForOutput(Now)
+
+		'Open file and run
+		fileNum = FreeFile
+		fileName = Me.getFilePath()
+		Call MakeDirsBaliUnit(Me.outputLoc)
+		Call MakeDirsBaliUnit(fileName)
+		Open fileName & title & |.xml| For Output As filenum
+		fileOpened = True
+
+		testCount = 0
+		errorCount = 0
+		failCount = 0
+		ForAll testsuite In testSuites
+			Call testSuite.endTimer()
+			testSuite.setOutputFormat(Me.outputFormat)
+			testCount = testCount + testsuite.tests
+			errorCount = errorCount + testsuite.errors
+			failCount = failCount + testsuite.failures
+		End ForAll
+
+		Print #fileNum, getTestRunnerXml(testCount, failCount, errorCount)
+
+		ForAll testsuite In testSuites
+			testTitle = cleanXmlString(testSuite.title)
+			If (testsuite.displayName = "") Then
+				testdisplayName = testtitle
+			Else
+				testDisplayName = cleanXmlString(testsuite.displayName)
+			End If
+			Print #fileNum, |  <testsuite name="| & testTitle & |" time="| & testsuite.duration & |" displayname="| & testDisplayName &_
+			|" id="[engine:| & Me.engine & |]/[| & testTitle & |]">|
+			ForAll testCase In testsuite.results
+				testDescription = cleanXmlString(testCase.description)
+				Print #fileNum, |    <testcase name="| testDescription & |" classname="| & testTitle & |" time="0" displayname="| &_
+				testDescription & |" id="[engine:| &_
+				engine & |]/[| & testTitle & |]/[| & testDescription & |]">|
+				Select Case testCase.outcome
+				Case "Passed":
+					Print #fileNum, |    </testcase>|
+				Case "Failed":
+					Print #fileNum, |      <failure>| & testCase.errorMsg
+					If (testCase.ErrorStack <> ||) Then
+						Print #fileNum, Replace(testCase.errorStack, "<br/>", Chr(10))
+					End If
+					Print #fileNum, |      </failure>
+    </testcase>|
+				Case "Error":
+					Print #fileNum, |      <error>| & testCase.errorMsg
+					If (testCase.ErrorStack <> ||) Then
+						Print #fileNum, testCase.errorStack
+					End If
+					Print #fileNum, |      </error>
+    </testcase>|
+				End Select
+
+			End ForAll
+
+			Print #filenum, |  </testsuite>|
+		End ForAll
+
+		Print #fileNum, |</testrun>|
+
+exitSub:
+		If (fileOpened) Then
+			Close fileNum
+		End If
+		Exit Sub
+
+trapError:
+		MsgBox |Error | & Error(Err) & | on line | & CStr(Erl)
+		Resume exitSub
+	End Sub
+		'}}
+
+End Class 
+
+
+%REM
 	Class TestSuite 
 	Core unit testing suite.
  
 %END REM
-Class TestSuite 
+Public Class TestSuite 
 
-	'{{Public Variables
+	'{{Variables
 	Public title As String
 	Public tests As Integer
 	Public runTime As String
@@ -104,7 +732,7 @@ Class TestSuite
 		Destructor
 	
 	%END REM
-	Sub delete() 
+	Public Sub delete() 
 		'{{SETI_AUTHOR_CODE_delete_implementation
 		Call Me.completeReport()
 		'}}
@@ -117,7 +745,7 @@ Class TestSuite
 		Sets endime to Timer
 	
 	%END REM
-	Sub endTimer() 
+	Public Sub endTimer() 
 		'{{SETI_AUTHOR_CODE_endTimer_implementation
 		endTime = Timer
 		'}}
@@ -130,7 +758,7 @@ Class TestSuite
 		Ends time, triggers afterAll if a CustomBeforeAfter has been passed in, and prints out the report.
 	
 	%END REM
-	Sub completeReport() 
+	Public Sub completeReport() 
 		'{{SETI_AUTHOR_CODE_completeReport_implementation
 		On Error GoTo trapError
 
@@ -171,7 +799,7 @@ Class TestSuite
 		@param	title 	Title for the report
 
 	%END REM
-	Sub New(title As String) 
+	Public Sub New(title As String) 
 		'{{SETI_AUTHOR_CODE_New_implementation
 		Me.title = title
 		Me.errors = 0
@@ -189,7 +817,7 @@ Class TestSuite
 		Checks whether an assertion has been run yet and, if not, starts the timer and runs beforeAll if a CustomBeforeAfter has been passed in.
 	
 	%END REM
-	Sub checkStarted() 
+	Public Sub checkStarted() 
 		'{{SETI_AUTHOR_CODE_checkStarted_implementation
 		If (Not started) Then
 			stTime = Timer
@@ -212,7 +840,7 @@ Class TestSuite
 		@param	errorStack 	More detailed stack for the error
 
 	%END REM
-	Sub addError(errorMsg As String, errorStack As Variant) 
+	Public Sub addError(errorMsg As String, errorStack As Variant) 
 		'{{SETI_AUTHOR_CODE_addError_implementation
 		If (|| = FullTrim(Me.Description)) Then
 			Me.tests = Me.tests + 1
@@ -240,7 +868,7 @@ Class TestSuite
 		@param	failMessage 	A message to write to explain the failure
 
 	%END REM
-	Sub addResult(success As Boolean, failMessage As String) 
+	Public Sub addResult(success As Boolean, failMessage As String) 
 		'{{SETI_AUTHOR_CODE_addResult_implementation
 		If (|| = FullTrim(Me.Description)) Then
 			Me.tests = Me.tests + 1
@@ -268,7 +896,7 @@ Class TestSuite
 		Tests whether a AbstractCustomBeforeAfter has been passed in and, if so, calls afterEach. Triggered from automatically all in-built assertions.
 	
 	%END REM
-	Sub runAfterEach() 
+	Public Sub runAfterEach() 
 		'{{SETI_AUTHOR_CODE_runAfterEach_implementation
 		If (Not Me.customBeforeAfter Is Nothing) Then
 			Me.customBeforeAfter.afterEach
@@ -283,7 +911,7 @@ Class TestSuite
 		Tests whether an AbstractCustomBeforeAfter has been passed in and, if so, calls beforeEach. Triggered from automatically all in-built assertions.
 	
 	%END REM
-	Sub runBeforeEach() 
+	Public Sub runBeforeEach() 
 		'{{SETI_AUTHOR_CODE_runBeforeEach_implementation
 		If (Not Me.customBeforeAfter Is Nothing) Then
 			Me.customBeforeAfter.beforeEach
@@ -299,7 +927,7 @@ Class TestSuite
 	
 		@return	String
 	%END REM
-	Function getOutputFormat() As String 
+	Public Function getOutputFormat() As String 
 		'{{SETI_AUTHOR_CODE_getOutputFormat_implementation
 		getOutputFormat = outputFormat
 		'}}
@@ -313,7 +941,7 @@ Class TestSuite
 	
 		@return	String
 	%END REM
-	Function duration() As String 
+	Public Function duration() As String 
 		'{{SETI_AUTHOR_CODE_duration_implementation
 		Dim dur As Double
 		dur = endTime - stTime
@@ -331,7 +959,7 @@ Class TestSuite
 
 		@return	TestSuite
 	%END REM
-	Function describe(description As String) As TestSuite 
+	Public Function describe(description As String) As TestSuite 
 		'{{SETI_AUTHOR_CODE_describe_implementation
 		Dim uniqueDesc As String
 		uniqueDesc = makeDescriptionUnique(description)
@@ -354,7 +982,7 @@ Class TestSuite
 	
 		@return	String
 	%END REM
-	Function getErrorMsg() As String 
+	Public Function getErrorMsg() As String 
 		'{{SETI_AUTHOR_CODE_getErrorMsg_implementation
 		getErrorMsg = |Error | & Error & |(| & Err() & |) on line | & Erl
 		'}}
@@ -370,7 +998,7 @@ Class TestSuite
 
 		@return	TestSuite
 	%END REM
-	Function outputTo(outputLoc As String) As TestSuite 
+	Public Function outputTo(outputLoc As String) As TestSuite 
 		'{{SETI_AUTHOR_CODE_outputTo_implementation
 		Dim lastChar As String
 		lastChar = Right(FullTrim(outputLoc), 1)
@@ -390,7 +1018,7 @@ Class TestSuite
 	
 		@return	Boolean
 	%END REM
-	Function ranSuccessfully() As Boolean 
+	Public Function ranSuccessfully() As Boolean 
 		'{{SETI_AUTHOR_CODE_ranSuccessfully_implementation
 		If (Me.errors = 0 And Me.failures = 0 And Me.missingAssertions = 0) Then
 			ranSuccessfully = True
@@ -408,7 +1036,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertFalse(actual As Boolean) As Boolean 
+	Public Function assertFalse(actual As Boolean) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertFalse_implementation
 		checkStarted
 
@@ -440,7 +1068,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertTrue(actual As Boolean) As Boolean 
+	Public Function assertTrue(actual As Boolean) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertTrue_implementation
 		checkStarted
 
@@ -473,7 +1101,7 @@ Class TestSuite
 
 		@return	TestSuite
 	%END REM
-	Function setDisplayName(displayName As String) As TestSuite 
+	Public Function setDisplayName(displayName As String) As TestSuite 
 		'{{SETI_AUTHOR_CODE_setDisplayName_implementation
 		Me.displayName = displayName
 		Set setDisplayName = Me
@@ -490,7 +1118,7 @@ Class TestSuite
 
 		@return	TestSuite
 	%END REM
-	Function setOutputFormat(formatType As String) As TestSuite 
+	Public Function setOutputFormat(formatType As String) As TestSuite 
 		'{{SETI_AUTHOR_CODE_setOutputFormat_implementation
 		Select Case formatType
 			Case "HTML", "XML", "BOTH":
@@ -516,7 +1144,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertIsLessThan(expected As Double, actual As Double) As Boolean 
+	Public Function assertIsLessThan(expected As Double, actual As Double) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertIsLessThan_implementation
 		checkStarted
 
@@ -546,7 +1174,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertEqualsLong(expected As Long, actual As Long) As Boolean 
+	Public Function assertEqualsLong(expected As Long, actual As Long) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertEqualsLong_implementation
 		checkStarted
 
@@ -588,7 +1216,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertNotEqualLong(expected As Long, actual As Long) As Boolean 
+	Public Function assertNotEqualLong(expected As Long, actual As Long) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertNotEqualLong_implementation
 		checkStarted
 
@@ -630,7 +1258,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertEqualsInteger(expected As Integer, actual As Integer) As Boolean 
+	Public Function assertEqualsInteger(expected As Integer, actual As Integer) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertEqualsInteger_implementation
 		checkStarted
 
@@ -672,7 +1300,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertNotEqualSingle(expected As Single, actual As Single) As Boolean 
+	Public Function assertNotEqualSingle(expected As Single, actual As Single) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertNotEqualSingle_implementation
 		checkStarted
 
@@ -714,7 +1342,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertEqualsSingle(expected As Single, actual As Single) As Boolean 
+	Public Function assertEqualsSingle(expected As Single, actual As Single) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertEqualsSingle_implementation
 		checkStarted
 
@@ -756,7 +1384,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertEqualsPrimitive(expected As Variant, actual As Variant) As Boolean 
+	Public Function assertEqualsPrimitive(expected As Variant, actual As Variant) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertEqualsPrimitive_implementation
 		checkStarted
 
@@ -813,7 +1441,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertNotEqualInteger(expected As Integer, actual As Integer) As Boolean 
+	Public Function assertNotEqualInteger(expected As Integer, actual As Integer) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertNotEqualInteger_implementation
 		checkStarted
 
@@ -853,7 +1481,7 @@ Class TestSuite
 
 		@return	TestSuite
 	%END REM
-	Function includeInTestRunner(testRunnerName As String) As TestSuite 
+	Public Function includeInTestRunner(testRunnerName As String) As TestSuite 
 		'{{SETI_AUTHOR_CODE_includeInTestRunner_implementation
 		Me.hasTestRunner = True
 		Me.testRunnerName = testRunnerName
@@ -873,7 +1501,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertIsGreaterThan(expected As Double, actual As Double) As Boolean 
+	Public Function assertIsGreaterThan(expected As Double, actual As Double) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertIsGreaterThan_implementation
 		checkStarted
 
@@ -907,7 +1535,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertNotEqualDouble(expected As Double, actual As Double) As Boolean 
+	Public Function assertNotEqualDouble(expected As Double, actual As Double) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertNotEqualDouble_implementation
 		checkStarted
 
@@ -949,7 +1577,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertEqualsDouble(expected As Double, actual As Double) As Boolean 
+	Public Function assertEqualsDouble(expected As Double, actual As Double) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertEqualsDouble_implementation
 		checkStarted
 
@@ -991,7 +1619,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertIs(expectedType As String, actual As Variant) As Boolean 
+	Public Function assertIs(expectedType As String, actual As Variant) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertIs_implementation
 		checkStarted
 
@@ -1028,7 +1656,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertIsNot(expectedType As String, actual As Variant) As Boolean 
+	Public Function assertIsNot(expectedType As String, actual As Variant) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertIsNot_implementation
 		checkStarted
 
@@ -1065,7 +1693,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertNotEqualString(expected As Variant, actual As Variant) As Boolean 
+	Public Function assertNotEqualString(expected As Variant, actual As Variant) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertNotEqualString_implementation
 		checkStarted
 
@@ -1115,7 +1743,7 @@ Class TestSuite
 
 		@return	TestSuite
 	%END REM
-	Function addCustomBeforeAfter(customBeforeAfter As AbstractCustomBeforeAfter) As TestSuite 
+	Public Function addCustomBeforeAfter(customBeforeAfter As AbstractCustomBeforeAfter) As TestSuite 
 		'{{SETI_AUTHOR_CODE_addCustomBeforeAfter_implementation
 		Set Me.customBeforeAfter = customBeforeAfter
 		Set addCustomBeforeAfter = Me
@@ -1134,7 +1762,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertEqualsNumeric(expected As Variant, actual As Variant) As Boolean 
+	Public Function assertEqualsNumeric(expected As Variant, actual As Variant) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertEqualsNumeric_implementation
 		checkStarted
 
@@ -1169,7 +1797,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertNotEqualNumeric(expected As Variant, actual As Variant) As Boolean 
+	Public Function assertNotEqualNumeric(expected As Variant, actual As Variant) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertNotequalNumeric_implementation
 		checkStarted
 
@@ -1204,7 +1832,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertNotEqualPrimitiveOrPrimitiveArray(expected As Variant, actual As Variant) As Boolean 
+	Public Function assertNotEqualPrimitiveOrPrimitiveArray(expected As Variant, actual As Variant) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertNotEqualPrimitiveOrPrimitiveArray_implementation
 		Dim i As Integer
 		Dim result As Boolean
@@ -1268,7 +1896,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertIsNotBetween(expected1 As Double, expected2 As Double, actual As Double) As Boolean 
+	Public Function assertIsNotBetween(expected1 As Double, expected2 As Double, actual As Double) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertIsNotBetween_implementation
 		checkStarted
 
@@ -1307,7 +1935,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertIsBetween(expected1 As Double, expected2 As Double, actual As Double) As Boolean 
+	Public Function assertIsBetween(expected1 As Double, expected2 As Double, actual As Double) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertIsBetween_implementation
 		checkStarted
 
@@ -1343,7 +1971,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertEqualsString(expected As String, actual As String, caseInsensitive As Boolean) As Boolean 
+	Public Function assertEqualsString(expected As String, actual As String, caseInsensitive As Boolean) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertEqualsString_implementation
 		checkStarted
 
@@ -1409,7 +2037,7 @@ Class TestSuite
 
 		@return	Boolean
 	%END REM
-	Function assertEqualsPrimitiveOrPrimitiveArray(expected As Variant, actual As Variant) As Boolean 
+	Public Function assertEqualsPrimitiveOrPrimitiveArray(expected As Variant, actual As Variant) As Boolean 
 		'{{SETI_AUTHOR_CODE_assertEqualsPrimitiveOrPrimitiveArray_implementation
 		checkStarted
 
@@ -1653,557 +2281,11 @@ End Class
 
 
 %REM
-	Class AbstractCustomTester 
-	Class for creating custom tests, e.g. for a specific LSX.
- 
-%END REM
-Class AbstractCustomTester 
-
-	'{{Public Variables
-	Public testSuite As TestSuite
-	'}}
-
-	'{{SETI_AUTHOR_CODE_AbstractCustomTester_Private_Variables
-	'}}
-
-	'{{SETI_AUTHOR_CODE_AbstractCustomTester_Private_Properties
-	'}}
-
-
-	%REM
-		Sub New 
-
-	%END REM
-	Sub New() 
-		'{{SETI_AUTHOR_CODE_New_implementation
-		'}}
-
-	End Sub
-
-
-	%REM
-		Function runTests 
-		Main function to run tests. Must be overridden.
-	
-		@return	Boolean
-	%END REM
-	Function runTests() As Boolean 
-		'{{SETI_AUTHOR_CODE_runTests_implementation
-		Error 1501, |Not implemented|
-		'}}
-
-	End Function
-
-
-	%REM
-		Function addTestSuite 
-		Loads a TestSuite into the tester, in which to record the results
-	
-		@param	testSuite 	TestSuite in which to record results
-
-		@return	AbstractCustomTester
-	%END REM
-	Function addTestSuite(testSuite As TestSuite) As AbstractCustomTester 
-		'{{SETI_AUTHOR_CODE_addTestSuite_implementation
-		Set Me.testSuite = testSuite
-		Set addTestSuite = Me
-		'}}
-
-	End Function
-
-	'{{SETI_AUTHOR_CODE_AbstractCustomTester_Private_Methods
-	'}} 
-
-End Class 
-
-
-%REM
-	Class TestRunner 
-	Wrapper for outputting an index.htm for multiple TestSuites
- 
-%END REM
-Class TestRunner 
-
-	'{{Public Variables
-	Public testSuites List As TestSuite
-	'}}
-
-	'{{SETI_AUTHOR_CODE_TestRunner_Private_Variables
-	Private title As String
-	Private nowTime As Variant
-	Private htmlHead As String
-	Private htmlIntro As String
-	Private htmlOutro As String
-	Private outputLoc As String
-	Private engine As String
-	Private outputFormat As String
-	'}}
-
-	'{{SETI_AUTHOR_CODE_TestRunner_Private_Properties
-	'}}
-
-
-	%REM
-		Sub Delete 
-		Destructor. Prints out reports and erases test suites List.
-	
-	%END REM
-	Sub Delete() 
-		'{{SETI_AUTHOR_CODE_Delete_implementation
-		If (Me.outputFormat = "XML" Or Me.outputFormat = "BOTH") Then
-			Call printoutXmlReport()
-		End If
-		If (Me.outputFormat = "HTML" Or Me.outputFormat = "BOTH") Then
-			Call printoutReport()
-		End If
-		Erase testSuites
-		'}}
-
-	End Sub
-
-
-	%REM
-		Sub New 
-		Constructor
-	
-		@param	title 	Title for the test run
-
-	%END REM
-	Sub New(title As String) 
-		'{{SETI_AUTHOR_CODE_New_implementation
-		Me.outputLoc = BASE_REPORT_LOC
-		Me.nowTime = Now
-		Me.title = title
-		Me.outputFormat = "HTML"
-
-		Dim passedEngine As String
-		passedEngine = Environ("TestRunnerEngine")
-		If (passedEngine = "") Then
-			engine = "testsuite-voltscript"
-		Else
-			engine = passedEngine
-		End If
-		'}}
-
-	End Sub
-
-
-	%REM
-		Sub addTestSuite 
-		Adds a TestSuite to this TestRunner
-	
-		@param	testSuite 	TestSuite to add to this TestRunner
-
-	%END REM
-	Sub addTestSuite(testSuite As TestSuite) 
-		'{{SETI_AUTHOR_CODE_addTestSuite_implementation
-		Set me.testSuites(testSuite.title) = testSuite
-		Call testSuite.includeInTestRunner(me.title).outputTo(getFilePath())
-		'}}
-
-	End Sub
-
-
-	%REM
-		Function getOutputFormat 
-		Getter for the output format, default is HTML.
-	
-		@return	String
-	%END REM
-	Function getOutputFormat() As String 
-		'{{SETI_AUTHOR_CODE_getOutputFormat_implementation
-		getOutputFormat = outputFormat
-		'}}
-
-	End Function
-
-
-	%REM
-		Function getFilePath 
-		Gets the directory to save the HTML / XML output to.
-	
-		@return	String
-	%END REM
-	Function getFilePath() As String 
-		'{{SETI_AUTHOR_CODE_getFilePath_implementation
-		getFilePath = Me.outputLoc & Replace(Me.title, | |, ||) & "-" & Formattimeforoutput(Me.nowTime) & "/"
-		'}}
-
-	End Function
-
-
-	%REM
-		Function outputTo 
-		Sets a directory to write reports to.
-	
-		@param	outputLoc 	Directory to write reports
-
-		@return	TestRunner
-	%END REM
-	Function outputTo(outputLoc As String) As TestRunner 
-		'{{SETI_AUTHOR_CODE_outputTo_implementation
-		Dim lastChar As String
-		lastChar = Right(FullTrim(outputLoc), 1)
-		If (lastChar <> |\\| And lastChar <> |/|) Then
-			outputLoc = outputLoc & |/|
-		End If
-		Me.outputLoc = outputLoc
-		Set outputTo = Me
-		'}}
-
-	End Function
-
-
-	%REM
-		Function createTestSuite 
-		Creates a new TestSuite with a label and adds it to this TestRunner
-	
-		@param	title 	Title for the test suite
-
-		@return	TestSuite
-	%END REM
-	Function createTestSuite(title As String) As TestSuite 
-		'{{SETI_AUTHOR_CODE_createTestSuite_implementation
-		Set me.testSuites(title) = New TestSuite(title)
-		Set createTestSuite = me.testSuites(title)
-		createTestSuite.includeInTestRunner(me.title).outputTo(Me.getFilePath())
-		'}}
-
-	End Function
-
-
-	%REM
-		Function setOutputFormat 
-		Sets the output format for the reports
-	
-		@param	formatType 	Format for the reports, "HTML", "XML", or "BOTH"
-
-		@return	TestRunner
-	%END REM
-	Function setOutputFormat(formatType As String) As TestRunner 
-		'{{SETI_AUTHOR_CODE_setOutputFormat_implementation
-		On Error GoTo 0
-		Select Case formatType
-			Case "HTML", "XML", "BOTH":
-
-			Case Else
-			Error 1400, "Invalid format type, only HTML, XML or BOTH are supported"
-		End Select
-
-		outputFormat = formatType
-		Set setOutputFormat = Me
-		'}}
-
-	End Function
-
-	'{{SETI_AUTHOR_CODE_TestRunner_Private_Methods
-
-	%REM
-		Function getTestRunnerXml
-		Description: Function to get testrunner level XML, including variable content
-	%END REM
-	Private Function getTestRunnerXml(tests As Integer, failures As Integer, errors As Integer) As String
-		Dim runtime As String
-		runTime = FormatTimeForOutput(Now)
-		getTestRunnerXml = |<?xml version="1.0" encoding="UTF-8"?><testrun name="| & Me.title & |" | &_
-		|tests="| & CStr(tests) & |" time="| & runtime & |" failures="| & CStr(failures) & |" errors="| & CStr(errors) & |">|
-	End Function
-
-	%REM
-		Function cleanXmlString
-		Description: Converts fouble quotes to single quotes
-	%END REM
-	Private Function cleanXmlString(inputStr As String) As String
-		cleanXmlString = Replace(inputStr, |"|, |'|)
-		cleanXmlString = Replace(cleanXmlString, |<|, |&lt;|)
-		cleanXmlString = Replace(cleanXmlString, |>|, |&gt;|)
-		cleanXmlString = Replace(cleanXmlString, |&|, |&amp;|)
-	End Function
-	
-	%REM
-		Prints out the HTML report
-	%END REM
-	Private Sub printoutReport
-		Dim fileName As String
-		Dim fileNum As Integer
-		Dim htmlHeadMod As String
-		Dim htmlIntroMod As String
-		Dim testCount As Integer
-		Dim fileOpened As Boolean
-
-		On Error GoTo trapError
-		
-		htmlHead = |<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <style>
-body {
-  font-family: arial, sans-serif;
-}
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-
-.overall {
-  margin-bottom: 5px;
-}
-.overall::before {
-  display: table;
-  content: "";
-}
-.overall::after {
-  display: table;
-  content: "";
-}
-
-.container {
-  margin: 0 auto;
-  max-width: 1170px;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-.row {
-  margin-bottom: 15px;
-  margin-left: -15px;
-  margin-right: -15px;
-}
-
-.overall-failed {
-  background-color: #cc3300;
-}
-
-.summary {
-  width: 20%;
-  float:left;
-  margin-right: 10px;
-}
-
-.body {
-  width: 79%;
-  float: left;
-}
-
-.passed {
-  color: #009933;
-  cursor: pointer;
-}
-.passed::before {
-  content: '\2713'; /* tick */
-}
-
-.failed {
-  color: #003399;
-  cursor: pointer;
-}
-.failed::before {
-  content: '\2716' /* cross */
-}
-
-.error {
-  color: #cc3300;
-  cursor: pointer;
-}
-.error::before {
-  content: '\2716' /* cross */
-}
-
-.highlight {
-  background-color: #3333cc;
-  color: #ffffff;
-}
-
-iframe {
-  width: 79%;
-  height: 100%;
-  border: 0px;
-}
-    </style>
-    <script>
-      let elemCount = {{testsRun}};
-      function display(elemNum, title) {
-        for (let i = 1; i <= elemCount; i++) {
-          let elem = document.getElementById("test" + i);
-          elem.classList.remove("highlight");
-        }
-        let highlightElem = document.getElementById("test" + elemNum);
-        highlightElem.classList.add("highlight");
-        let bodyElem = document.getElementById("bodyIframe");
-        bodyElem.src = title;
-      }
-    </script>
-  </head>
-
-|	' End of htmlHead
-		
-		htmlIntro = |<body>
-    <div class="container">
-    <div class="summary">
-|
-		
-		htmlOutro = |
-    </div>
-    <div class="body">
-      <iframe src="" title="Test Results" id="bodyIframe"></iframe>
-    </div>
-  </div>
-  </body>
-</html>|
-		
-		'Open file and run
-		fileNum = FreeFile
-		fileName = Me.getFilePath()
-		Call MakeDirsBaliUnit(Me.outputLoc)
-		Call MakeDirsBaliUnit(fileName)
-		Open fileName & |index.html| For Output As filenum
-		fileOpened = True
-		
-		testCount = 0
-		htmlIntroMod = htmlIntro
-		ForAll test In testSuites
-			testCount = testCount + 1
-			Dim testClass As String
-			Dim testFileName As String
-			If (test.ranSuccessfully) Then
-				testClass = "passed"
-			ElseIf (test.errors > 0) Then
-				testClass = "error"
-			ElseIf (test.failures > 0) Then
-				testClass="failed"
-			ElseIf (test.missingAssertions > 0) Then
-				testClass = "failed"
-			End If
-			htmlintroMod = htmlIntroMod & |<div class = "| & testClass & |" id="test| & CStr(testCount) & _
-			|" onclick="display(| & CStr(testCount) & |,'| & Replace(test.title, " ", "") & |.html')">&nbsp;| &_
-			 test.title & |</div>|
-		End ForAll
-		
-		htmlHeadMod = Replace(htmlHead, |{{testsRun}}|, CStr(testCount))
-		Print #filenum, htmlHeadMod
-		
-		Print #fileNum, htmlIntroMod
-		
-		Print #filenum, htmlOutro
-exitSub:
-		If (fileOpened) Then
-			Close fileNum
-		End If
-		Exit Sub
-		
-trapError:
-		MsgBox |Error | & Error(Err) & | on line | & CStr(Erl)
-		Resume exitSub
-	End Sub
-	
-	%REM
-		Prints out JUnit-compatible XML report
-	%END REM
-	Private Sub printoutXmlReport
-		Dim fileName As String
-		Dim fileNum As Integer
-		Dim runTime As String
-		Dim testCount As Integer, errorCount As Integer, failCount As Integer
-		Dim fileOpened As Boolean
-		Dim testTitle As String, testDisplayName As String, testDescription As String
-
-		On Error GoTo trapError
-		
-		runTime = FormatTimeForOutput(Now)
-		
-		'Open file and run
-		fileNum = FreeFile
-		fileName = Me.getFilePath()
-		Call MakeDirsBaliUnit(Me.outputLoc)
-		Call MakeDirsBaliUnit(fileName)
-		Open fileName & title & |.xml| For Output As filenum
-		fileOpened = True
-		
-		testCount = 0
-		errorCount = 0
-		failCount = 0
-		ForAll testsuite In testSuites
-			Call testSuite.endTimer()
-			testSuite.setOutputFormat(Me.outputFormat)
-			testCount = testCount + testsuite.tests
-			errorCount = errorCount + testsuite.errors
-			failCount = failCount + testsuite.failures
-		End ForAll
-		
-		Print #fileNum, getTestRunnerXml(testCount, failCount, errorCount)
-		
-		ForAll testsuite In testSuites
-			testTitle = cleanXmlString(testSuite.title)
-			If (testsuite.displayName = "") Then
-				testdisplayName = testtitle
-			Else
-				testDisplayName = cleanXmlString(testsuite.displayName)
-			End If
-			Print #fileNum, |  <testsuite name="| & testTitle & |" time="| & testsuite.duration & |" displayname="| & testDisplayName &_
-			|" id="[engine:| & Me.engine & |]/[| & testTitle & |]">|
-			ForAll testCase In testsuite.results
-				testDescription = cleanXmlString(testCase.description)
-				Print #fileNum, |    <testcase name="| testDescription & |" classname="| & testTitle & |" time="0" displayname="| &_
-				testDescription & |" id="[engine:| &_
-				engine & |]/[| & testTitle & |]/[| & testDescription & |]">|
-				Select Case testCase.outcome
-				Case "Passed":
-					Print #fileNum, |    </testcase>|
-				Case "Failed":
-					Print #fileNum, |      <failure>| & testCase.errorMsg
-					If (testCase.ErrorStack <> ||) Then
-						Print #fileNum, Replace(testCase.errorStack, "<br/>", Chr(10))
-					End If
-					Print #fileNum, |      </failure>
-    </testcase>|
-				Case "Error":
-					Print #fileNum, |      <error>| & testCase.errorMsg
-					If (testCase.ErrorStack <> ||) Then
-						Print #fileNum, testCase.errorStack
-					End If
-					Print #fileNum, |      </error>
-    </testcase>|
-				End Select
-				
-			End ForAll
-			
-			Print #filenum, |  </testsuite>|
-		End ForAll
-		
-		Print #fileNum, |</testrun>|
-		
-exitSub:
-		If (fileOpened) Then
-			Close fileNum
-		End If
-		Exit Sub
-		
-trapError:
-		MsgBox |Error | & Error(Err) & | on line | & CStr(Erl)
-		Resume exitSub
-	End Sub
-		'}}
-
-End Class 
-
-
-%REM
 	Class TestSuiteReport 
 	Class for the HTML report for a TestSuite
  
 %END REM
-Class TestSuiteReport 
+Public Class TestSuiteReport 
 
 	'{{SETI_AUTHOR_CODE_TestSuiteReport_Private_Variables
 	Private htmlHead As String
@@ -2223,7 +2305,7 @@ Class TestSuiteReport
 		@param	outputLoc 	Directory to write the HTML or XML report to
 
 	%END REM
-	Sub New(outputLoc As String) 
+	Public Sub New(outputLoc As String) 
 		'{{SETI_AUTHOR_CODE_New_implementation
 		If (outputLoc = ||) Then
 			Me.reportLoc = BASE_REPORT_LOC
@@ -2390,7 +2472,7 @@ tr:nth-child(even) {
 		@param	testSuite 	Test suite to write out
 
 	%END REM
-	Sub printoutReport(testSuite As TestSuite) 
+	Public Sub printoutReport(testSuite As TestSuite) 
 		'{{SETI_AUTHOR_CODE_printoutReport_implementation
 		Dim fileName As String
 		Dim fileNum As Integer
@@ -2477,88 +2559,6 @@ trapError:
 	End Sub
 
 	'{{SETI_AUTHOR_CODE_TestSuiteReport_Private_Methods
-	'}} 
-
-End Class 
-
-
-%REM
-	Class AbstractCustomBeforeAfter 
-	Class for custom beforeAll, beforeEach, afterEach and afterAll code.
-beforeAll is automatically run during TestSuite.isStarted() function.
-beforeEach is automatically run by core TestSuite assertions, but must be manually run in custom assertion tests.
-afterEach is automatically run by core TestSuite assertions, but must be run manually in custom assertion tests.
-afterAll is automatically run during TestSuite.delete() function, at the end of the scope for the TestSuite.
- 
-%END REM
-Class AbstractCustomBeforeAfter 
-
-	'{{SETI_AUTHOR_CODE_AbstractCustomBeforeAfter_Private_Variables
-	'}}
-
-	'{{SETI_AUTHOR_CODE_AbstractCustomBeforeAfter_Private_Properties
-	'}}
-
-
-	%REM
-		Sub New 
-
-	%END REM
-	Sub New() 
-		'{{SETI_AUTHOR_CODE_New_implementation
-		'}}
-
-	End Sub
-
-
-	%REM
-		Sub beforeEach 
-		Code to run before each assertion.
-	
-	%END REM
-	Sub beforeEach() 
-		'{{SETI_AUTHOR_CODE_beforeEach_implementation
-		'}}
-
-	End Sub
-
-
-	%REM
-		Sub beforeAll 
-		Code to run before any assertion starts.
-	
-	%END REM
-	Sub beforeAll() 
-		'{{SETI_AUTHOR_CODE_beforeAll_implementation
-		'}}
-
-	End Sub
-
-
-	%REM
-		Sub afterEach 
-		Code to run after each assertion is completed.
-	
-	%END REM
-	Sub afterEach() 
-		'{{SETI_AUTHOR_CODE_afterEach_implementation
-		'}}
-
-	End Sub
-
-
-	%REM
-		Sub afterAll 
-		Code to run after all assertions have been completed.
-	
-	%END REM
-	Sub afterAll() 
-		'{{SETI_AUTHOR_CODE_afterAll_implementation
-		'}}
-
-	End Sub
-
-	'{{SETI_AUTHOR_CODE_AbstractCustomBeforeAfter_Private_Methods
 	'}} 
 
 End Class 
