@@ -2,6 +2,7 @@
 
 How-to guides instruct users in completing key goals and tasks related to VoltScript Testing.
 
+- [Use dependency management](archipelago.md)
 - [Write a standalone test suite](Standalone.md)
 - [Aggregate test suites](TestRunner.md)
 - [Write tests](writingtests.md)

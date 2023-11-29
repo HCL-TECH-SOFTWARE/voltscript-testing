@@ -11,12 +11,12 @@ There are no dependencies on any LotusScript Extensions (LSX), such as `nlsxbe.d
 ---
 ## What's new
 
-For the latest release information about VoltScript Testing, see [What's new](references/whatsnew.md)
+For the latest release information about VoltScript Testing, see [What's new](references/whatsnew.md).
 
 ---
 ## Using via dependency management
 
-For using with dependency management, see [Using dependency management](howto/archipelago.md)
+For using with dependency management, see [Use dependency management](howto/archipelago.md).
 
 ---
 ## How the documentation is organized
