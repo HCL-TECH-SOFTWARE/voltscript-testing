@@ -1,0 +1,57 @@
+%REM
+	Copyright 2022-2023 HCL America, Inc.
+	Licensed under the Apache License, Version 2.0 (the "License"); 
+	you may not use this file except in compliance with the License. 
+	You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, 
+	software distributed under the License is distributed on an "AS IS" BASIS, 
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+	See the License for the specific language governing permissions and limitations under the License	
+%END REM
+Option Declare
+Option Public
+Use "VoltScriptTesting"
+
+Class Person
+    Public firstName as String
+    Public lastName as String
+    Public age as Integer
+
+    Sub New()
+      
+    End Sub
+End Class
+
+Sub Initialize
+
+    Dim person as New Person()
+    Dim errMsg as String
+    Dim testSuite as New TestSuite("Validator")
+
+    person.firstName = "John"
+    person.lastName = "Doe"
+    person.age = 42
+
+    testSuite.suppressReport = True
+    Call testSuite.describe("fname").assertNotEqualString("", person.firstName)
+    Call testSuite.describe("lname").assertNotEqualString("", person.lastName)
+    Call testSuite.describe("age > 0").assertIsGreaterThan(0.0, CDbl(person.age))
+    Call testSuite.describe("age > 0 alt").assertTrue(person.age > 0)
+    Call testSuite.describe("age sensible").assertTrue(person.age < 110)
+
+    If testSuite.ranSuccessfully() Then
+      Print "Person valid"
+    Else
+      errMsg = "Person not valid"
+      ForAll test in testSuite.results
+        If (test.outcome <> "Passed") Then
+          errMsg = errMsg & Chr(10) & ListTag(test) & ": " & test.errorMsg
+        End If
+      End ForAll
+      Error 1001, errMsg
+    End If
+
+End Sub

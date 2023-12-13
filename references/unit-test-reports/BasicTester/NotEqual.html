@@ -1,0 +1,147 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <style>
+body {
+  font-family: arial, sans-serif;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.overall {
+  margin-bottom: 5px;
+}
+.overall::before {
+  display: table;
+  content: "";
+}
+.overall::after {
+  display: table;
+  content: "";
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1170px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.row {
+  margin-bottom: 15px;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.overall-passed {
+  background-color: #009933;
+}
+
+.overall div {
+  width:33.33333333%;
+  float:left;
+}
+
+.overall-failed {
+  background-color: #cc3300;
+}
+
+.tests {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.tests .summary {
+  width: 49%;
+  padding-right: 5px;
+  float:left;
+}
+
+.tests .details {
+  width: 50%;
+  float:left;
+}
+
+.passed {
+  color: #009933;
+  cursor: pointer;
+}
+.passed::before {
+  content: '\2713'; /* tick */
+}
+
+.failed {
+  color: #003399;
+  cursor: pointer;
+}
+.failed::before {
+  content: '\2716' /* cross */
+}
+
+.error {
+  color: #cc3300;
+  cursor: pointer;
+}
+.error::before {
+  content: '\2716' /* cross */
+}
+
+.highlight {
+  background-color: #3333cc;
+  color: #ffffff;
+}
+    </style>
+    <script>
+      let elemCount = 24;
+      function toggle(elemNum) {
+        for (let i = 1; i <= elemCount; i++) {
+          let elem = document.getElementById("test" + i);
+          elem.classList.remove("highlight");
+          let elemDetail = document.getElementById("testDetail" + i);
+          elemDetail.style = "display:none";
+        }
+        let highlightElem = document.getElementById("test" + elemNum);
+        highlightElem.classList.add("highlight");
+        let showElem = document.getElementById("testDetail" + elemNum);
+        showElem.style = "display:block";
+      }
+    </script>
+  </head>
+
+
+<body>
+    <div class="container">
+    <div class="row">
+      <h1>Not Equal</h1>
+      <div>Finished after: 0 seconds</div>
+    </div>
+    <div class="overall row">
+      <div>Runs: 24</div>
+      <div>Errors: 0</div>
+      <div>Fails: 11</div>
+    </div>
+    <br/>
+    <div class="overall-failed row">&nbsp;</div>
+
+    <div class="tests">
+
+<div class="summary"><div id="test1" class=Passed onclick="toggle(1)">&nbsp;Test foo not equal to bar</div><div id="test2" class=Failed onclick="toggle(2)">&nbsp;Test foo not equal to foo</div><div id="test3" class=Passed onclick="toggle(3)">&nbsp;Test 1 not equal to 2</div><div id="test4" class=Failed onclick="toggle(4)">&nbsp;Test 1 not equal to 1</div><div id="test5" class=Passed onclick="toggle(5)">&nbsp;Test 1 not equal to 2_1</div><div id="test6" class=Failed onclick="toggle(6)">&nbsp;Test 1 not equal to 1_1</div><div id="test7" class=Passed onclick="toggle(7)">&nbsp;Test integers, not equal</div><div id="test8" class=Failed onclick="toggle(8)">&nbsp;Test integers, not equal fails</div><div id="test9" class=Passed onclick="toggle(9)">&nbsp;Test doubles, not equal</div><div id="test10" class=Failed onclick="toggle(10)">&nbsp;Test doubles, not equal fails</div><div id="test11" class=Passed onclick="toggle(11)">&nbsp;Test singles, not equal</div><div id="test12" class=Failed onclick="toggle(12)">&nbsp;Test singles, not equal fails</div><div id="test13" class=Passed onclick="toggle(13)">&nbsp;Test longs, not equal</div><div id="test14" class=Failed onclick="toggle(14)">&nbsp;Test longs, not equal fails</div><div id="test15" class=Passed onclick="toggle(15)">&nbsp;Test numeric, not equal</div><div id="test16" class=Failed onclick="toggle(16)">&nbsp;Test numeric, not equal fails</div><div id="test17" class=Failed onclick="toggle(17)">&nbsp;Test a is not Integer</div><div id="test18" class=Passed onclick="toggle(18)">&nbsp;Test a is not String</div><div id="test19" class=Passed onclick="toggle(19)">&nbsp;Test primitive not matches</div><div id="test20" class=Failed onclick="toggle(20)">&nbsp;Test primitive not matches fails</div><div id="test21" class=Passed onclick="toggle(21)">&nbsp;Test primitive not matches array</div><div id="test22" class=Passed onclick="toggle(22)">&nbsp;Test array not matches</div><div id="test23" class=Failed onclick="toggle(23)">&nbsp;Test array not matches fails</div><div id="test24" class=Passed onclick="toggle(24)">&nbsp;Test primitive integer and string</div></div>
+<div class="details"><div id="testDetail1" style="display:none"></div><div id="testDetail2" style="display:none">Expected: Foo matches actual: Foo</div><div id="testDetail3" style="display:none"></div><div id="testDetail4" style="display:none">Expected: 1 matches actual: 1</div><div id="testDetail5" style="display:none"></div><div id="testDetail6" style="display:none">Expected: 1 matches actual: 1</div><div id="testDetail7" style="display:none"></div><div id="testDetail8" style="display:none">Expected: 1 matches actual: 1</div><div id="testDetail9" style="display:none"></div><div id="testDetail10" style="display:none">Expected: 2.5 matches actual: 2.5</div><div id="testDetail11" style="display:none"></div><div id="testDetail12" style="display:none">Expected: 6.02E+23 matches actual: 6.02E+23</div><div id="testDetail13" style="display:none"></div><div id="testDetail14" style="display:none">Expected: 2094070921 matches actual: 2094070921</div><div id="testDetail15" style="display:none"></div><div id="testDetail16" style="display:none">Expected: 1 matches actual: 1</div><div id="testDetail17" style="display:none">Expected: INTEGER matches actual: INTEGER</div><div id="testDetail18" style="display:none"></div><div id="testDetail19" style="display:none"></div><div id="testDetail20" style="display:none">Expected: 1 matches actual: 1</div><div id="testDetail21" style="display:none"></div><div id="testDetail22" style="display:none"></div><div id="testDetail23" style="display:none">Expected: [0,1,2] matches actual: [0,1,2]</div><div id="testDetail24" style="display:none"></div></div>
+
+    </div>
+  </div>
+  </body>
+</html>
