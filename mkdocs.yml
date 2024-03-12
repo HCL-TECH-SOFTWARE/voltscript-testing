@@ -64,10 +64,11 @@ markdown_extensions:
 
 # Copyright
 copyright: >-
-  Copyright &copy; 2022, HCL America, Inc. -
+  Copyright &copy; 2023, HCL America, Inc. | <a href="https://www.hcl-software.com/legal/privacy" target="_blank">Privacy Statement</a> | <a href="https://www.hcl-software.com/legal/terms-use" target="_blank">Terms of Use</a> <br/>
   <a href="#__consent">Change cookie settings</a>
+
 extra:
-  productversion: 1.0.0
+  productversion: 1.0.1
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/HCL-TECH-SOFTWARE
@@ -91,7 +92,7 @@ use_directory_urls: false
 
 # Customization
 extra_css:
-  - /voltscript-testing/assets/css/style.css
+  - assets/css/style.css
 
 plugins:
   - awesome-pages
