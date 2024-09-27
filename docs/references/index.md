@@ -59,6 +59,12 @@ List of [frequently asked questions](FAQs.md) related to VoltScript Testing.
     - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-json-converter){: target="_blank" rel="noopener noreferrer"}
 - VoltScript Console Colors
     - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-console-colors){: target="_blank" rel="noopener noreferrer"}
+- VoltScript VoltMX Middleware
+    - [Documentation](https://opensource.hcltechsw.com/voltscript-voltmx-middleware){: target="_blank" rel="noopener noreferrer"}
+    - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-voltmx-middleware){: target="_blank" rel="noopener noreferrer"}
+- VoltScript Logging
+    - [Documentation](https://opensource.hcltechsw.com/voltscript-logging){: target="_blank" rel="noopener noreferrer"}
+    - [Source code](https://github.com/HCL-TECH-SOFTWARE/voltscript-logging){: target="_blank" rel="noopener noreferrer"}
 
 
 ## Support
