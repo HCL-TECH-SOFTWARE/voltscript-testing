@@ -18,26 +18,26 @@ theme:
     - search.suggest
     - content.code.annotate
     - content.tooltips
-  #custom_dir: theme_overrides/
+  custom_dir: theme_overrides/
   icon:
     repo: fontawesome/brands/github
   font: false
   #  text: Roboto
   #  code: Roboto Mono
   favicon: assets/images/favicon.png
-  palette:
-    - scheme: default
-      primary: indigo
-      accent: indigo
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-    - scheme: slate
-      primary: indigo
-      accent: indigo
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
+#  palette:
+#    - scheme: default
+#      primary: indigo
+#      accent: indigo
+#      toggle:
+#        icon: material/brightness-7
+#        name: Switch to dark mode
+#    - scheme: slate
+#      primary: indigo
+#      accent: indigo
+#      toggle:
+#        icon: material/brightness-4
+#        name: Switch to light mode
 
   # Static files
   static_templates:
@@ -49,6 +49,7 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.superfences
   - attr_list
+  - md_in_html
   - abbr
   - footnotes
   - pymdownx.tabbed:
@@ -93,6 +94,7 @@ use_directory_urls: false
 # Customization
 extra_css:
   - assets/css/style.css
+  - assets/css/style1.css
 
 plugins:
   - awesome-pages

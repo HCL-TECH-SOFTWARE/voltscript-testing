@@ -24,7 +24,7 @@ If you want to get involved in a role (including ones we may have missed!) reach
 
 ## Development Environment
 
-- Develop code with Visual Studio Code and VoltScript extensions, see https://help.hcltechsw.com/docs/voltscript/early-access/howto/writing/index.html.
+- Develop code with Visual Studio Code and VoltScript extensions, see https://opensource.hcltechsw.com/voltscript-docs/howto/writing/index.html.
 - Documentation uses Material for MKDocs framework:
     - Write documentation in the relevant area of the docs directory.
     - Preview documentation using MKDocs, either [locally installed with relevant plugins](https://squidfunk.github.io/mkdocs-material/getting-started/) or using the [MKDocs HCL Container Image](https://github.com/HCL-TECH-SOFTWARE/hcl-mkdocs-build-image)
